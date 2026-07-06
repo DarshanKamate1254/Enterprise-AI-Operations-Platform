@@ -9,51 +9,74 @@ logger = logging.getLogger("telemetry-metrics")
 # ----------------------------------------------------
 # PROMETHEUS METRIC REGISTRATIONS
 # ----------------------------------------------------
+from prometheus_client import REGISTRY
+
 # 1. Latency tracking
-NODE_LATENCY = Histogram(
-    "agent_node_latency_seconds",
-    "Latency of individual agent nodes in seconds",
-    ["node"]
-)
+if "agent_node_latency_seconds" in REGISTRY._names_to_collectors:
+    NODE_LATENCY = REGISTRY._names_to_collectors["agent_node_latency_seconds"]
+else:
+    NODE_LATENCY = Histogram(
+        "agent_node_latency_seconds",
+        "Latency of individual agent nodes in seconds",
+        ["node"]
+    )
 
 # 2. Token counts
-LLM_TOKENS = Counter(
-    "llm_tokens_total",
-    "Total input and output tokens consumed",
-    ["agent", "type"]  # type: "prompt" or "completion"
-)
+if "llm_tokens_total" in REGISTRY._names_to_collectors:
+    LLM_TOKENS = REGISTRY._names_to_collectors["llm_tokens_total"]
+else:
+    LLM_TOKENS = Counter(
+        "llm_tokens_total",
+        "Total input and output tokens consumed",
+        ["agent", "type"]  # type: "prompt" or "completion"
+    )
 
 # 3. Model cost (USD)
-LLM_COST = Counter(
-    "llm_cost_usd_total",
-    "Estimated total accumulated LLM invocation cost in USD",
-    ["agent"]
-)
+if "llm_cost_usd_total" in REGISTRY._names_to_collectors:
+    LLM_COST = REGISTRY._names_to_collectors["llm_cost_usd_total"]
+else:
+    LLM_COST = Counter(
+        "llm_cost_usd_total",
+        "Estimated total accumulated LLM invocation cost in USD",
+        ["agent"]
+    )
 
 # 4. Failures & Retries
-AGENT_FAILURES = Counter(
-    "agent_failures_total",
-    "Total unhandled failures or exceptions within agent nodes",
-    ["agent", "error_type"]
-)
+if "agent_failures_total" in REGISTRY._names_to_collectors:
+    AGENT_FAILURES = REGISTRY._names_to_collectors["agent_failures_total"]
+else:
+    AGENT_FAILURES = Counter(
+        "agent_failures_total",
+        "Total unhandled failures or exceptions within agent nodes",
+        ["agent", "error_type"]
+    )
 
-AGENT_RETRIES = Counter(
-    "agent_retries_total",
-    "Total feedback-loop planning retry loops executed"
-)
+if "agent_retries_total" in REGISTRY._names_to_collectors:
+    AGENT_RETRIES = REGISTRY._names_to_collectors["agent_retries_total"]
+else:
+    AGENT_RETRIES = Counter(
+        "agent_retries_total",
+        "Total feedback-loop planning retry loops executed"
+    )
 
 # 5. Invocations
-AGENT_INVOCATIONS = Counter(
-    "agent_invocations_total",
-    "Total calls made to specialized agent nodes",
-    ["agent"]
-)
+if "agent_invocations_total" in REGISTRY._names_to_collectors:
+    AGENT_INVOCATIONS = REGISTRY._names_to_collectors["agent_invocations_total"]
+else:
+    AGENT_INVOCATIONS = Counter(
+        "agent_invocations_total",
+        "Total calls made to specialized agent nodes",
+        ["agent"]
+    )
 
-TOOL_INVOCATIONS = Counter(
-    "tool_invocations_total",
-    "Total calls made to helper tools",
-    ["tool"]
-)
+if "tool_invocations_total" in REGISTRY._names_to_collectors:
+    TOOL_INVOCATIONS = REGISTRY._names_to_collectors["tool_invocations_total"]
+else:
+    TOOL_INVOCATIONS = Counter(
+        "tool_invocations_total",
+        "Total calls made to helper tools",
+        ["tool"]
+    )
 
 
 # ----------------------------------------------------

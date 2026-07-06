@@ -23,15 +23,20 @@ class QdrantManager:
         )
         
         # Configure client connection arguments
-        client_kwargs = {
-            "host": settings.qdrant.host,
-            "port": settings.qdrant.port,
-            "https": settings.qdrant.use_https,
-        }
-        if settings.qdrant.api_key:
-            client_kwargs["api_key"] = settings.qdrant.api_key
-            
-        self.client = QdrantClient(**client_kwargs)
+        host = settings.qdrant.host
+        if not host or host in ("local", "sqlite") or host.startswith(".") or host.startswith("/"):
+            # Use local disk-based database for development without Docker
+            self.client = QdrantClient(path="data/qdrant_db")
+        else:
+            client_kwargs = {
+                "host": host,
+                "port": settings.qdrant.port,
+                "https": settings.qdrant.use_https,
+            }
+            if settings.qdrant.api_key:
+                client_kwargs["api_key"] = settings.qdrant.api_key
+                
+            self.client = QdrantClient(**client_kwargs)
 
     def create_collection_if_not_exists(self, embedding_dim: int = 1536):
         """
