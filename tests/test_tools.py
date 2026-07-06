@@ -6,16 +6,14 @@ from unittest.mock import MagicMock, patch
 
 # Configure sys.path for test imports
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-tools_dir = os.path.join(root_dir, "tools")
 sys.path.insert(0, root_dir)
-sys.path.insert(0, tools_dir)
 
-from sql import SQLTool
-from retriever import RetrieverTool
-from api import APITool
-from calculator import CalculatorTool
-from filesystem import FilesystemTool
-from memory import MemoryTool
+from tools.sql import SQLTool
+from tools.retriever import RetrieverTool
+from tools.api import APITool
+from tools.calculator import CalculatorTool
+from tools.filesystem import FilesystemTool
+from tools.memory import MemoryTool
 
 
 class TestReusableTools(unittest.TestCase):

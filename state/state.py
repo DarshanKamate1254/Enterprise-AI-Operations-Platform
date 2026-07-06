@@ -22,6 +22,7 @@ class AgentState(TypedDict):
     
     # Core user query and routing decisions
     user_query: str
+    user_role: str  # "Admin", "Manager", "User"
     route: str  # "sql", "rag", "api", "general", "unsafe"
     
     # Planning variables
@@ -38,6 +39,7 @@ class AgentState(TypedDict):
     # Feedback loop tracking
     reflection_feedback: str
     reflection_attempts: int
+    conversation_summary: str  # Summarized chat history
     
     # Safety validation outcomes
     safety_verdict: str  # "safe" or "unsafe"

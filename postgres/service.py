@@ -8,10 +8,10 @@ from sqlalchemy.orm import Session
 # Ensure imports resolve
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from database import engine, Base
-import models
-import schemas
-import repositories
+from .database import engine, Base
+from . import models
+from . import schemas
+from . import repositories
 
 
 def init_db():

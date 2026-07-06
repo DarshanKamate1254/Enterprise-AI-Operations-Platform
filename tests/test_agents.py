@@ -6,17 +6,19 @@ from unittest.mock import MagicMock, patch
 # Configure sys.path for test imports
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, root_dir)
-sys.path.insert(0, os.path.join(root_dir, "agents"))
 
 from state.state import AgentState
-from router import router_node, RouteDecision
-from planner import planner_node, PlanSteps
-from retrieval import retrieval_node
-from sql import sql_node, SQLGeneration
-from api import api_node, APIGeneration
-from reflection import reflection_node, ReflectionVerdict
-from safety import safety_node, SafetyVerdict
-from report import report_node
+from agents.router import router_node
+from agents.planner import planner_node
+from agents.retrieval import retrieval_node
+from agents.sql import sql_node
+from agents.api import api_node
+from agents.reflection import reflection_node
+from agents.safety import safety_node
+from agents.report import report_node
+from schemas.agent_schemas import (
+    RouteDecision, PlanSteps, SQLGeneration, APIGeneration, ReflectionVerdict, SafetyVerdict
+)
 
 
 class TestAgentNodes(unittest.TestCase):
@@ -41,7 +43,7 @@ class TestAgentNodes(unittest.TestCase):
         }
 
     # 1. ROUTER NODE TEST
-    @patch('router.ChatOpenAI')
+    @patch('agents.router.ChatOpenAI')
     def test_router_node(self, mock_chat_openai):
         """Verify the Router node updates the route state parameter."""
         mock_llm = MagicMock()
@@ -55,7 +57,7 @@ class TestAgentNodes(unittest.TestCase):
         self.assertTrue(len(updates["messages"]) > 0)
 
     # 2. PLANNER NODE TEST
-    @patch('planner.ChatOpenAI')
+    @patch('agents.planner.ChatOpenAI')
     def test_planner_node(self, mock_chat_openai):
         """Verify the Planner node compiles task sequences."""
         mock_llm = MagicMock()
@@ -68,7 +70,7 @@ class TestAgentNodes(unittest.TestCase):
         self.assertEqual(updates["plan"], ["query db", "generate report"])
 
     # 3. RETRIEVAL NODE TEST
-    @patch('retrieval.RetrieverTool')
+    @patch('agents.retrieval.RetrieverTool')
     def test_retrieval_node(self, mock_retriever_tool):
         """Verify the Retrieval node updates context lists."""
         mock_tool_inst = MagicMock()
@@ -82,9 +84,9 @@ class TestAgentNodes(unittest.TestCase):
         self.assertIn("Leave_Policy.md", updates["retrieved_context"][0])
 
     # 4. SQL NODE TEST
-    @patch('sql.db_session')
-    @patch('sql.SQLTool')
-    @patch('sql.ChatOpenAI')
+    @patch('agents.sql.db_session')
+    @patch('agents.sql.SQLTool')
+    @patch('agents.sql.ChatOpenAI')
     def test_sql_node(self, mock_chat_openai, mock_sql_tool_class, mock_db_session):
         """Verify the SQL node compiles queries and executes read operations."""
         # Mock LLM query generation
@@ -104,8 +106,8 @@ class TestAgentNodes(unittest.TestCase):
         self.assertIn("Devendra Rao", updates["sql_result"])
 
     # 5. API NODE TEST
-    @patch('api.APITool')
-    @patch('api.ChatOpenAI')
+    @patch('agents.api.APITool')
+    @patch('agents.api.ChatOpenAI')
     def test_api_node(self, mock_chat_openai, mock_api_tool_class):
         """Verify the API node constructs and fires API triggers."""
         # Mock LLM API generation
@@ -129,7 +131,7 @@ class TestAgentNodes(unittest.TestCase):
         self.assertIn("status_code", updates["api_result"])
 
     # 6. REFLECTION NODE TEST
-    @patch('reflection.ChatOpenAI')
+    @patch('agents.reflection.ChatOpenAI')
     def test_reflection_node(self, mock_chat_openai):
         """Verify the Reflection node updates loop states and records critiques."""
         mock_llm = MagicMock()
@@ -143,7 +145,7 @@ class TestAgentNodes(unittest.TestCase):
         self.assertEqual(updates["reflection_attempts"], 1)
 
     # 7. SAFETY NODE TEST
-    @patch('safety.ChatOpenAI')
+    @patch('agents.safety.ChatOpenAI')
     def test_safety_node(self, mock_chat_openai):
         """Verify the Safety node flags security violations."""
         mock_llm = MagicMock()
@@ -156,7 +158,7 @@ class TestAgentNodes(unittest.TestCase):
         self.assertEqual(updates["safety_verdict"], "safe")
 
     # 8. REPORT NODE TEST
-    @patch('report.ChatOpenAI')
+    @patch('agents.report.ChatOpenAI')
     def test_report_node(self, mock_chat_openai):
         """Verify the Report node compiles final answers."""
         mock_llm = MagicMock()

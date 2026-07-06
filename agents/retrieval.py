@@ -44,26 +44,31 @@ class RetrievalAgent:
         return context_blocks
 
 
+from monitoring.telemetry import track_node_latency, record_tool_metric
+
+
 def retrieval_node(state: AgentState) -> Dict[str, Any]:
     """
     LangGraph node wrapper for the Retrieval Agent.
     Updates the retrieved_context and completed_steps.
     """
-    query = state.get("user_query") or ""
-    # Category can be inferred from query or routing category filters
-    category = state.get("route")
-    if category not in {"hr", "finance", "sales", "it", "customer_support", "inventory"}:
-        category = None
+    with track_node_latency("retrieval"):
+        query = state.get("user_query") or ""
+        # Category can be inferred from query or routing category filters
+        category = state.get("route")
+        if category not in {"hr", "finance", "sales", "it", "customer_support", "inventory"}:
+            category = None
 
-    # Load tool and run
-    agent = RetrievalAgent()
-    blocks = agent.execute_retrieval(query, category)
-    
-    # Track steps completion via state reducer delta
-    return {
-        "retrieved_context": blocks,
-        "completed_steps": ["retrieval"],
-        "messages": [
-            ("assistant", f"[Retrieval Action] Executed semantic policy search. Retrieved {len(blocks)} matches.")
-        ]
-    }
+        # Load tool and run
+        agent = RetrievalAgent()
+        record_tool_metric("retriever")
+        blocks = agent.execute_retrieval(query, category)
+        
+        # Track steps completion via state reducer delta
+        return {
+            "retrieved_context": blocks,
+            "completed_steps": ["retrieval"],
+            "messages": [
+                ("assistant", f"[Retrieval Action] Executed semantic policy search. Retrieved {len(blocks)} matches.")
+            ]
+        }
