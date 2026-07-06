@@ -69,12 +69,12 @@ def ingest_documents():
         
         # 3. Index to Qdrant
         manager = QdrantManager()
-        manager.build_index(nodes)
+        chunks_indexed = manager.index_chunks(nodes)
         
         return IngestResponse(
             success=True,
             message="Ingestion completed successfully.",
-            chunks_count=len(nodes)
+            chunks_count=chunks_indexed
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Ingestion failed: {str(e)}")
@@ -86,10 +86,7 @@ def retrieve_documents(payload: RetrieveRequest):
     filters by metadata category if requested, and rerank matches with Flashrank.
     """
     try:
-        manager = QdrantManager()
-        index = manager.get_index()
-        retriever = HybridRetriever(index)
-        
+        retriever = HybridRetriever()
         results = retriever.retrieve(
             query=payload.query,
             category=payload.category,

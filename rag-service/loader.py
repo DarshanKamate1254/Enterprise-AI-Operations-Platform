@@ -1,7 +1,13 @@
 import os
 from typing import List, Dict, Any
-from llama_index.core import Document
-from llama_index.core.readers import SimpleDirectoryReader
+
+class Document:
+    def __init__(self, text: str, metadata: Dict[str, Any]):
+        self.text = text
+        self.metadata = metadata
+
+    def __repr__(self):
+        return f"Document(title={self.metadata.get('document_title')}, category={self.metadata.get('category')})"
 
 def extract_custom_metadata(file_path: str) -> Dict[str, Any]:
     """
@@ -48,13 +54,18 @@ class DocumentLoader:
         if not os.path.exists(self.directory_path):
             raise FileNotFoundError(f"Directory {self.directory_path} does not exist.")
             
-        reader = SimpleDirectoryReader(
-            input_dir=self.directory_path,
-            recursive=True,
-            file_metadata=extract_custom_metadata,
-            required_exts=[".md"]
-        )
-        
-        documents = reader.load_data()
-        print(f"Loaded {len(documents)} document pages from {self.directory_path}")
+        documents = []
+        for root, _, files in os.walk(self.directory_path):
+            for file in files:
+                if file.endswith(".md"):
+                    file_path = os.path.join(root, file)
+                    try:
+                        with open(file_path, "r", encoding="utf-8") as f:
+                            text = f.read()
+                        meta = extract_custom_metadata(file_path)
+                        documents.append(Document(text=text, metadata=meta))
+                    except Exception as e:
+                        print(f"Failed to load file {file_path}: {e}")
+                        
+        print(f"Loaded {len(documents)} documents from {self.directory_path}")
         return documents
