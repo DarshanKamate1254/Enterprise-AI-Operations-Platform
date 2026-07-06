@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaTech Multi-Agent AI Operations Platform - Architecture & Reference Manual</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #060913;
+      --panel-bg: rgba(13, 20, 38, 0.6);
+      --border-color: rgba(255, 255, 255, 0.07);
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-emerald: #10b981;
+      --accent-glow: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      --text-primary: #f3f4f6;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --code-bg: rgba(255, 255, 255, 0.03);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      font-family: 'Outfit', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient Glow Blobs */
+    .glow-blob {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      filter: blur(140px);
+      z-index: -1;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+    .blob-1 {
+      top: 5%;
+      right: 10%;
+      background: var(--accent-purple);
+    }
+    .blob-2 {
+      top: 40%;
+      left: 5%;
+      background: var(--accent-blue);
+    }
+    .blob-3 {
+      bottom: 10%;
+      right: 15%;
+      background: var(--accent-emerald);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.01);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-blue);
+    }
+
+    /* Grid layout */
+    .container {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
+    }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      border-right: 1px solid var(--border-color);
+      background: rgba(6, 9, 19, 0.95);
+      padding: 40px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(10px);
+      z-index: 100;
+    }
+
+    .brand h1 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      background: var(--accent-glow);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .brand p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 40px;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex-grow: 1;
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 10px 14px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      border-left: 2px solid transparent;
+    }
+
+    .nav-link:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .nav-link.active {
+      color: #fff;
+      background: rgba(59, 130, 246, 0.08);
+      border-left-color: var(--accent-blue);
+      font-weight: 600;
+    }
+
+    .sidebar-footer {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-color);
+      padding-top: 20px;
+      line-height: 1.4;
+    }
+
+    /* Main Workspace */
+    .content-area {
+      padding: 60px 80px;
+      max-width: 1200px;
+      overflow-y: auto;
+    }
+
+    header {
+      margin-bottom: 50px;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin-top: 10px;
+      max-width: 800px;
+    }
+
+    /* General Typography & Elements */
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 40px 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 25px 0 12px;
+      color: var(--text-primary);
+    }
+
+    p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+
+    /* Glass Panels */
+    .glass-card {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(15px);
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 30px;
+    }
+
+    th {
+      padding: 12px 16px;
+      border-bottom: 2px solid var(--border-color);
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      text-align: left;
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    tr:hover td {
+      color: var(--text-primary);
+    }
+
+    /* Code Blocks */
+    code {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.9rem;
+      background: var(--code-bg);
+      padding: 3px 6px;
+      border-radius: 4px;
+      color: var(--accent-blue);
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 25px;
+    }
+
+    pre code {
+      background: transparent;
+      padding: 0;
+      color: var(--text-primary);
+    }
+
+    /* Flow Diagrams */
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin: 25px 0;
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 16px 20px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.015);
+      border-left: 4px solid var(--accent-blue);
+      transition: all 0.2s ease;
+    }
+
+    .flow-step:hover {
+      transform: translateX(6px);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .flow-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    .flow-details {
+      flex-grow: 1;
+    }
+
+    .flow-title {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 2px;
+    }
+
+    .flow-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .agent-badges {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .agent-badge {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .badge-primary {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--accent-blue);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .badge-purple {
+      background: rgba(139, 92, 246, 0.15);
+      color: var(--accent-purple);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+
+    .badge-emerald {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+      .content-area {
+        padding: 40px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Glow -->
+  <div class="glow-blob blob-1"></div>
+  <div class="glow-blob blob-2"></div>
+  <div class="glow-blob blob-3"></div>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <h1>NovaTech AI</h1>
+        <p>Operations Platform</p>
+      </div>
+      <nav class="nav-links">
+        <a href="#overview" class="nav-link active" onclick="activateLink(this)">Overview</a>
+        <a href="#architecture" class="nav-link" onclick="activateLink(this)">Architecture & Flow</a>
+        <a href="#techniques" class="nav-link" onclick="activateLink(this)">Techniques & "Why"</a>
+        <a href="#agents" class="nav-link" onclick="activateLink(this)">Specialized Agents</a>
+        <a href="#tooling" class="nav-link" onclick="activateLink(this)">Unified Tooling</a>
+        <a href="#deployment" class="nav-link" onclick="activateLink(this)">Deployment & CI/CD</a>
+      </nav>
+      <div class="sidebar-footer">
+        <p>Architecture Manual</p>
+        <p>v1.0.0 Stable</p>
+      </div>
+    </aside>
+
+    <!-- Content Area -->
+    <div class="content-area">
+      <header>
+        <h1 style="font-size: 2.6rem; font-weight: 800; letter-spacing: -0.5px;">Platform Reference & Reference Architecture</h1>
+        <p class="subtitle">An Enterprise-Grade Multi-Agent AI System Orchestrated by LangGraph with Distributed State checkpointers, MCP tools execution, and Microservice decupled layouts.</p>
+      </header>
+
+      <!-- SECTION 1: OVERVIEW -->
+      <section id="overview" style="scroll-margin-top: 60px;">
+        <div class="glass-card">
+          <p>
+            The **NovaTech AI Operations Platform** is a flagship multi-agent system built for advanced corporate governance. 
+            It translates messy, unstructured operational requests into organized steps, fetches policies using retrieval-augmented intelligence, runs relational SQL queries, coordinates third-party APIs, and scans all outputs for data safety and compliance.
+          </p>
+          <p>
+            Rather than a monolithic setup, the platform is designed around decoupled, independent services communicating via standard APIs. The multi-agent orchestrator uses <strong>LangGraph</strong> to coordinate cycles and reflection loops.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECTION 2: ARCHITECTURE & FLOW -->
+      <section id="architecture" style="scroll-margin-top: 60px;">
+        <h2>Architecture & Execution Flow</h2>
+        <div class="glass-card">
+          <h3>The Runtime Execution Flow</h3>
+          <p>
+            When a query is received, the request flows sequentially through the system:
+          </p>
+          <div class="flow-steps">
+            <div class="flow-step">
+              <div class="flow-num">1</div>
+              <div class="flow-details">
+                <div class="flow-title">Security & Intent Classification</div>
+                <div class="flow-desc">The request is scanned for prompt injection attacks and evaluated against table-level role boundaries.</div>
+                <div class="agent-badges">
+                  <span class="agent-badge badge-primary">Router Agent</span>
+                  <span class="agent-badge badge-purple">Security Guard</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="flow-step">
+              <div class="flow-num">2</div>
+              <div class="flow-details">
+                <div class="flow-title">Operational Decomposition</div>
+                <div class="flow-desc">The request is mapped to a sequence of execution steps (SQL query, RAG retrieval, or REST API calls).</div>
+                <div class="agent-badges">
+                  <span class="agent-badge badge-primary">Planner Agent</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flow-step">
+              <div class="flow-num">3</div>
+              <div class="flow-details">
+                <div class="flow-title">Asynchronous Parallel Execution</div>
+                <div class="flow-desc">The platform invokes the required specialized execution agents in parallel.</div>
+                <div class="agent-badges">
+                  <span class="agent-badge badge-emerald">SQL Agent</span>
+                  <span class="agent-badge badge-emerald">Retrieval Agent</span>
+                  <span class="agent-badge badge-emerald">API Agent</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flow-step">
+              <div class="flow-num">4</div>
+              <div class="flow-details">
+                <div class="flow-title">Quality Assurance & Correctness Audits</div>
+                <div class="flow-desc">Checks if the output answers the query correctly. If database errors or empty sets are returned, it loops back to the Planner.</div>
+                <div class="agent-badges">
+                  <span class="agent-badge badge-primary">Reflection Agent</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flow-step">
+              <div class="flow-num">5</div>
+              <div class="flow-details">
+                <div class="flow-title">PII Scan & Compliance Validation</div>
+                <div class="flow-desc">Exposed outputs are scanned, sensitive data (emails, credit cards, password hashes) is redacted, and safety is verified.</div>
+                <div class="agent-badges">
+                  <span class="agent-badge badge-purple">Safety Agent</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flow-step">
+              <div class="flow-num">6</div>
+              <div class="flow-details">
+                <div class="flow-title">Final Report Compilation</div>
+                <div class="flow-desc">The approved and sanitized context is compiled into a formatted Markdown report.</div>
+                <div class="agent-badges">
+                  <span class="agent-badge badge-primary">Report Agent</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 3: TECHNIQUES & WHY -->
+      <section id="techniques" style="scroll-margin-top: 60px;">
+        <h2>Core Techniques & Rationale</h2>
+        <div class="glass-card">
+          <p>
+            Building a production-ready AI system requires specific design patterns to handle the unpredictability of LLMs. Here is a breakdown of the techniques used in the project and the rationale behind them:
+          </p>
+          <table>
+            <thead>
+              <tr>
+                <th>Technique</th>
+                <th>Implementation Details</th>
+                <th>Why (Architectural Rationale)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Cyclic Workflows (LangGraph)</strong></td>
+                <td>Uses LangGraph's <code>StateGraph</code> to manage cycles, conditional edges, and feedback loops.</td>
+                <td>Unlike linear pipelines, operations require loops (e.g., self-correction). LangGraph maintains state across retries cleanly.</td>
+              </tr>
+              <tr>
+                <td><strong>Model Context Protocol (MCP)</strong></td>
+                <td>Implements an HTTP server hosting platform tools (SQL query, retriever, filesystem, math, memory, rest_api).</td>
+                <td>Separates agent intelligence from tool execution. Agents execute tasks via the MCP server, simplifying tool management.</td>
+              </tr>
+              <tr>
+                <td><strong>AST Math Parser</strong></td>
+                <td>Math tasks are processed via Python's <code>ast</code> module instead of standard <code>eval()</code>.</td>
+                <td>Protects the server from arbitrary code execution attacks, permitting only secure operations.</td>
+              </tr>
+              <tr>
+                <td><strong>Hybrid Search & Reranking</strong></td>
+                <td>Similarity search in Qdrant combined with a local <strong>Flashrank</strong> reranker.</td>
+                <td>Vector search can retrieve irrelevant chunks. Reranking sorts results by semantic relevance, improving context quality.</td>
+              </tr>
+              <tr>
+                <td><strong>PII Masking & Regex Scans</strong></td>
+                <td>Applies pre-response regex filters to redact emails, 16-digit credit cards, and bcrypt password hashes.</td>
+                <td>Prevents the leakage of sensitive data (PII) to end-users or model logs.</td>
+              </tr>
+              <tr>
+                <td><strong>Redis State Checkpointer</strong></td>
+                <td>LangGraph checkpointers are backed by a distributed Redis database.</td>
+                <td>Ensures session persistence and chat history restoration across distributed gateway nodes.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION 4: SPECIALIZED AGENTS -->
+      <section id="agents" style="scroll-margin-top: 60px;">
+        <h2>The 8 Specialized Agents</h2>
+        <div class="glass-card">
+          <p>
+            The system distributes responsibilities across 8 specialized agent roles, each defined by system prompts and structured output requirements:
+          </p>
+          
+          <h3>1. Intent Router Agent</h3>
+          <p>
+            Determines the execution path for incoming queries. Uses Pydantic schemas (<code>RouteDecision</code>) to select targets: <code>sql</code>, <code>rag</code>, <code>api</code>, <code>general</code>, or <code>unsafe</code>. It intercepts SQL injections and unauthorized table access.
+          </p>
+
+          <h3>2. Task Planner Agent</h3>
+          <p>
+            Generates a sequential list of steps needed to answer complex queries. If reflection fails, the planner receives critique feedback and adjusts the plan. Includes logic to summarize history when thread context grows, saving token costs.
+          </p>
+
+          <h3>3. Retrieval Agent (RAG)</h3>
+          <p>
+            Performs similarity queries in Qdrant collection documents. By routing requests through the MCP <code>retriever</code> tool, it retrieves policy chunks and reranks them via Flashrank.
+          </p>
+
+          <h3>4. SQL Database Agent</h3>
+          <p>
+            Translates natural language questions into read-only SQL queries. It inspects schema types and enforces a whitelist policy (only allowing SELECT commands on public tables).
+          </p>
+
+          <h3>5. API Client Agent</h3>
+          <p>
+            Constructs and triggers outgoing REST HTTP queries. Calls the MCP <code>rest_api</code> tool to fetch external payloads.
+          </p>
+
+          <h3>6. Reflection Agent (QA)</h3>
+          <p>
+            Acts as a quality control layer. It checks database outcomes and retrieval contexts. If it detects empty tables or irrelevant text chunks, it triggers a retry loop back to the Planner.
+          </p>
+
+          <h3>7. Safety Compliance Agent</h3>
+          <p>
+            Scans response buffers before final compilation. It redacts PII data (credit cards, hashes, emails) to ensure compliance.
+          </p>
+
+          <h3>8. Report Compilation Agent</h3>
+          <p>
+            Consolidates all intermediate states and query outcomes into a structured Markdown document using tables and bullet points.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECTION 5: UNIFIED TOOLING -->
+      <section id="tooling" style="scroll-margin-top: 60px;">
+        <h2>Unified Tooling Ecosystem</h2>
+        <div class="glass-card">
+          <p>
+            The platform isolates all actions inside a dedicated tools layer. The <strong>MCP Server</strong> hosts these tools, allowing agents to execute operations via standard API models.
+          </p>
+          <p>
+            Each tool also supports a **local fallback mechanism**. If the MCP server is unreachable, the agents execute the tool locally using backup code blocks, preventing downtime.
+          </p>
+          <pre><code># Example MCP call structure
+POST http://localhost:8080/mcp
+Headers: { "Authorization": "Bearer token_here" }
+Payload:
+{
+  "tool": "sql_query",
+  "arguments": {
+    "query": "SELECT name FROM departments WHERE cost_center = 'CC-100'"
+  }
+}</code></pre>
+        </div>
+      </section>
+
+      <!-- SECTION 6: DEPLOYMENT & CI/CD -->
+      <section id="deployment" style="scroll-margin-top: 60px;">
+        <h2>Containerization, DevOps & CI/CD</h2>
+        <div class="glass-card">
+          <p>
+            The platform is designed to run in containerized environments. It includes Docker configuration files, Kubernetes manifests, and automation scripts:
+          </p>
+
+          <h3>Docker Compose</h3>
+          <p>
+            Orchestrates Python services, React frontend nodes, and databases (Postgres, Redis, Qdrant, Prometheus, Grafana). Includes health checks to ensure dependencies are running before dependent services start.
+          </p>
+
+          <h3>Kubernetes manifests</h3>
+          <p>
+            Provides configurations for production-scale deployments:
+          </p>
+          <ul>
+            <li><strong>StatefulSets</strong>: Manages PostgreSQL, Redis, and Qdrant database pods, ensuring persistent storage volumes (PVCs) remain attached.</li>
+            <li><strong>HPAs (Horizontal Pod Autoscalers)</strong>: Automatically scales the API Gateway deployment based on CPU load.</li>
+            <li><strong>Ingress Rules</strong>: Route external requests to the correct services (frontend dashboard to port 80, API calls to the Gateway API on port 8000).</li>
+          </ul>
+
+          <h3>CI/CD Pipeline (GitHub Actions)</h3>
+          <p>
+            Automates code verification:
+          </p>
+          <ol>
+            <li>Installs dependencies and runs Python unit and integration tests (<code>pytest</code>).</li>
+            <li>Runs TypeScript compilation checks (<code>npm run build</code>) for the React frontend.</li>
+            <li>Validates Docker Compose configuration files.</li>
+          </ol>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // Navigation active highlights
+    function activateLink(element) {
+      const links = document.querySelectorAll('.nav-link');
+      links.forEach(link => link.classList.remove('active'));
+      element.classList.add('active');
+    }
+
+    // Scroll listener to update active sidebar link based on section in view
+    window.addEventListener('scroll', () => {
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('.nav-link');
+      let currentSectionId = 'overview';
+
+      sections.forEach(section => {
+        const top = section.offsetTop - 100;
+        if (window.scrollY >= top) {
+          currentSectionId = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + currentSectionId) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
