@@ -9,7 +9,7 @@ sys.path.insert(0, rag_dir)
 
 from loader import DocumentLoader
 from chunker import DocumentChunker
-from vector_store import QdrantManager
+from vector_store import PineconeManager
 
 def run_ingestion():
     print("====================================================")
@@ -33,10 +33,10 @@ def run_ingestion():
         chunker = DocumentChunker()
         nodes = chunker.split_documents(documents)
         
-        # 3. Index to Qdrant
-        print("Uploading vectors and indexing in Qdrant Vector Store...")
-        manager = QdrantManager()
-        manager.build_index(nodes)
+        # 3. Index to Pinecone
+        print("Uploading vectors and indexing in Pinecone Vector Store...")
+        manager = PineconeManager()
+        manager.index_chunks(nodes)
         
         print(f"Successfully processed and indexed {len(nodes)} chunks.")
         print("Ingestion completed successfully.")

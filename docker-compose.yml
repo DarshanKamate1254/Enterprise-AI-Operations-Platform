@@ -40,25 +40,7 @@ services:
       timeout: 5s
       retries: 5
 
-  # --- Vector Database (Qdrant) ---
-  qdrant:
-    image: qdrant/qdrant:v1.8.4
-    container_name: enterprise-qdrant
-    restart: unless-stopped
-    ports:
-      - "6333:6333"
-      - "6334:6334"
-    environment:
-      QDRANT__SERVICE__API_KEY: qdrant_secure_api_key_here
-    volumes:
-      - qdrant_data:/qdrant/storage
-    networks:
-      - platform-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+
 
   # --- Model Context Protocol (MCP) Server ---
   mcp-server:
@@ -78,9 +60,6 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_PASSWORD=redis_secure_pass
-      - QDRANT_HOST=qdrant
-      - QDRANT_PORT=6333
-      - QDRANT_API_KEY=qdrant_secure_api_key_here
     networks:
       - platform-network
     depends_on:
@@ -103,15 +82,10 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres_secure_pass
       - POSTGRES_DB=enterprise_ai_ops
-      - QDRANT_HOST=qdrant
-      - QDRANT_PORT=6333
-      - QDRANT_API_KEY=qdrant_secure_api_key_here
     networks:
       - platform-network
     depends_on:
       postgres:
-        condition: service_healthy
-      qdrant:
         condition: service_healthy
 
   # --- API Gateway ---
@@ -133,9 +107,6 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_PASSWORD=redis_secure_pass
-      - QDRANT_HOST=qdrant
-      - QDRANT_PORT=6333
-      - QDRANT_API_KEY=qdrant_secure_api_key_here
       - MCP_SERVER_URL=http://mcp-server:8080/mcp
       - RAG_SERVICE_URL=http://rag-service:8001
     networks:
@@ -144,8 +115,6 @@ services:
       postgres:
         condition: service_healthy
       redis:
-        condition: service_healthy
-      qdrant:
         condition: service_healthy
       mcp-server:
         condition: service_started
@@ -181,7 +150,6 @@ services:
     depends_on:
       - postgres
       - redis
-      - qdrant
 
   # --- Observability Dashboards (Grafana) ---
   grafana:
@@ -207,6 +175,5 @@ networks:
 volumes:
   postgres_data:
   redis_data:
-  qdrant_data:
   prometheus_data:
   grafana_data:

@@ -1,44 +1,172 @@
 import sys
 import os
+import json
+import numpy as np
 from typing import List, Dict, Any, Optional
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from qdrant_client import QdrantClient
-from qdrant_client.http import models
-from langchain_openai import OpenAIEmbeddings
+from pinecone import Pinecone
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from config import settings
+from vector_store import HashingTFEncoder
 
+# Lazy loader for Flashrank Ranker
 _ranker = None
-
 def get_ranker():
-    """Lazy load the Flashrank Ranker to optimize memory usage."""
     global _ranker
     if _ranker is None:
         from flashrank import Ranker
         _ranker = Ranker()
     return _ranker
 
+# Lazy loader for Redis connection
+_redis_client = None
+def get_redis_client():
+    global _redis_client
+    if _redis_client is None:
+        try:
+            import redis
+            if settings.redis.host:
+                _redis_client = redis.Redis(
+                    host=settings.redis.host,
+                    port=settings.redis.port,
+                    db=settings.redis.db,
+                    password=settings.redis.password,
+                    socket_timeout=2.0
+                )
+                # Test connection
+                _redis_client.ping()
+        except Exception as e:
+            print(f"Redis connection failed (semantic cache disabled): {e}")
+            _redis_client = None
+    return _redis_client
+
+
 class HybridRetriever:
-    def __init__(self, collection_name: str = "nova_policies"):
-        self.collection_name = collection_name
-        
-        # Setup OpenAI Embeddings
+    """
+    HybridRetriever implements semantic search over Pinecone, integrating:
+    1. Redis Semantic Cache
+    2. Corrective RAG (CRAG) query rewrite fallback
+    3. HashingTFEncoder (sparse-dense hybrid search)
+    4. Dartboard Retrieval (MMR-based relevance + diversity)
+    5. Relevant Segment Extraction (RSE chunk stitching)
+    
+    Replaces the legacy Qdrant-based HybridRetriever class.
+    """
+    def __init__(self):
+        # Retrieve OpenAI Embeddings
         api_key = settings.llm.openai_api_key or "mock_key"
         self.embed_model = OpenAIEmbeddings(
             model=settings.llm.default_embedding_model,
             api_key=api_key
         )
         
-        # Setup Qdrant Client
-        client_kwargs = {
-            "host": settings.qdrant.host,
-            "port": settings.qdrant.port,
-            "https": settings.qdrant.use_https,
-        }
-        if settings.qdrant.api_key:
-            client_kwargs["api_key"] = settings.qdrant.api_key
+        # Instantiate ChatOpenAI for CRAG query rewrites
+        self.llm = ChatOpenAI(
+            model=settings.llm.default_chat_model,
+            temperature=0.0,
+            api_key=api_key
+        )
+        
+        # Initialize Pinecone Client
+        pc_api_key = settings.pinecone.api_key or "mock_key"
+        self.pc = Pinecone(api_key=pc_api_key)
+        self.index_name = settings.pinecone.index_name
+        self.sparse_encoder = HashingTFEncoder()
+
+    def _cosine_similarity(self, v1: List[float], v2: List[float]) -> float:
+        a = np.array(v1)
+        b = np.array(v2)
+        denom = (np.linalg.norm(a) * np.linalg.norm(b))
+        if denom == 0:
+            return 0.0
+        return float(np.dot(a, b) / denom)
+
+    def _check_semantic_cache(self, query: str, query_vector: List[float]) -> Optional[List[Dict[str, Any]]]:
+        """
+        Queries Redis semantic cache for a cached query with high similarity (>0.95).
+        """
+        r = get_redis_client()
+        if not r:
+            return None
             
-        self.client = QdrantClient(**client_kwargs)
+        try:
+            # Fetch all semantic cache keys
+            keys = r.keys("semantic_cache:*")
+            for k in keys:
+                cache_data_str = r.get(k)
+                if not cache_data_str:
+                    continue
+                cache_data = json.loads(cache_data_str)
+                cached_vector = cache_data.get("vector", [])
+                
+                # Check similarity
+                sim = self._cosine_similarity(query_vector, cached_vector)
+                if sim >= 0.95:
+                    print(f"Redis Semantic Cache Hit! Match found under key '{k.decode()}' (similarity: {sim:.4f})")
+                    return cache_data.get("results", [])
+        except Exception as e:
+            print(f"Error checking semantic cache: {e}")
+            
+        return None
+
+    def _write_semantic_cache(self, query: str, query_vector: List[float], results: List[Dict[str, Any]]):
+        """
+        Saves a query, its embedding, and the results to Redis.
+        """
+        r = get_redis_client()
+        if not r:
+            return
+            
+        try:
+            cache_key = f"semantic_cache:{hash(query)}"
+            cache_payload = {
+                "query": query,
+                "vector": query_vector,
+                "results": results
+            }
+            # Cache for 1 hour
+            r.setex(cache_key, 3600, json.dumps(cache_payload))
+        except Exception as e:
+            print(f"Error writing to semantic cache: {e}")
+
+    def _query_pinecone(self, query: str, category: Optional[str], top_k: int) -> List[Dict[str, Any]]:
+        """
+        Executes a sparse-dense hybrid vector query on Pinecone with role/category filtering.
+        """
+        index = self.pc.Index(self.index_name)
+        
+        # Embed query text (dense)
+        query_dense = self.embed_model.embed_query(query)
+        # Generate query text (sparse)
+        query_sparse = self.sparse_encoder.encode(query)
+        
+        # Build Pinecone metadata filter (preserves RBAC metadata restriction)
+        filter_dict = {}
+        if category:
+            filter_dict["category"] = category
+            
+        # Execute index query
+        response = index.query(
+            vector=query_dense,
+            sparse_vector=query_sparse,
+            filter=filter_dict if filter_dict else None,
+            top_k=top_k,
+            include_metadata=True,
+            include_values=True
+        )
+        
+        results = []
+        for match in response.get("matches", []):
+            meta = match.get("metadata", {})
+            results.append({
+                "id": match.get("id"),
+                "text": meta.get("text", ""),
+                "score": match.get("score", 0.0),
+                "vector": match.get("values", []),
+                "metadata": meta
+            })
+        return results
 
     def retrieve(
         self,
@@ -48,73 +176,160 @@ class HybridRetriever:
         rerank_top_n: int = 4
     ) -> List[Dict[str, Any]]:
         """
-        Perform vector search in Qdrant with metadata filtering, followed by local Flashrank reranking.
+        Executes the full upgraded retrieval pipeline:
+        Redis Semantic Cache -> CRAG Rewrite -> Pinecone Hybrid Search -> Flashrank -> MMR Diversity -> RSE Stitching
         """
-        # Check if collection exists
-        collections = self.client.get_collections().collections
-        if not any(c.name == self.collection_name for c in collections):
-            print(f"Collection '{self.collection_name}' does not exist in Qdrant.")
-            return []
+        # 1. Generate query dense vector for semantic cache checks
+        query_dense = self.embed_model.embed_query(query)
+        
+        # 2. Redis Semantic Cache Lookups
+        cached_results = self._check_semantic_cache(query, query_dense)
+        if cached_results is not None:
+            return cached_results
 
-        # 1. Embed query
-        query_vector = self.embed_model.embed_query(query)
+        # 3. Baseline Pinecone hybrid search
+        search_results = self._query_pinecone(query, category, top_k)
         
-        # 2. Setup category/department filters if requested
-        query_filter = None
-        if category:
-            query_filter = models.Filter(
-                must=[
-                    models.FieldCondition(
-                        key="metadata.category",
-                        match=models.MatchValue(value=category)
-                    )
-                ]
+        # 4. Technique: Corrective RAG (CRAG)
+        # Trigger query rewrite fallback if the top hit similarity falls below the threshold
+        top_score = search_results[0]["score"] if search_results else 0.0
+        if settings.rag.enable_crag and top_score < settings.rag.crag_threshold:
+            print(f"Technique [CRAG]: Low confidence top score ({top_score:.4f} < {settings.rag.crag_threshold}). Rewriting query...")
+            rewrite_prompt = (
+                f"Rewrite the following user query to be optimized for semantic keyword and vector retrieval "
+                f"in a policy document store. Return ONLY the rewritten query text:\n\nUser Query: {query}"
             )
-            
-        # 3. Perform Qdrant vector search
-        search_results = self.client.search(
-            collection_name=self.collection_name,
-            query_vector=query_vector,
-            query_filter=query_filter,
-            limit=top_k
-        )
-        
+            try:
+                rewrite_resp = self.llm.invoke(rewrite_prompt)
+                rewritten_query = rewrite_resp.content.strip()
+                print(f"Technique [CRAG]: Rewritten query is '{rewritten_query}'")
+                
+                # Fetch second set of results using rewritten query
+                fallback_results = self._query_pinecone(rewritten_query, category, top_k)
+                
+                # Merge and deduplicate by point ID, keeping highest score
+                merged_map = {item["id"]: item for item in search_results}
+                for item in fallback_results:
+                    if item["id"] not in merged_map or item["score"] > merged_map[item["id"]]["score"]:
+                        merged_map[item["id"]] = item
+                        
+                search_results = sorted(list(merged_map.values()), key=lambda x: x["score"], reverse=True)
+            except Exception as e:
+                print(f"Technique [CRAG]: Fallback query rewrite failed: {e}")
+
         if not search_results:
             return []
-            
-        # 4. Rerank matches using Flashrank
+
+        # 5. Flashrank cross-encoder reranking
         try:
-            from flashrank import RerankRequest
             ranker = get_ranker()
-            
             passages = []
             for idx, hit in enumerate(search_results):
                 passages.append({
                     "id": idx,
-                    "text": hit.payload.get("text", ""),
-                    "meta": hit.payload.get("metadata", {})
+                    "text": hit.get("text", ""),
+                    "meta": hit.get("metadata", {})
                 })
                 
+            from flashrank import RerankRequest
             req = RerankRequest(query=query, passages=passages)
             reranked = ranker.rerank(req)
             
-            results = []
-            for item in reranked[:rerank_top_n]:
+            # Map reranked outcomes back to search results formats
+            ordered_results = []
+            for item in reranked:
                 orig_idx = item["id"]
                 hit = search_results[orig_idx]
-                results.append({
-                    "text": item["text"],
-                    "score": float(item["score"]),
-                    "metadata": item["meta"]
-                })
-        except Exception as e:
-            print(f"Flashrank reranking failed: {e}. Falling back to default Qdrant cosine similarity scores.")
-            results = []
-            for hit in search_results[:rerank_top_n]:
-                results.append({
-                    "text": hit.payload.get("text", ""),
-                    "score": float(hit.score) if hit.score is not None else 0.0,
-                    "metadata": hit.payload.get("metadata", {})
-                })
+                hit["score"] = float(item["score"])
+                ordered_results.append(hit)
                 
-        return results
+            search_results = ordered_results
+        except Exception as e:
+            print(f"Flashrank reranking failed: {e}. Defaulting to Pinecone cosine similarity.")
+
+        # 6. Technique: Dartboard Retrieval (Maximal Marginal Relevance - MMR)
+        # Select top diverse and relevant chunks using vector similarities
+        final_candidates = search_results
+        if settings.rag.enable_dartboard and len(search_results) > rerank_top_n:
+            print("Technique [Dartboard]: Diversifying search results via MMR...")
+            selected_indices = [0]  # Always seed with the highest ranked result
+            
+            while len(selected_indices) < min(rerank_top_n, len(search_results)):
+                best_mmr = -999.0
+                best_candidate_idx = -1
+                
+                for idx, candidate in enumerate(search_results):
+                    if idx in selected_indices:
+                        continue
+                        
+                    # Calculate similarity with already selected points
+                    max_sim = -1.0
+                    for sel_idx in selected_indices:
+                        sim = self._cosine_similarity(candidate["vector"], search_results[sel_idx]["vector"])
+                        if sim > max_sim:
+                            max_sim = sim
+                            
+                    # Calculate MMR score (relevance vs redundancy penalty)
+                    # Score is normalized to [0, 1] range to match similarity norm
+                    relevance = candidate["score"]
+                    mmr_val = 0.7 * relevance - 0.3 * max_sim
+                    
+                    if mmr_val > best_mmr:
+                        best_mmr = mmr_val
+                        best_candidate_idx = idx
+                        
+                if best_candidate_idx != -1:
+                    selected_indices.append(best_candidate_idx)
+                else:
+                    break
+                    
+            final_candidates = [search_results[i] for i in selected_indices]
+
+        # 7. Technique: Relevant Segment Extraction (RSE)
+        # Stitch consecutive retrieved text chunks from the same document together
+        if settings.rag.enable_rse:
+            print("Technique [RSE]: Stitching adjacent document chunks...")
+            # Group candidate chunks by filename
+            file_groups = {}
+            for item in final_candidates:
+                fn = item["metadata"].get("file_name", "unknown")
+                file_groups.setdefault(fn, []).append(item)
+                
+            stitched_results = []
+            for fn, group in file_groups.items():
+                # Sort group by chunk index
+                group_sorted = sorted(group, key=lambda x: x["metadata"].get("chunk_index", 0))
+                
+                temp_chunk = group_sorted[0]
+                for next_chunk in group_sorted[1:]:
+                    idx_curr = temp_chunk["metadata"].get("chunk_index", 0)
+                    idx_next = next_chunk["metadata"].get("chunk_index", 0)
+                    
+                    # If chunks are consecutive (difference of 1), stitch them together
+                    if idx_next - idx_curr <= 1:
+                        temp_chunk["text"] += f"\n...\n{next_chunk['text']}"
+                        temp_chunk["score"] = max(temp_chunk["score"], next_chunk["score"])
+                        # Update metadata boundary limit
+                        temp_chunk["metadata"]["chunk_index"] = idx_next
+                    else:
+                        stitched_results.append(temp_chunk)
+                        temp_chunk = next_chunk
+                        
+                stitched_results.append(temp_chunk)
+                
+            # Re-sort stitched results by score
+            final_candidates = sorted(stitched_results, key=lambda x: x["score"], reverse=True)
+
+        # 8. Clean vectors and format for return
+        output_results = []
+        for item in final_candidates[:rerank_top_n]:
+            output_results.append({
+                "text": item["text"],
+                "score": item["score"],
+                "metadata": item["metadata"]
+            })
+            
+        # 9. Save final outcomes to Redis semantic cache
+        self._write_semantic_cache(query, query_dense, output_results)
+        
+        return output_results

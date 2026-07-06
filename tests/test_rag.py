@@ -46,40 +46,45 @@ class TestRAGPipeline(unittest.TestCase):
             self.assertEqual(node.metadata["file_name"], "Leave_Policy.md")
             self.assertTrue(len(node.text) > 0)
 
-    @patch('retriever.QdrantClient')
+    @patch('retriever.Pinecone')
     @patch('retriever.OpenAIEmbeddings')
-    def test_retriever_formatting(self, mock_embeddings, mock_qdrant_client_class):
+    def test_retriever_formatting(self, mock_embeddings, mock_pinecone_class):
         """
         Verify the HybridRetriever correctly formats retrieved node scores and metadata.
         """
-        # Setup mock Qdrant client instance
-        mock_qdrant_client = MagicMock()
-        mock_qdrant_client_class.return_value = mock_qdrant_client
+        # Setup mock Pinecone client and index instances
+        mock_pinecone = MagicMock()
+        mock_pinecone_class.return_value = mock_pinecone
         
-        # Setup mock Qdrant collections check
-        mock_collection_info = MagicMock()
-        mock_collection_info.name = "nova_policies"
-        mock_collections_response = MagicMock()
-        mock_collections_response.collections = [mock_collection_info]
-        mock_qdrant_client.get_collections.return_value = mock_collections_response
+        mock_index = MagicMock()
+        mock_pinecone.Index.return_value = mock_index
         
-        # Setup mock Qdrant search results
-        mock_scored_point = MagicMock()
-        mock_scored_point.score = 0.85
-        mock_scored_point.payload = {
-            "text": "Leave policy content details.",
-            "metadata": {"category": "hr"}
+        # Mock index query response
+        mock_index.query.return_value = {
+            "matches": [
+                {
+                    "id": "point-1",
+                    "score": 0.85,
+                    "values": [0.1] * 1536,
+                    "metadata": {
+                        "text": "Leave policy content details.",
+                        "category": "hr",
+                        "file_name": "Leave_Policy.md",
+                        "chunk_index": 0
+                    }
+                }
+            ]
         }
-        mock_qdrant_client.search.return_value = [mock_scored_point]
         
         # Create retriever
-        retriever = HybridRetriever(collection_name="nova_policies")
+        retriever = HybridRetriever()
         
         # Mock flashrank rerank function
         mock_ranker = MagicMock()
         mock_ranker.rerank.return_value = [{"id": 0, "text": "Leave policy content details.", "score": 0.85, "meta": {"category": "hr"}}]
         
-        with patch('retriever.get_ranker', return_value=mock_ranker):
+        with patch('retriever.get_ranker', return_value=mock_ranker), \
+             patch('retriever.get_redis_client', return_value=None):
             results = retriever.retrieve("query about leave", category="hr")
             
             self.assertEqual(len(results), 1)

@@ -23,11 +23,17 @@ class SQLGeneration(BaseModel):
     explanation: str = Field(..., description="Detailed explanation of what database fields are being queried.")
 
 
+class APIParameter(BaseModel):
+    """Key-value parameter for API payloads."""
+    key: str = Field(..., description="Parameter key or argument name.")
+    value: str = Field(..., description="Parameter value.")
+
+
 class APIGeneration(BaseModel):
     """Structured external request generator."""
     method: str = Field(..., description="HTTP Method (GET, POST, PUT, DELETE).")
     url: str = Field(..., description="Target endpoint destination URL.")
-    payload: Dict[str, Any] = Field(default_factory=dict, description="JSON body arguments or URL query parameters.")
+    payload: List[APIParameter] = Field(default_factory=list, description="JSON body arguments or URL query parameters.")
     explanation: str = Field(..., description="Explanation of what API features are invoked.")
 
 

@@ -154,7 +154,7 @@ class TestLangGraphOrchestration(unittest.TestCase):
         mock_api = MagicMock()
         mock_api_llm.return_value = mock_api
         mock_api.with_structured_output.return_value = lambda x: APIGeneration(
-            method="GET", url="http://local-gw/health", payload={}, explanation="Mock health check"
+            method="GET", url="http://local-gw/health", payload=[], explanation="Mock health check"
         )
 
         # Mock APITool actions

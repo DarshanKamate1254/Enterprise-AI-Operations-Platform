@@ -10,7 +10,7 @@ from typing import List, Dict, Any, Optional
 from config import settings
 from loader import DocumentLoader
 from chunker import DocumentChunker
-from vector_store import QdrantManager
+from vector_store import PineconeManager
 from retriever import HybridRetriever
 
 app = FastAPI(
@@ -68,7 +68,7 @@ def ingest_documents():
         nodes = chunker.split_documents(documents)
         
         # 3. Index to Qdrant
-        manager = QdrantManager()
+        manager = PineconeManager()
         chunks_indexed = manager.index_chunks(nodes)
         
         return IngestResponse(

@@ -28,7 +28,7 @@ class APIAgent:
                 temperature=0.0,
                 api_key=api_key
             )
-        self.structured_llm = llm.with_structured_output(APIGeneration)
+        self.structured_llm = llm.with_structured_output(APIGeneration, strict=False)
         self.prompt = ChatPromptTemplate.from_messages([
             ("system", API_SYSTEM_PROMPT),
             ("human", "Formulate API call for request: {query}")
@@ -52,10 +52,12 @@ def api_node(state: AgentState) -> Dict[str, Any]:
         agent = APIAgent()
         api_call = agent.generate_api_call(query)
         
+        payload_dict = {param.key: param.value for param in api_call.payload}
+        
         payload_str = json.dumps({
             "method": api_call.method,
             "url": api_call.url,
-            "payload": api_call.payload
+            "payload": payload_dict
         }, indent=2)
 
         result_str = ""
@@ -75,7 +77,7 @@ def api_node(state: AgentState) -> Dict[str, Any]:
                 "arguments": {
                     "method": api_call.method,
                     "url": api_call.url,
-                    "payload": api_call.payload
+                    "payload": payload_dict
                 }
             }
             response = httpx.post(settings.mcp.server_url, json=payload, headers=headers, timeout=5.0)
@@ -99,8 +101,8 @@ def api_node(state: AgentState) -> Dict[str, Any]:
                     response = tool.call_endpoint(
                         method=api_call.method,
                         url=api_call.url,
-                        json_data=api_call.payload if api_call.method in ("POST", "PUT") else None,
-                        params=api_call.payload if api_call.method == "GET" else None
+                        json_data=payload_dict if api_call.method in ("POST", "PUT") else None,
+                        params=payload_dict if api_call.method == "GET" else None
                     )
                     result_str = json.dumps(response, indent=2)
             except Exception as e:

@@ -114,7 +114,7 @@ class TestAgentNodes(unittest.TestCase):
         mock_llm = MagicMock()
         mock_chat_openai.return_value = mock_llm
         mock_llm.with_structured_output.return_value = lambda x: APIGeneration(
-            method="GET", url="http://local-gw/health", payload={}, explanation="Check service availability"
+            method="GET", url="http://local-gw/health", payload=[], explanation="Check service availability"
         )
         
         # Mock APITool endpoint request execution

@@ -10,12 +10,17 @@ sys.path.insert(0, os.path.join(root_dir, "mcp-server"))
 
 from mcp_app import app
 
+from config import settings
+
 class TestMCPServer(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
+        self.headers = {}
+        if settings.mcp.auth_token:
+            self.headers["Authorization"] = f"Bearer {settings.mcp.auth_token}"
 
     def test_list_tools(self):
-        response = self.client.get("/mcp/tools")
+        response = self.client.get("/mcp/tools", headers=self.headers)
         self.assertEqual(response.status_code, 200)
         tools = response.json()
         self.assertIsInstance(tools, list)
@@ -29,7 +34,7 @@ class TestMCPServer(unittest.TestCase):
             "tool": "calculator",
             "arguments": {"expression": "10 * (2 + 3)"}
         }
-        response = self.client.post("/mcp", json=payload)
+        response = self.client.post("/mcp", json=payload, headers=self.headers)
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertTrue(data["success"])
@@ -41,7 +46,7 @@ class TestMCPServer(unittest.TestCase):
             "tool": "nonexistent_tool",
             "arguments": {}
         }
-        response = self.client.post("/mcp", json=payload)
+        response = self.client.post("/mcp", json=payload, headers=self.headers)
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertFalse(data["success"])
