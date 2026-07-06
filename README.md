@@ -166,6 +166,7 @@ kubectl apply -f kubernetes/ingress.yaml
 - Detail specifications of endpoints: [API Specifications](docs/API_Documentation.md).
 - Details of specialized Agent nodes: [Agent Architecture](docs/Agent_Architecture.md).
 - Setup guides: [Developer Guide](docs/Developer_Guide.md).
+- Interactive all-in-one HTML guide: [Platform Reference Manual](docs/platform_overview.html).
 
 ---
 
