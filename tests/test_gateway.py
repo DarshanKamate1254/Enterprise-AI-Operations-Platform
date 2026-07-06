@@ -1,7 +1,7 @@
 import os
 import sys
 import unittest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, patch, AsyncMock
 
 # Configure sys.path for test imports
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -108,7 +108,7 @@ class TestAPIGateway(unittest.TestCase):
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"success": True, "chunks_count": 5}
-        mock_client.post.return_value = mock_response
+        mock_client.post = AsyncMock(return_value=mock_response)
         
         # Generate token with Admin role
         token = create_access_token({"sub": "devendra.rao", "role": "Admin", "user_id": 1})
