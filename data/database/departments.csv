@@ -1,0 +1,7 @@
+department_id,name,description,cost_center
+1,Executive Leadership,Board and corporate strategic governance,CC-101
+2,Engineering & IT,"Software development, product infrastructure, and tech support",CC-202
+3,Human Resources,"Talent acquisition, employee welfare, and operations",CC-303
+4,Finance & Accounting,"Corporate ledger, travel audits, billing, and tax",CC-404
+5,Sales & Marketing,Enterprise customer acquisition and product outreach,CC-505
+6,Customer Support,L1/L2 technical assistance and client success,CC-606

@@ -1,0 +1,101 @@
+customer_id,company_name,contact_name,email,phone,country,industry
+1,Nexus Telecom Inc - 1,Aarti Mehta,contact@nexustelecominc1.com,+91-98100-00001,United States,Manufacturing
+2,Fusion BioTech Pvt Ltd - 2,Suresh Das,contact@fusionbiotechpvtltd2.com,+1-555-102-0002,Australia,Logistics
+3,Pacific Trading Pvt Ltd - 3,Suresh Dave,contact@pacifictradingpvtltd3.com,+91-98100-00003,Canada,Retail
+4,Omega Agri Inc - 4,Swati Singh,contact@omegaagriinc4.com,+1-555-104-0004,Canada,E-Commerce
+5,Vanguard Realty Ltd - 5,Aditi Reddy,contact@vanguardrealtyltd5.com,+91-98100-00005,Australia,EduTech
+6,Terra Farms Ltd - 6,Nitin Mishra,contact@terrafarmsltd6.com,+1-555-106-0006,Singapore,E-Commerce
+7,Terra Farms Pvt Ltd - 7,Ankit Gupta,contact@terrafarmspvtltd7.com,+91-98100-00007,Canada,SaaS
+8,Core Manufacturing Inc - 8,Komal Roy,contact@coremanufacturinginc8.com,+1-555-108-0008,Singapore,Logistics
+9,Core Manufacturing Pvt Ltd - 9,Nitin Choudhury,contact@coremanufacturingpvtltd9.com,+91-98100-00009,United Kingdom,EduTech
+10,Delta Energy Pvt Ltd - 10,Tanuja Deshmukh,contact@deltaenergypvtltd10.com,+1-555-110-0010,Singapore,Retail
+11,Pacific Trading Corp - 11,Aditi Nair,contact@pacifictradingcorp11.com,+91-98100-00011,Singapore,E-Commerce
+12,Nexus Telecom Corp - 12,Rohan Rao,contact@nexustelecomcorp12.com,+1-555-112-0012,Germany,Retail
+13,Fusion BioTech Corp - 13,Aarti Bhalerao,contact@fusionbiotechcorp13.com,+91-98100-00013,Germany,Healthcare
+14,Gateway Capital Inc - 14,Devendra Gupta,contact@gatewaycapitalinc14.com,+1-555-114-0014,Australia,Retail
+15,AeroSpace Tech Inc - 15,Ritu Shetty,contact@aerospacetechinc15.com,+91-98100-00015,United States,EduTech
+16,Omega Agri Corp - 16,Nitin Nair,contact@omegaagricorp16.com,+1-555-116-0016,Australia,Manufacturing
+17,Libra Commerce Corp - 17,Nitin Dubey,contact@libracommercecorp17.com,+91-98100-00017,Singapore,Retail
+18,Quantum Core Corp - 18,Jyoti Mehta,contact@quantumcorecorp18.com,+1-555-118-0018,India,Retail
+19,Pacific Trading Ltd - 19,Poonam Reddy,contact@pacifictradingltd19.com,+91-98100-00019,Germany,Manufacturing
+20,Gateway Capital Pvt Ltd - 20,Shalini Nair,contact@gatewaycapitalpvtltd20.com,+1-555-120-0020,India,Retail
+21,Terra Farms Corp - 21,Komal Kapoor,contact@terrafarmscorp21.com,+91-98100-00021,United Kingdom,Logistics
+22,Libra Commerce Ltd - 22,Riddhi Singh,contact@libracommerceltd22.com,+1-555-122-0022,Australia,Healthcare
+23,Echo Web Services Corp - 23,Pooja Mishra,contact@echowebservicescorp23.com,+91-98100-00023,Australia,Manufacturing
+24,Core Manufacturing Inc - 24,Deepika Verma,contact@coremanufacturinginc24.com,+1-555-124-0024,United States,Logistics
+25,Krypton Legal Pvt Ltd - 25,Komal Dubey,contact@kryptonlegalpvtltd25.com,+91-98100-00025,Australia,Logistics
+26,Quantum Core Ltd - 26,Preeti Vyas,contact@quantumcoreltd26.com,+1-555-126-0026,India,E-Commerce
+27,Orion Cyber Pvt Ltd - 27,Varun Rao,contact@orioncyberpvtltd27.com,+91-98100-00027,Canada,Retail
+28,Core Manufacturing Inc - 28,Rakesh Naidu,contact@coremanufacturinginc28.com,+1-555-128-0028,United Kingdom,FinTech
+29,Matrix Tech Inc - 29,Neha Chatterjee,contact@matrixtechinc29.com,+91-98100-00029,India,SaaS
+30,Pacific Trading Corp - 30,Varun Kapoor,contact@pacifictradingcorp30.com,+1-555-130-0030,Germany,Retail
+31,United Logistics Ltd - 31,Karan Mahajan,contact@unitedlogisticsltd31.com,+91-98100-00031,United Kingdom,Manufacturing
+32,Saphire Hospitality Inc - 32,Alok Deshmukh,contact@saphirehospitalityinc32.com,+1-555-132-0032,Canada,SaaS
+33,Orion Cyber Inc - 33,Meera Kapoor,contact@orioncyberinc33.com,+91-98100-00033,United States,Manufacturing
+34,Core Manufacturing Corp - 34,Divya Pandey,contact@coremanufacturingcorp34.com,+1-555-134-0034,Germany,Healthcare
+35,BlueWater Logistics Inc - 35,Rajesh Soni,contact@bluewaterlogisticsinc35.com,+91-98100-00035,Australia,E-Commerce
+36,Quantum Core Inc - 36,Rahul Dubey,contact@quantumcoreinc36.com,+1-555-136-0036,United Kingdom,EduTech
+37,Matrix Tech Ltd - 37,Manoj Sen,contact@matrixtechltd37.com,+91-98100-00037,India,Retail
+38,Gateway Capital Pvt Ltd - 38,Varun Kaur,contact@gatewaycapitalpvtltd38.com,+1-555-138-0038,United Kingdom,SaaS
+39,AeroSpace Tech Corp - 39,Shalini Soni,contact@aerospacetechcorp39.com,+91-98100-00039,Canada,Retail
+40,Matrix Tech Inc - 40,Preeti Bose,contact@matrixtechinc40.com,+1-555-140-0040,Singapore,Retail
+41,Krypton Legal Pvt Ltd - 41,Ankit Saxena,contact@kryptonlegalpvtltd41.com,+91-98100-00041,Australia,Retail
+42,Redwood Supply Inc - 42,Komal Mehta,contact@redwoodsupplyinc42.com,+1-555-142-0042,Germany,FinTech
+43,Zenith Enterprise Ltd - 43,Kiran Kaur,contact@zenithenterpriseltd43.com,+91-98100-00043,Australia,FinTech
+44,Apex Retail Ltd - 44,Sanjay Chatterjee,contact@apexretailltd44.com,+1-555-144-0044,India,FinTech
+45,Delta Energy Ltd - 45,Pranav Das,contact@deltaenergyltd45.com,+91-98100-00045,United Kingdom,EduTech
+46,Elysian SaaS Ltd - 46,Meera Dubey,contact@elysiansaasltd46.com,+1-555-146-0046,Singapore,Healthcare
+47,Krypton Legal Pvt Ltd - 47,Riddhi Menon,contact@kryptonlegalpvtltd47.com,+91-98100-00047,United States,EduTech
+48,Core Manufacturing Pvt Ltd - 48,Tanuja Gupta,contact@coremanufacturingpvtltd48.com,+1-555-148-0048,Canada,FinTech
+49,Core Manufacturing Inc - 49,Aditi Kamate,contact@coremanufacturinginc49.com,+91-98100-00049,India,Logistics
+50,BlueWater Logistics Ltd - 50,Nitin Nair,contact@bluewaterlogisticsltd50.com,+1-555-150-0050,Germany,Logistics
+51,Insignia Systems Corp - 51,Tanuja Banerjee,contact@insigniasystemscorp51.com,+91-98100-00051,India,Healthcare
+52,Saphire Hospitality Inc - 52,Shalini Rao,contact@saphirehospitalityinc52.com,+1-555-152-0052,Germany,FinTech
+53,Zenith Enterprise Corp - 53,Yogesh Soni,contact@zenithenterprisecorp53.com,+91-98100-00053,United Kingdom,Logistics
+54,Apex Retail Inc - 54,Vikram Iyer,contact@apexretailinc54.com,+1-555-154-0054,Canada,Healthcare
+55,Terra Farms Pvt Ltd - 55,Suresh Menon,contact@terrafarmspvtltd55.com,+91-98100-00055,United Kingdom,EduTech
+56,Apex Retail Corp - 56,Arjun Dubey,contact@apexretailcorp56.com,+1-555-156-0056,Canada,SaaS
+57,Beacon Health Ltd - 57,Ritu Chatterjee,contact@beaconhealthltd57.com,+91-98100-00057,Australia,E-Commerce
+58,Horizon Pharma Inc - 58,Manish Naidu,contact@horizonpharmainc58.com,+1-555-158-0058,Australia,Manufacturing
+59,Omega Agri Ltd - 59,Komal Shetty,contact@omegaagriltd59.com,+91-98100-00059,Canada,Manufacturing
+60,Elysian SaaS Inc - 60,Pooja Deshmukh,contact@elysiansaasinc60.com,+1-555-160-0060,United Kingdom,Logistics
+61,Saphire Hospitality Ltd - 61,Yogesh Kamate,contact@saphirehospitalityltd61.com,+91-98100-00061,Australia,Retail
+62,Elysian SaaS Pvt Ltd - 62,Preeti Pandey,contact@elysiansaaspvtltd62.com,+1-555-162-0062,India,SaaS
+63,Centurion Media Corp - 63,Devendra Saxena,contact@centurionmediacorp63.com,+91-98100-00063,Singapore,Manufacturing
+64,Matrix Tech Pvt Ltd - 64,Monica Choudhury,contact@matrixtechpvtltd64.com,+1-555-164-0064,United States,Logistics
+65,Redwood Supply Ltd - 65,Preeti Dave,contact@redwoodsupplyltd65.com,+91-98100-00065,Canada,Logistics
+66,Quantum Core Ltd - 66,Priyanka Kulkarni,contact@quantumcoreltd66.com,+1-555-166-0066,United Kingdom,FinTech
+67,Apex Retail Corp - 67,Rajesh Vyas,contact@apexretailcorp67.com,+91-98100-00067,Australia,Logistics
+68,Echo Web Services Corp - 68,Sandip Dave,contact@echowebservicescorp68.com,+1-555-168-0068,Germany,EduTech
+69,Horizon Pharma Corp - 69,Suresh Chatterjee,contact@horizonpharmacorp69.com,+91-98100-00069,Singapore,Manufacturing
+70,Delta Energy Inc - 70,Neha Choudhury,contact@deltaenergyinc70.com,+1-555-170-0070,Singapore,Healthcare
+71,Redwood Supply Inc - 71,Amit Das,contact@redwoodsupplyinc71.com,+91-98100-00071,Australia,SaaS
+72,Delta Energy Corp - 72,Vikram Choudhury,contact@deltaenergycorp72.com,+1-555-172-0072,Singapore,Logistics
+73,Fusion BioTech Inc - 73,Shalini Sharma,contact@fusionbiotechinc73.com,+91-98100-00073,Australia,E-Commerce
+74,Delta Energy Pvt Ltd - 74,Ananya Dave,contact@deltaenergypvtltd74.com,+1-555-174-0074,Singapore,E-Commerce
+75,Orion Cyber Ltd - 75,Vikram Sharma,contact@orioncyberltd75.com,+91-98100-00075,Germany,Manufacturing
+76,Krypton Legal Ltd - 76,Harish Saxena,contact@kryptonlegalltd76.com,+1-555-176-0076,India,FinTech
+77,Delta Energy Ltd - 77,Neha Patel,contact@deltaenergyltd77.com,+91-98100-00077,United Kingdom,SaaS
+78,Apex Retail Pvt Ltd - 78,Deepika Kumar,contact@apexretailpvtltd78.com,+1-555-178-0078,Canada,Manufacturing
+79,Apex Retail Inc - 79,Neha Dave,contact@apexretailinc79.com,+91-98100-00079,Canada,Retail
+80,Omega Agri Inc - 80,Tanuja Naidu,contact@omegaagriinc80.com,+1-555-180-0080,United Kingdom,SaaS
+81,Zenith Enterprise Ltd - 81,Shalini Dutta,contact@zenithenterpriseltd81.com,+91-98100-00081,United Kingdom,Manufacturing
+82,Nexus Telecom Pvt Ltd - 82,Sneha Rao,contact@nexustelecompvtltd82.com,+1-555-182-0082,Canada,Logistics
+83,Orion Cyber Inc - 83,Devendra Joshi,contact@orioncyberinc83.com,+91-98100-00083,India,Logistics
+84,Capella Edu Pvt Ltd - 84,Karan Sharma,contact@capellaedupvtltd84.com,+1-555-184-0084,United Kingdom,SaaS
+85,Quantum Core Ltd - 85,Vijay Gupta,contact@quantumcoreltd85.com,+91-98100-00085,India,Manufacturing
+86,Quantum Core Corp - 86,Rakesh Chatterjee,contact@quantumcorecorp86.com,+1-555-186-0086,United States,Logistics
+87,Zenith Enterprise Corp - 87,Alok Dutta,contact@zenithenterprisecorp87.com,+91-98100-00087,Australia,Logistics
+88,Horizon Pharma Pvt Ltd - 88,Abhishek Bose,contact@horizonpharmapvtltd88.com,+1-555-188-0088,Australia,E-Commerce
+89,Zenith Enterprise Corp - 89,Deepika Patel,contact@zenithenterprisecorp89.com,+91-98100-00089,United States,E-Commerce
+90,Terra Farms Corp - 90,Gaurav Kaur,contact@terrafarmscorp90.com,+1-555-190-0090,Singapore,SaaS
+91,Beacon Health Ltd - 91,Rakesh Iyer,contact@beaconhealthltd91.com,+91-98100-00091,Australia,Retail
+92,Delta Energy Ltd - 92,Harish Joshi,contact@deltaenergyltd92.com,+1-555-192-0092,Germany,FinTech
+93,Vanguard Realty Ltd - 93,Riddhi Pandey,contact@vanguardrealtyltd93.com,+91-98100-00093,Germany,Manufacturing
+94,AeroSpace Tech Pvt Ltd - 94,Rajesh Kaur,contact@aerospacetechpvtltd94.com,+1-555-194-0094,Germany,FinTech
+95,Saphire Hospitality Corp - 95,Yogesh Gupta,contact@saphirehospitalitycorp95.com,+91-98100-00095,Canada,E-Commerce
+96,Krypton Legal Ltd - 96,Meera Reddy,contact@kryptonlegalltd96.com,+1-555-196-0096,Germany,Retail
+97,Orion Cyber Ltd - 97,Pooja Mahajan,contact@orioncyberltd97.com,+91-98100-00097,Singapore,Retail
+98,Elysian SaaS Corp - 98,Nitin Rao,contact@elysiansaascorp98.com,+1-555-198-0098,Canada,E-Commerce
+99,Elysian SaaS Ltd - 99,Rakesh Kulkarni,contact@elysiansaasltd99.com,+91-98100-00099,Singapore,Retail
+100,United Logistics Pvt Ltd - 100,Komal Joshi,contact@unitedlogisticspvtltd100.com,+1-555-200-0100,Singapore,Manufacturing
