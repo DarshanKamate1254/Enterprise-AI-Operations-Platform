@@ -17,7 +17,7 @@ class RetrieverTool:
         self.local_retriever = local_retriever
         self.http_client = http_client or httpx.Client()
         # Fallback API URL from settings
-        self.api_url = f"http://{settings.app.host}:{settings.app.port}/retrieve"
+        self.api_url = f"{settings.rag.url.rstrip('/')}/retrieve"
 
     def search_policies(
         self,

@@ -67,6 +67,8 @@ spec:
                 secretKeyRef:
                   name: platform-secrets
                   key: jwt-secret-key
+            - name: RAG_SERVICE_URL
+              value: "http://rag-service:8001"
           readinessProbe:
             httpGet:
               path: /metrics

@@ -23,11 +23,18 @@ ENGINE_KWARGS = {
     "pool_pre_ping": True
 }
 
-# Resolve PostgreSQL URL from settings
-connection_url = settings.db.connection_url
+import os
+
+# Resolve PostgreSQL URL from settings or override with DATABASE_URL
+connection_url = os.getenv("DATABASE_URL") or settings.db.connection_url
 
 # We will initialize the engine. Note: For tests, we may override the engine or URL.
-engine = create_engine(connection_url, **ENGINE_KWARGS)
+if "sqlite" in connection_url:
+    # SQLite does not support connection pooling parameters like pool_size
+    engine = create_engine(connection_url)
+else:
+    engine = create_engine(connection_url, **ENGINE_KWARGS)
+
 
 # Configure the sessionmaker
 session_factory = sessionmaker(autocommit=False, autoflush=False, bind=engine)

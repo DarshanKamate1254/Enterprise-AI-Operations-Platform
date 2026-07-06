@@ -137,6 +137,7 @@ services:
       - QDRANT_PORT=6333
       - QDRANT_API_KEY=qdrant_secure_api_key_here
       - MCP_SERVER_URL=http://mcp-server:8080/mcp
+      - RAG_SERVICE_URL=http://rag-service:8001
     networks:
       - platform-network
     depends_on:

@@ -94,9 +94,19 @@ python mcp-server/mcp_app.py
 *Exposes tools on port `8080`.*
 
 ### B. Start the RAG Service
+On macOS/Linux:
 ```bash
-# Set custom port override
 export API_PORT=8001
+python rag-service/main.py
+```
+On Windows PowerShell:
+```powershell
+$env:API_PORT="8001"
+python rag-service/main.py
+```
+On Windows Command Prompt (cmd):
+```cmd
+set API_PORT=8001
 python rag-service/main.py
 ```
 *Exposes RAG endpoints on port `8001`.*

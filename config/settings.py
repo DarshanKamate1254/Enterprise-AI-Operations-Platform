@@ -57,6 +57,10 @@ class MCPSettings(BaseSettings):
     auth_token: Optional[str] = Field(default=None, alias="MCP_AUTH_TOKEN")
 
 
+class RAGSettings(BaseSettings):
+    url: str = Field(default="http://localhost:8001", alias="RAG_SERVICE_URL")
+
+
 class AppSettings(BaseSettings):
     app_name: str = Field(default="Enterprise AI Operations Platform", alias="APP_NAME")
     env: str = Field(default="development", alias="APP_ENV")
@@ -83,6 +87,7 @@ class Settings(BaseSettings):
     llm: LLMModelSettings = LLMModelSettings()
     observability: ObservabilitySettings = ObservabilitySettings()
     mcp: MCPSettings = MCPSettings()
+    rag: RAGSettings = RAGSettings()
 
 
 # Singleton instance of settings to import throughout the project

@@ -75,8 +75,18 @@ gateway.add_middleware(
 # ----------------------------------------------------
 # PROMETHEUS METRICS
 # ----------------------------------------------------
-REQUEST_COUNT = Counter("gateway_requests_total", "Total requests processed", ["method", "endpoint", "http_status"])
-REQUEST_LATENCY = Histogram("gateway_request_latency_seconds", "Request latency in seconds", ["endpoint"])
+from prometheus_client import REGISTRY
+
+if "gateway_requests_total" in REGISTRY._names_to_collectors:
+    REQUEST_COUNT = REGISTRY._names_to_collectors["gateway_requests_total"]
+else:
+    REQUEST_COUNT = Counter("gateway_requests_total", "Total requests processed", ["method", "endpoint", "http_status"])
+
+if "gateway_request_latency_seconds" in REGISTRY._names_to_collectors:
+    REQUEST_LATENCY = REGISTRY._names_to_collectors["gateway_request_latency_seconds"]
+else:
+    REQUEST_LATENCY = Histogram("gateway_request_latency_seconds", "Request latency in seconds", ["endpoint"])
+
 
 
 # ----------------------------------------------------
@@ -231,7 +241,7 @@ async def upload_document(
         logger.info(f"File saved to '{target_path}'. Triggering RAG index ingestion.")
         
         # Trigger indexer via HTTP POST call to RAG service
-        rag_url = f"http://{settings.app.host}:{settings.app.port}/ingest"
+        rag_url = f"{settings.rag.url.rstrip('/')}/ingest"
         async with httpx.AsyncClient() as client:
             response = await client.post(rag_url, timeout=30.0)
             if response.status_code == 200:
@@ -286,3 +296,14 @@ def metrics():
     Exposes Prometheus system status statistics.
     """
     return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(
+        "main:gateway",
+        host=settings.app.host,
+        port=settings.app.port,
+        reload=settings.app.debug
+    )
+
