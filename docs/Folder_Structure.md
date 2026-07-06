@@ -33,7 +33,8 @@ enterprise-ai-platform/
 │   ├── Deployment_Guide.md
 │   ├── API_Documentation.md
 │   ├── Agent_Architecture.md
-│   └── Folder_Structure.md
+│   ├── Folder_Structure.md
+│   └── platform_overview.html  # All-in-one HTML interactive manual
 ├── frontend/                  # React dashboard client project
 │   ├── src/
 │   │   ├── App.tsx            # Main state and view components
