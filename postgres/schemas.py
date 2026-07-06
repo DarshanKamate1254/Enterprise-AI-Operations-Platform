@@ -1,7 +1,7 @@
 import re
 from datetime import date
 from typing import Optional
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 
 
 # ----------------------------------------------------
@@ -18,8 +18,7 @@ class DepartmentCreate(DepartmentBase):
 class DepartmentResponse(DepartmentBase):
     department_id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # ----------------------------------------------------
@@ -58,8 +57,7 @@ class EmployeeCreate(EmployeeBase):
 class EmployeeResponse(EmployeeBase):
     employee_id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # ----------------------------------------------------
@@ -85,8 +83,7 @@ class UserCreate(UserBase):
 class UserResponse(UserBase):
     user_id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # ----------------------------------------------------
@@ -106,8 +103,7 @@ class CustomerCreate(CustomerBase):
 class CustomerResponse(CustomerBase):
     customer_id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # ----------------------------------------------------
@@ -126,8 +122,7 @@ class ProductCreate(ProductBase):
 class ProductResponse(ProductBase):
     product_id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # ----------------------------------------------------
@@ -147,8 +142,7 @@ class InventoryCreate(InventoryBase):
 class InventoryResponse(InventoryBase):
     inventory_id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # ----------------------------------------------------
@@ -177,8 +171,7 @@ class OrderCreate(OrderBase):
 class OrderResponse(OrderBase):
     order_id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # ----------------------------------------------------
@@ -215,5 +208,4 @@ class SupportTicketCreate(SupportTicketBase):
 class SupportTicketResponse(SupportTicketBase):
     ticket_id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

@@ -1,0 +1,60 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: platform-ingress
+  namespace: enterprise-ai-platform
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+    - http:
+        paths:
+          # Route static frontend client requests
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
+          # Route gateway auth routes
+          - path: /login
+            pathType: Exact
+            backend:
+              service:
+                name: gateway-api
+                port:
+                  number: 8000
+          # Route gateway chat stream routes
+          - path: /chat
+            pathType: Exact
+            backend:
+              service:
+                name: gateway-api
+                port:
+                  number: 8000
+          # Route ingestion uploads
+          - path: /upload
+            pathType: Exact
+            backend:
+              service:
+                name: gateway-api
+                port:
+                  number: 8000
+          # Route sessions history
+          - path: /history
+            pathType: Exact
+            backend:
+              service:
+                name: gateway-api
+                port:
+                  number: 8000
+          # Route telemetry statistics
+          - path: /metrics
+            pathType: Exact
+            backend:
+              service:
+                name: gateway-api
+                port:
+                  number: 8000

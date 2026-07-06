@@ -31,9 +31,33 @@ class RetrievalAgent:
         ])
 
     def execute_retrieval(self, query: str, category: Optional[str] = None) -> List[str]:
-        # Formulate query optimization if needed, otherwise query directly via tool
-        # For simplicity and robustness, query the retriever tool directly
-        results = self.tool.search_policies(query=query, category=category)
+        import httpx
+        mcp_success = False
+        results = []
+        
+        headers = {}
+        if settings.mcp.auth_token:
+            headers["Authorization"] = f"Bearer {settings.mcp.auth_token}"
+            
+        try:
+            payload = {
+                "tool": "retriever",
+                "arguments": {
+                    "query": query,
+                    "category": category
+                }
+            }
+            response = httpx.post(settings.mcp.server_url, json=payload, headers=headers, timeout=5.0)
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("success"):
+                    results = data.get("result", [])
+                    mcp_success = True
+        except Exception:
+            pass
+            
+        if not mcp_success:
+            results = self.tool.search_policies(query=query, category=category)
         
         # Format results as string segments
         context_blocks = []

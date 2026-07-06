@@ -60,6 +60,111 @@ services:
       timeout: 5s
       retries: 5
 
+  # --- Model Context Protocol (MCP) Server ---
+  mcp-server:
+    build:
+      context: .
+      dockerfile: docker/mcp-server.Dockerfile
+    container_name: enterprise-mcp
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres_secure_pass
+      - POSTGRES_DB=enterprise_ai_ops
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=redis_secure_pass
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - QDRANT_API_KEY=qdrant_secure_api_key_here
+    networks:
+      - platform-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # --- RAG Service ---
+  rag-service:
+    build:
+      context: .
+      dockerfile: docker/rag-service.Dockerfile
+    container_name: enterprise-rag
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      - API_PORT=8001
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres_secure_pass
+      - POSTGRES_DB=enterprise_ai_ops
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - QDRANT_API_KEY=qdrant_secure_api_key_here
+    networks:
+      - platform-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+
+  # --- API Gateway ---
+  gateway-api:
+    build:
+      context: .
+      dockerfile: docker/gateway-api.Dockerfile
+    container_name: enterprise-gateway
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - API_PORT=8000
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres_secure_pass
+      - POSTGRES_DB=enterprise_ai_ops
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=redis_secure_pass
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - QDRANT_API_KEY=qdrant_secure_api_key_here
+      - MCP_SERVER_URL=http://mcp-server:8080/mcp
+    networks:
+      - platform-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+      mcp-server:
+        condition: service_started
+      rag-service:
+        condition: service_started
+
+  # --- Frontend Client ---
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+    container_name: enterprise-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    networks:
+      - platform-network
+    depends_on:
+      - gateway-api
+
   # --- Metrics Aggregation (Prometheus) ---
   prometheus:
     image: prom/prometheus:v2.50.1

@@ -61,21 +61,58 @@ def sql_node(state: AgentState) -> Dict[str, Any]:
         if not validate_sql_syntax_and_whitelist(generated_query):
             result_str = "SQL Validation Error: Query was blocked. Only read-only SELECT commands on permitted tables are authorized."
         else:
-            # Execute query using the SQLTool inside a DB session
+            # Try calling tool via MCP Server, falling back to local DB session on failure
+            import httpx
+            mcp_success = False
+            
+            headers = {}
+            if settings.mcp.auth_token:
+                headers["Authorization"] = f"Bearer {settings.mcp.auth_token}"
+                
             try:
                 from monitoring.telemetry import record_tool_metric
-                record_tool_metric("sql_tool")
-                with db_session() as session:
-                    tool = SQLTool(session)
-                    cols, rows = tool.execute_query(generated_query)
-                    
-                    # Format results as a text table for context
-                    result_lines = [", ".join(cols)]
-                    for r in rows:
-                        result_lines.append(", ".join(str(val) for val in r))
-                    result_str = "\n".join(result_lines)
-            except Exception as e:
-                result_str = f"SQL Execution Error: {str(e)}"
+                record_tool_metric("mcp_tool")
+                
+                payload = {
+                    "tool": "sql_query",
+                    "arguments": {"query": generated_query}
+                }
+                # Send tool execution query to MCP server
+                response = httpx.post(settings.mcp.server_url, json=payload, headers=headers, timeout=5.0)
+                if response.status_code == 200:
+                    data = response.json()
+                    if data.get("success"):
+                        res_data = data.get("result", {})
+                        cols = res_data.get("columns", [])
+                        records = res_data.get("records", [])
+                        
+                        result_lines = [", ".join(cols)]
+                        for rec in records:
+                            result_lines.append(", ".join(str(rec.get(col, "")) for col in cols))
+                        result_str = "\n".join(result_lines)
+                        mcp_success = True
+                    else:
+                        result_str = f"MCP SQL Execution Error: {data.get('error')}"
+                        mcp_success = True  # Avoid fallback if server returned explicit failure details
+            except Exception as mcp_ex:
+                # Fallback to local direct tool invocation
+                pass
+                
+            if not mcp_success:
+                try:
+                    from monitoring.telemetry import record_tool_metric
+                    record_tool_metric("sql_tool")
+                    with db_session() as session:
+                        tool = SQLTool(session)
+                        cols, rows = tool.execute_query(generated_query)
+                        
+                        # Format results as a text table for context
+                        result_lines = [", ".join(cols)]
+                        for r in rows:
+                            result_lines.append(", ".join(str(val) for val in r))
+                        result_str = "\n".join(result_lines)
+                except Exception as e:
+                    result_str = f"SQL Execution Error: {str(e)}"
 
         # Track steps completion via state reducer delta
         return {
