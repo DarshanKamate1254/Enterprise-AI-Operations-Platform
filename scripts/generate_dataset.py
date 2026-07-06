@@ -642,7 +642,7 @@ product_names = [
 ]
 products = []
 for i in range(1, 41):
-    name = f"{random.choice(product_names)} v{i%4+1}.0"
+    name = f"{product_names[(i - 1) % len(product_names)]} v{i}.0"
     category = random.choice(product_categories)
     price = float(random.randint(50, 1500) * 100)  # price between 5000 and 150000
     supplier = f"NovaTech Internal Systems" if "SaaS" in category or "Services" in category else f"Hardware Vendor {i%3+1}"

@@ -9,11 +9,9 @@ rag_dir = os.path.join(root_dir, "rag-service")
 sys.path.insert(0, root_dir)
 sys.path.insert(0, rag_dir)
 
-from loader import extract_custom_metadata, DocumentLoader
+from loader import extract_custom_metadata, Document
 from chunker import DocumentChunker
 from retriever import HybridRetriever
-from llama_index.core import Document
-from llama_index.core.schema import TextNode
 
 class TestRAGPipeline(unittest.TestCase):
     
@@ -46,29 +44,42 @@ class TestRAGPipeline(unittest.TestCase):
         for node in nodes:
             self.assertEqual(node.metadata["category"], "hr")
             self.assertEqual(node.metadata["file_name"], "Leave_Policy.md")
-            self.assertTrue(len(node.get_content()) > 0)
+            self.assertTrue(len(node.text) > 0)
 
-    @patch('qdrant_client.QdrantClient')
-    def test_retriever_formatting(self, mock_qdrant_client):
+    @patch('retriever.QdrantClient')
+    @patch('retriever.OpenAIEmbeddings')
+    def test_retriever_formatting(self, mock_embeddings, mock_qdrant_client_class):
         """
         Verify the HybridRetriever correctly formats retrieved node scores and metadata.
         """
-        # Create mock index and retriever
-        mock_index = MagicMock()
-        mock_llama_retriever = MagicMock()
-        mock_index.as_retriever.return_value = mock_llama_retriever
+        # Setup mock Qdrant client instance
+        mock_qdrant_client = MagicMock()
+        mock_qdrant_client_class.return_value = mock_qdrant_client
         
-        # Setup mock retrieval results
-        mock_node = TextNode(text="Leave policy content details.", metadata={"category": "hr"})
-        from llama_index.core.schema import NodeWithScore
-        mock_results = [NodeWithScore(node=mock_node, score=0.85)]
-        mock_llama_retriever.retrieve.return_value = mock_results
+        # Setup mock Qdrant collections check
+        mock_collection_info = MagicMock()
+        mock_collection_info.name = "nova_policies"
+        mock_collections_response = MagicMock()
+        mock_collections_response.collections = [mock_collection_info]
+        mock_qdrant_client.get_collections.return_value = mock_collections_response
         
-        retriever = HybridRetriever(mock_index)
+        # Setup mock Qdrant search results
+        mock_scored_point = MagicMock()
+        mock_scored_point.score = 0.85
+        mock_scored_point.payload = {
+            "text": "Leave policy content details.",
+            "metadata": {"category": "hr"}
+        }
+        mock_qdrant_client.search.return_value = [mock_scored_point]
         
-        # Run retrieval mocking the flashrank reranker to avoid downloading weights in tests
-        with patch('llama_index.postprocessor.flashrank.FlashrankRerank.postprocess_nodes') as mock_rerank:
-            mock_rerank.return_value = mock_results
+        # Create retriever
+        retriever = HybridRetriever(collection_name="nova_policies")
+        
+        # Mock flashrank rerank function
+        mock_ranker = MagicMock()
+        mock_ranker.rerank.return_value = [{"id": 0, "text": "Leave policy content details.", "score": 0.85, "meta": {"category": "hr"}}]
+        
+        with patch('retriever.get_ranker', return_value=mock_ranker):
             results = retriever.retrieve("query about leave", category="hr")
             
             self.assertEqual(len(results), 1)

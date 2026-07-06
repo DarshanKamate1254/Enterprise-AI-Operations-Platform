@@ -1,101 +1,101 @@
 ticket_id,customer_id,issue,priority,assigned_employee_id,status,created_date,resolved_date
-1,81,Warehouse delivery address correction request - Ref ID 5934,Critical,38,Resolved,2025-12-11,2025-12-16
-2,29,SaaS latency spike exceeds SLA 3-second limit - Ref ID 9529,Low,31,In Progress,2026-09-18,
-3,52,Billing dispute: duplicate charge on annual license - Ref ID 6724,Medium,15,Resolved,2026-06-10,2026-06-12
-4,97,Warehouse delivery address correction request - Ref ID 9691,Critical,31,Open,2025-11-12,
-5,58,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 4994,Low,48,Resolved,2026-02-13,2026-02-16
-6,70,Requested laptop replacement for damaged hardware screen - Ref ID 1404,High,31,Closed,2026-01-10,2026-01-12
-7,42,Refund claim for cancelled SaaS seats - Ref ID 2349,Low,12,Open,2025-04-22,
-8,81,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 7950,Low,15,Closed,2025-12-22,2025-12-24
-9,4,Request for sandbox access credentials - Ref ID 6434,Low,11,Open,2025-03-26,
-10,33,Refund claim for cancelled SaaS seats - Ref ID 2154,Medium,,Resolved,2026-07-15,2026-07-19
-11,56,Stock request pending manager approval since 4 days - Ref ID 1276,Critical,48,Open,2025-11-24,
-12,80,Billing dispute: duplicate charge on annual license - Ref ID 1745,Low,24,Open,2026-11-10,
-13,78,Billing dispute: duplicate charge on annual license - Ref ID 5612,Critical,27,Closed,2025-08-06,2025-08-11
-14,29,SaaS latency spike exceeds SLA 3-second limit - Ref ID 7406,High,48,In Progress,2026-11-26,
-15,94,Stock request pending manager approval since 4 days - Ref ID 1182,Medium,11,Open,2025-10-20,
-16,51,Refund claim for cancelled SaaS seats - Ref ID 9970,Low,19,In Progress,2026-04-14,
-17,83,Refund claim for cancelled SaaS seats - Ref ID 3333,Medium,12,In Progress,2026-04-04,
-18,24,Warehouse delivery address correction request - Ref ID 1891,Critical,48,Open,2026-11-03,
-19,33,Billing dispute: duplicate charge on annual license - Ref ID 4234,Critical,24,Resolved,2025-11-21,2025-11-23
-20,13,Requested laptop replacement for damaged hardware screen - Ref ID 2143,Medium,,Resolved,2026-08-11,2026-08-16
-21,85,Requested laptop replacement for damaged hardware screen - Ref ID 3496,High,24,Closed,2025-01-11,2025-01-13
-22,29,Pricing quote mismatch on custom SOW contract - Ref ID 5533,High,12,Resolved,2026-08-15,2026-08-18
-23,100,Requested laptop replacement for damaged hardware screen - Ref ID 8978,Low,12,Open,2026-03-18,
-24,26,Requested laptop replacement for damaged hardware screen - Ref ID 2252,Low,6,Open,2026-10-07,
-25,5,Refund claim for cancelled SaaS seats - Ref ID 5269,Critical,48,In Progress,2026-07-08,
-26,99,Warehouse delivery address correction request - Ref ID 5767,Medium,30,Open,2026-06-17,
-27,2,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 3717,Medium,30,In Progress,2025-10-19,
-28,85,SaaS latency spike exceeds SLA 3-second limit - Ref ID 8921,High,6,In Progress,2026-04-03,
-29,34,Stock request pending manager approval since 4 days - Ref ID 4834,Low,48,In Progress,2026-07-16,
-30,59,VPN login timed out error after Okta verify - Ref ID 1653,High,,Open,2026-12-09,
-31,75,Refund claim for cancelled SaaS seats - Ref ID 3848,Critical,48,Closed,2026-10-21,2026-10-22
-32,67,Requested laptop replacement for damaged hardware screen - Ref ID 7165,Medium,31,Closed,2026-06-16,2026-06-20
-33,78,VPN login timed out error after Okta verify - Ref ID 9222,Medium,30,In Progress,2025-02-17,
-34,83,Requested laptop replacement for damaged hardware screen - Ref ID 4465,Medium,12,In Progress,2026-10-23,
-35,16,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 7793,High,50,Open,2026-11-16,
-36,62,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 3641,Critical,6,In Progress,2025-03-19,
-37,76,SaaS latency spike exceeds SLA 3-second limit - Ref ID 3207,Low,38,In Progress,2025-03-09,
-38,24,Refund claim for cancelled SaaS seats - Ref ID 7642,Low,50,Resolved,2025-04-15,2025-04-20
-39,61,Request for sandbox access credentials - Ref ID 3794,Medium,27,In Progress,2025-10-22,
-40,66,Requested laptop replacement for damaged hardware screen - Ref ID 3747,High,,Closed,2025-04-13,2025-04-17
-41,17,Billing dispute: duplicate charge on annual license - Ref ID 1271,Medium,31,Closed,2025-10-04,2025-10-06
-42,61,Warehouse delivery address correction request - Ref ID 1639,Low,11,Closed,2025-10-18,2025-10-19
-43,100,Pricing quote mismatch on custom SOW contract - Ref ID 9553,Critical,24,Open,2026-04-26,
-44,62,Pricing quote mismatch on custom SOW contract - Ref ID 6742,Low,27,In Progress,2026-08-25,
-45,30,Billing dispute: duplicate charge on annual license - Ref ID 5641,Critical,19,In Progress,2025-12-24,
-46,1,Warehouse delivery address correction request - Ref ID 9561,Low,31,Open,2026-11-07,
-47,89,Stock request pending manager approval since 4 days - Ref ID 7698,High,11,In Progress,2026-11-19,
-48,33,Requested laptop replacement for damaged hardware screen - Ref ID 9783,Critical,38,Resolved,2026-11-13,2026-11-15
-49,53,Refund claim for cancelled SaaS seats - Ref ID 8904,Medium,24,Closed,2026-05-19,2026-05-22
-50,100,Pricing quote mismatch on custom SOW contract - Ref ID 3262,Low,,In Progress,2026-12-06,
-51,13,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 9328,Critical,24,Open,2025-07-21,
-52,1,Billing dispute: duplicate charge on annual license - Ref ID 3381,Critical,38,Closed,2025-02-09,2025-02-11
-53,48,Billing dispute: duplicate charge on annual license - Ref ID 1618,Critical,27,Resolved,2025-03-21,2025-03-25
-54,57,VPN login timed out error after Okta verify - Ref ID 4304,High,15,Open,2025-10-06,
-55,87,VPN login timed out error after Okta verify - Ref ID 6893,Medium,48,Open,2025-02-09,
-56,100,Pricing quote mismatch on custom SOW contract - Ref ID 6785,Critical,27,In Progress,2025-12-23,
-57,9,Billing dispute: duplicate charge on annual license - Ref ID 5661,High,24,Resolved,2025-10-07,2025-10-11
-58,52,Warehouse delivery address correction request - Ref ID 1076,High,12,Closed,2025-09-03,2025-09-08
-59,38,Stock request pending manager approval since 4 days - Ref ID 2917,High,31,Resolved,2026-07-19,2026-07-23
-60,99,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 6565,Critical,,Closed,2025-08-04,2025-08-07
-61,9,Pricing quote mismatch on custom SOW contract - Ref ID 4610,Medium,24,Closed,2026-09-18,2026-09-19
-62,90,Requested laptop replacement for damaged hardware screen - Ref ID 5067,High,11,Closed,2026-02-18,2026-02-20
-63,61,Stock request pending manager approval since 4 days - Ref ID 6792,Medium,38,Resolved,2025-12-22,2025-12-24
-64,64,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 4847,Medium,19,In Progress,2025-04-27,
-65,32,Warehouse delivery address correction request - Ref ID 6833,Medium,11,Open,2025-11-22,
-66,64,Warehouse delivery address correction request - Ref ID 1108,Low,30,Resolved,2026-08-19,2026-08-22
-67,63,SaaS latency spike exceeds SLA 3-second limit - Ref ID 9374,High,27,In Progress,2025-01-17,
-68,55,Request for sandbox access credentials - Ref ID 9859,Low,31,Resolved,2026-11-25,2026-11-27
-69,59,Billing dispute: duplicate charge on annual license - Ref ID 9490,Critical,24,Open,2025-11-07,
-70,49,Warehouse delivery address correction request - Ref ID 2650,High,,Resolved,2026-03-18,2026-03-21
-71,31,Requested laptop replacement for damaged hardware screen - Ref ID 8722,High,24,In Progress,2026-07-07,
-72,54,Stock request pending manager approval since 4 days - Ref ID 6981,Critical,19,Closed,2025-10-05,2025-10-10
-73,88,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 2636,High,15,Closed,2026-04-05,2026-04-07
-74,61,VPN login timed out error after Okta verify - Ref ID 3893,Critical,30,In Progress,2026-08-10,
-75,33,Refund claim for cancelled SaaS seats - Ref ID 1781,Critical,11,In Progress,2025-04-27,
-76,33,Request for sandbox access credentials - Ref ID 2577,Critical,50,Resolved,2026-06-12,2026-06-17
-77,72,Requested laptop replacement for damaged hardware screen - Ref ID 6638,Low,27,Open,2026-11-20,
-78,26,Warehouse delivery address correction request - Ref ID 9821,Medium,19,Resolved,2026-11-17,2026-11-21
-79,100,Request for sandbox access credentials - Ref ID 2284,Critical,38,Resolved,2026-11-05,2026-11-07
-80,82,Stock request pending manager approval since 4 days - Ref ID 7911,Critical,,Open,2025-03-11,
-81,30,Stock request pending manager approval since 4 days - Ref ID 6191,High,50,Resolved,2026-05-15,2026-05-18
-82,96,Warehouse delivery address correction request - Ref ID 9535,Critical,27,In Progress,2025-01-05,
-83,94,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 5122,Low,15,In Progress,2026-02-04,
-84,9,Request for sandbox access credentials - Ref ID 9985,Low,6,Closed,2025-02-09,2025-02-14
-85,20,Billing dispute: duplicate charge on annual license - Ref ID 7387,High,15,In Progress,2026-08-21,
-86,17,SaaS latency spike exceeds SLA 3-second limit - Ref ID 9630,Medium,6,Open,2026-06-28,
-87,61,Request for sandbox access credentials - Ref ID 9856,High,31,Closed,2025-12-18,2025-12-20
-88,76,Warehouse delivery address correction request - Ref ID 8480,Critical,31,Resolved,2026-08-18,2026-08-20
-89,12,Request for sandbox access credentials - Ref ID 6044,High,27,Resolved,2025-05-01,2025-05-02
-90,67,SaaS latency spike exceeds SLA 3-second limit - Ref ID 6634,High,,Closed,2025-12-16,2025-12-20
-91,39,VPN login timed out error after Okta verify - Ref ID 8052,High,38,In Progress,2025-09-12,
-92,25,Pricing quote mismatch on custom SOW contract - Ref ID 8161,Critical,15,In Progress,2026-07-08,
-93,34,Billing dispute: duplicate charge on annual license - Ref ID 7917,Medium,31,Resolved,2026-11-24,2026-11-29
-94,35,Pricing quote mismatch on custom SOW contract - Ref ID 4080,Low,12,In Progress,2026-02-21,
-95,59,Warehouse delivery address correction request - Ref ID 8418,High,50,Closed,2025-06-01,2025-06-03
-96,7,Refund claim for cancelled SaaS seats - Ref ID 1362,Medium,11,Resolved,2026-03-23,2026-03-27
-97,94,VPN login timed out error after Okta verify - Ref ID 4814,Low,12,Open,2026-04-11,
-98,54,Requested laptop replacement for damaged hardware screen - Ref ID 9165,High,30,Open,2026-02-27,
-99,97,SaaS latency spike exceeds SLA 3-second limit - Ref ID 1918,High,27,Open,2026-03-07,
-100,33,Pricing quote mismatch on custom SOW contract - Ref ID 1206,Low,,In Progress,2026-08-08,
+1,100,Request for sandbox access credentials - Ref ID 4695,High,38,In Progress,2025-05-15,
+2,23,Billing dispute: duplicate charge on annual license - Ref ID 4063,Medium,50,Open,2026-01-14,
+3,36,Refund claim for cancelled SaaS seats - Ref ID 5329,Medium,12,Resolved,2025-06-15,2025-06-17
+4,6,SaaS latency spike exceeds SLA 3-second limit - Ref ID 6285,Low,48,Resolved,2026-10-18,2026-10-21
+5,10,Stock request pending manager approval since 4 days - Ref ID 9608,Medium,12,Open,2025-07-18,
+6,69,Pricing quote mismatch on custom SOW contract - Ref ID 2506,High,15,In Progress,2026-06-12,
+7,38,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 9691,Critical,31,Open,2025-11-12,
+8,58,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 4994,Low,48,Resolved,2026-02-13,2026-02-16
+9,70,Requested laptop replacement for damaged hardware screen - Ref ID 1404,High,31,Closed,2026-01-10,2026-01-12
+10,42,Refund claim for cancelled SaaS seats - Ref ID 2349,Low,,In Progress,2025-11-03,
+11,27,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 7950,Low,15,Closed,2025-12-22,2025-12-24
+12,4,Request for sandbox access credentials - Ref ID 6434,Low,11,Open,2025-03-26,
+13,33,Refund claim for cancelled SaaS seats - Ref ID 2154,Medium,19,Closed,2026-08-21,2026-08-25
+14,56,Stock request pending manager approval since 4 days - Ref ID 1276,Critical,48,Open,2025-11-24,
+15,80,Billing dispute: duplicate charge on annual license - Ref ID 1745,Low,24,Open,2026-11-10,
+16,78,Billing dispute: duplicate charge on annual license - Ref ID 5612,Critical,27,Closed,2025-08-06,2025-08-11
+17,29,SaaS latency spike exceeds SLA 3-second limit - Ref ID 7406,High,48,In Progress,2026-11-26,
+18,94,Stock request pending manager approval since 4 days - Ref ID 1182,Medium,11,Open,2025-10-20,
+19,51,Refund claim for cancelled SaaS seats - Ref ID 9970,Low,19,In Progress,2026-04-14,
+20,83,Refund claim for cancelled SaaS seats - Ref ID 3333,Medium,,In Progress,2025-10-27,
+21,33,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 2877,Medium,48,Open,2026-11-18,
+22,10,Requested laptop replacement for damaged hardware screen - Ref ID 2103,High,11,In Progress,2026-06-12,
+23,17,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 2639,High,38,Open,2025-06-16,
+24,58,Stock request pending manager approval since 4 days - Ref ID 6008,Medium,38,Resolved,2026-07-06,2026-07-07
+25,41,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 4629,Critical,19,Resolved,2025-11-24,2025-11-27
+26,62,Request for sandbox access credentials - Ref ID 8296,High,19,Closed,2025-03-21,2025-03-26
+27,11,Requested laptop replacement for damaged hardware screen - Ref ID 3293,Medium,19,Open,2025-01-28,
+28,65,VPN login timed out error after Okta verify - Ref ID 7637,Medium,6,Resolved,2026-11-25,2026-11-27
+29,47,Pricing quote mismatch on custom SOW contract - Ref ID 4658,High,12,Closed,2025-07-12,2025-07-17
+30,2,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 3717,Medium,,Closed,2025-03-19,2025-03-24
+31,85,SaaS latency spike exceeds SLA 3-second limit - Ref ID 8921,High,6,In Progress,2026-04-03,
+32,34,Stock request pending manager approval since 4 days - Ref ID 4834,Low,48,In Progress,2026-07-16,
+33,59,VPN login timed out error after Okta verify - Ref ID 1653,High,11,Resolved,2026-10-18,2026-10-23
+34,23,Pricing quote mismatch on custom SOW contract - Ref ID 7201,High,38,Open,2026-07-08,
+35,67,Pricing quote mismatch on custom SOW contract - Ref ID 6781,High,30,Closed,2025-09-05,2025-09-09
+36,22,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 2263,High,15,In Progress,2025-03-12,
+37,78,Billing dispute: duplicate charge on annual license - Ref ID 4773,Critical,24,Open,2026-11-16,
+38,62,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 3641,Critical,6,In Progress,2025-03-19,
+39,76,SaaS latency spike exceeds SLA 3-second limit - Ref ID 3207,Low,38,In Progress,2025-03-09,
+40,24,Refund claim for cancelled SaaS seats - Ref ID 7642,Low,,Resolved,2025-04-15,2025-04-20
+41,61,Request for sandbox access credentials - Ref ID 3794,Medium,27,In Progress,2025-10-22,
+42,66,Requested laptop replacement for damaged hardware screen - Ref ID 3747,High,30,Open,2025-07-13,
+43,17,Billing dispute: duplicate charge on annual license - Ref ID 1271,Medium,31,Closed,2025-10-04,2025-10-06
+44,61,Warehouse delivery address correction request - Ref ID 1639,Low,11,Closed,2025-10-18,2025-10-19
+45,100,Pricing quote mismatch on custom SOW contract - Ref ID 9553,Critical,24,Open,2026-04-26,
+46,62,Pricing quote mismatch on custom SOW contract - Ref ID 6742,Low,27,In Progress,2026-08-25,
+47,30,Billing dispute: duplicate charge on annual license - Ref ID 5641,Critical,19,In Progress,2025-12-24,
+48,1,Warehouse delivery address correction request - Ref ID 9561,Low,31,Open,2026-11-07,
+49,89,Stock request pending manager approval since 4 days - Ref ID 7698,High,11,In Progress,2026-11-19,
+50,33,Requested laptop replacement for damaged hardware screen - Ref ID 9783,Critical,,Resolved,2026-11-13,2026-11-15
+51,53,Refund claim for cancelled SaaS seats - Ref ID 8904,Medium,24,Closed,2026-05-19,2026-05-22
+52,100,Pricing quote mismatch on custom SOW contract - Ref ID 3262,Low,50,In Progress,2026-12-06,
+53,13,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 9328,Critical,24,Open,2025-07-21,
+54,1,Billing dispute: duplicate charge on annual license - Ref ID 3381,Critical,38,Closed,2025-02-09,2025-02-11
+55,48,Billing dispute: duplicate charge on annual license - Ref ID 1618,Critical,27,Resolved,2025-03-21,2025-03-25
+56,57,VPN login timed out error after Okta verify - Ref ID 4304,High,15,Open,2025-10-06,
+57,87,VPN login timed out error after Okta verify - Ref ID 6893,Medium,48,Open,2025-02-09,
+58,100,Pricing quote mismatch on custom SOW contract - Ref ID 6785,Critical,27,In Progress,2025-12-23,
+59,9,Billing dispute: duplicate charge on annual license - Ref ID 5661,High,24,Resolved,2025-10-07,2025-10-11
+60,52,Warehouse delivery address correction request - Ref ID 1076,High,,In Progress,2026-09-04,
+61,72,Billing dispute: duplicate charge on annual license - Ref ID 9243,High,24,Open,2026-09-27,
+62,74,Requested laptop replacement for damaged hardware screen - Ref ID 8254,Critical,38,Closed,2025-06-25,2025-06-29
+63,88,Request for sandbox access credentials - Ref ID 1448,Critical,11,Resolved,2025-07-21,2025-07-23
+64,87,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 6172,Critical,24,Open,2026-04-10,
+65,12,Pricing quote mismatch on custom SOW contract - Ref ID 6603,Low,31,In Progress,2026-06-12,
+66,28,Warehouse delivery address correction request - Ref ID 5408,Medium,50,In Progress,2026-12-07,
+67,31,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 5348,Medium,15,In Progress,2025-10-12,
+68,20,Billing dispute: duplicate charge on annual license - Ref ID 2964,Low,48,Closed,2025-09-02,2025-09-06
+69,48,Warehouse delivery address correction request - Ref ID 6167,Critical,38,Resolved,2026-03-25,2026-03-30
+70,36,Pricing quote mismatch on custom SOW contract - Ref ID 4638,Medium,,Open,2026-08-18,
+71,5,Refund claim for cancelled SaaS seats - Ref ID 6689,Critical,48,In Progress,2026-02-23,
+72,67,Request for sandbox access credentials - Ref ID 6171,Low,6,In Progress,2026-10-04,
+73,42,Stock request pending manager approval since 4 days - Ref ID 5254,Medium,31,Resolved,2025-05-16,2025-05-21
+74,44,Stock request pending manager approval since 4 days - Ref ID 4013,Critical,27,In Progress,2026-12-25,
+75,48,Stock request pending manager approval since 4 days - Ref ID 7563,High,30,In Progress,2025-10-22,
+76,30,Billing dispute: duplicate charge on annual license - Ref ID 5422,Medium,31,Closed,2026-04-05,2026-04-07
+77,61,VPN login timed out error after Okta verify - Ref ID 3893,Critical,30,In Progress,2026-08-10,
+78,33,Refund claim for cancelled SaaS seats - Ref ID 1781,Critical,11,In Progress,2025-04-27,
+79,33,Request for sandbox access credentials - Ref ID 2577,Critical,50,Resolved,2026-06-12,2026-06-17
+80,72,Requested laptop replacement for damaged hardware screen - Ref ID 6638,Low,,Closed,2025-06-28,2025-07-03
+81,26,Warehouse delivery address correction request - Ref ID 9821,Medium,19,Resolved,2026-11-17,2026-11-21
+82,100,Request for sandbox access credentials - Ref ID 2284,Critical,38,Resolved,2026-11-05,2026-11-07
+83,82,Stock request pending manager approval since 4 days - Ref ID 7911,Critical,11,Open,2025-06-08,
+84,41,Stock request pending manager approval since 4 days - Ref ID 5773,High,38,Closed,2026-08-25,2026-08-28
+85,96,Warehouse delivery address correction request - Ref ID 9535,Critical,27,In Progress,2025-01-05,
+86,94,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 5122,Low,15,In Progress,2026-02-04,
+87,9,Request for sandbox access credentials - Ref ID 9985,Low,6,Closed,2025-02-09,2025-02-14
+88,20,Billing dispute: duplicate charge on annual license - Ref ID 7387,High,15,In Progress,2026-08-21,
+89,17,SaaS latency spike exceeds SLA 3-second limit - Ref ID 9630,Medium,6,Open,2026-06-28,
+90,61,Request for sandbox access credentials - Ref ID 9856,High,,Closed,2025-12-18,2025-12-20
+91,76,Warehouse delivery address correction request - Ref ID 8480,Critical,31,Resolved,2026-08-18,2026-08-20
+92,12,Request for sandbox access credentials - Ref ID 6044,High,27,Resolved,2025-05-01,2025-05-02
+93,67,SaaS latency spike exceeds SLA 3-second limit - Ref ID 6634,High,30,Open,2026-08-10,
+94,2,Pricing quote mismatch on custom SOW contract - Ref ID 5799,Medium,6,Resolved,2025-07-18,2025-07-22
+95,51,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 3675,Critical,27,In Progress,2026-02-14,
+96,81,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 9464,High,19,Resolved,2026-04-28,2026-04-29
+97,24,SaaS latency spike exceeds SLA 3-second limit - Ref ID 5744,Low,48,Closed,2026-05-23,2026-05-28
+98,63,API endpoint /v1/customers returning 502 Bad Gateway - Ref ID 6253,Low,12,Open,2025-03-04,
+99,37,Requested laptop replacement for damaged hardware screen - Ref ID 3048,Critical,50,Open,2025-02-05,
+100,2,Request for sandbox access credentials - Ref ID 4558,High,,Closed,2026-08-12,2026-08-16
