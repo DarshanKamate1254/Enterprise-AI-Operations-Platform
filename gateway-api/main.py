@@ -25,20 +25,39 @@ logger = logging.getLogger("gateway-api")
 # ----------------------------------------------------
 # OPENTELEMETRY INSTRUMENTATION SETUP
 # ----------------------------------------------------
+import atexit
+from contextlib import asynccontextmanager
 from opentelemetry import trace
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
 
+import sys
+
 provider = TracerProvider()
-processor = BatchSpanProcessor(ConsoleSpanExporter())
-provider.add_span_processor(processor)
+if "pytest" not in sys.modules and "unittest" not in sys.modules:
+    processor = BatchSpanProcessor(ConsoleSpanExporter())
+    provider.add_span_processor(processor)
 trace.set_tracer_provider(provider)
+
+# Gracefully shutdown OpenTelemetry on process exit to prevent I/O errors on closed stdout in background threads
+atexit.register(provider.shutdown)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup logic
+    yield
+    # Shutdown logic
+    try:
+        provider.shutdown()
+    except Exception as e:
+        logger.error(f"Error during OpenTelemetry TracerProvider shutdown: {e}")
 
 gateway = FastAPI(
     title="NovaTech Operations Platform - API Gateway",
     description="API Gateway hosting Chat client workflows, upload ingestion targets, and RBAC authentication.",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan
 )
 
 # Instrument the FastAPI app

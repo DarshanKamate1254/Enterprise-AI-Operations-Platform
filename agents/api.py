@@ -59,19 +59,52 @@ def api_node(state: AgentState) -> Dict[str, Any]:
         }, indent=2)
 
         result_str = ""
+        import httpx
+        mcp_success = False
+        
+        headers = {}
+        if settings.mcp.auth_token:
+            headers["Authorization"] = f"Bearer {settings.mcp.auth_token}"
+            
         try:
-            # Instantiate and run APITool
-            record_tool_metric("api_tool")
-            with APITool() as tool:
-                response = tool.call_endpoint(
-                    method=api_call.method,
-                    url=api_call.url,
-                    json_data=api_call.payload if api_call.method in ("POST", "PUT") else None,
-                    params=api_call.payload if api_call.method == "GET" else None
-                )
-                result_str = json.dumps(response, indent=2)
-        except Exception as e:
-            result_str = json.dumps({"error": f"API Invocations failed: {str(e)}"}, indent=2)
+            from monitoring.telemetry import record_tool_metric
+            record_tool_metric("mcp_tool")
+            
+            payload = {
+                "tool": "rest_api",
+                "arguments": {
+                    "method": api_call.method,
+                    "url": api_call.url,
+                    "payload": api_call.payload
+                }
+            }
+            response = httpx.post(settings.mcp.server_url, json=payload, headers=headers, timeout=5.0)
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("success"):
+                    result_str = json.dumps(data.get("result", {}), indent=2)
+                    mcp_success = True
+                else:
+                    result_str = json.dumps({"error": f"MCP API Execution Error: {data.get('error')}"}, indent=2)
+                    mcp_success = True
+        except Exception:
+            pass
+            
+        if not mcp_success:
+            try:
+                # Instantiate and run APITool
+                from monitoring.telemetry import record_tool_metric
+                record_tool_metric("api_tool")
+                with APITool() as tool:
+                    response = tool.call_endpoint(
+                        method=api_call.method,
+                        url=api_call.url,
+                        json_data=api_call.payload if api_call.method in ("POST", "PUT") else None,
+                        params=api_call.payload if api_call.method == "GET" else None
+                    )
+                    result_str = json.dumps(response, indent=2)
+            except Exception as e:
+                result_str = json.dumps({"error": f"API Invocations failed: {str(e)}"}, indent=2)
 
         # Track steps completion via state reducer delta
         return {
