@@ -13,6 +13,9 @@ from tools.api import APITool
 from prompts.agent_prompts import API_SYSTEM_PROMPT
 
 
+from monitoring.telemetry import track_node_latency, record_llm_metrics, record_tool_metric
+
+
 class APIAgent:
     """
     API Agent plans and formats outbound HTTP rest operations.
@@ -33,7 +36,9 @@ class APIAgent:
 
     def generate_api_call(self, query: str) -> APIGeneration:
         chain = self.prompt | self.structured_llm
-        return chain.invoke({"query": query})
+        response = chain.invoke({"query": query})
+        record_llm_metrics("api", response, settings.llm.default_chat_model)
+        return response
 
 
 def api_node(state: AgentState) -> Dict[str, Any]:
@@ -41,37 +46,39 @@ def api_node(state: AgentState) -> Dict[str, Any]:
     LangGraph node wrapper for the API Agent.
     Generates and invokes an HTTP operation via APITool.
     """
-    query = state.get("user_query") or ""
-    
-    agent = APIAgent()
-    api_call = agent.generate_api_call(query)
-    
-    payload_str = json.dumps({
-        "method": api_call.method,
-        "url": api_call.url,
-        "payload": api_call.payload
-    }, indent=2)
+    with track_node_latency("api"):
+        query = state.get("user_query") or ""
+        
+        agent = APIAgent()
+        api_call = agent.generate_api_call(query)
+        
+        payload_str = json.dumps({
+            "method": api_call.method,
+            "url": api_call.url,
+            "payload": api_call.payload
+        }, indent=2)
 
-    result_str = ""
-    try:
-        # Instantiate and run APITool
-        with APITool() as tool:
-            response = tool.call_endpoint(
-                method=api_call.method,
-                url=api_call.url,
-                json_data=api_call.payload if api_call.method in ("POST", "PUT") else None,
-                params=api_call.payload if api_call.method == "GET" else None
-            )
-            result_str = json.dumps(response, indent=2)
-    except Exception as e:
-        result_str = json.dumps({"error": f"API Invocations failed: {str(e)}"}, indent=2)
+        result_str = ""
+        try:
+            # Instantiate and run APITool
+            record_tool_metric("api_tool")
+            with APITool() as tool:
+                response = tool.call_endpoint(
+                    method=api_call.method,
+                    url=api_call.url,
+                    json_data=api_call.payload if api_call.method in ("POST", "PUT") else None,
+                    params=api_call.payload if api_call.method == "GET" else None
+                )
+                result_str = json.dumps(response, indent=2)
+        except Exception as e:
+            result_str = json.dumps({"error": f"API Invocations failed: {str(e)}"}, indent=2)
 
-    # Track steps completion via state reducer delta
-    return {
-        "api_payload": payload_str,
-        "api_result": result_str,
-        "completed_steps": ["api"],
-        "messages": [
-            ("assistant", f"[API Action] Formulated Call:\n```json\n{payload_str}\n```\nResponse Outcomes:\n```json\n{result_str}\n```")
-        ]
-    }
+        # Track steps completion via state reducer delta
+        return {
+            "api_payload": payload_str,
+            "api_result": result_str,
+            "completed_steps": ["api"],
+            "messages": [
+                ("assistant", f"[API Action] Formulated Call:\n```json\n{payload_str}\n```\nResponse Outcomes:\n```json\n{result_str}\n```")
+            ]
+        }

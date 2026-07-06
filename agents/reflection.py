@@ -11,6 +11,9 @@ from schemas.agent_schemas import ReflectionVerdict
 from prompts.agent_prompts import REFLECTION_SYSTEM_PROMPT
 
 
+from monitoring.telemetry import track_node_latency, record_llm_metrics, AGENT_RETRIES
+
+
 class ReflectionAgent:
     """
     Reflection Agent evaluates context correctness, checks database outputs,
@@ -41,7 +44,7 @@ class ReflectionAgent:
         api_r: str
     ) -> ReflectionVerdict:
         chain = self.prompt | self.structured_llm
-        return chain.invoke({
+        response = chain.invoke({
             "query": query,
             "plan": plan,
             "completed": completed,
@@ -50,6 +53,8 @@ class ReflectionAgent:
             "rag": rag,
             "api_r": api_r
         })
+        record_llm_metrics("reflection", response, settings.llm.default_chat_model)
+        return response
 
 
 def reflection_node(state: AgentState) -> Dict[str, Any]:
@@ -57,26 +62,31 @@ def reflection_node(state: AgentState) -> Dict[str, Any]:
     LangGraph node wrapper for the Reflection Agent.
     Updates the reflection_feedback and counts execution attempts.
     """
-    query = state.get("user_query") or ""
-    plan = str(state.get("plan") or [])
-    completed = str(state.get("completed_steps") or [])
-    sql_q = state.get("sql_query") or "None"
-    sql_r = state.get("sql_result") or "None"
-    rag = "\n".join(state.get("retrieved_context") or [])
-    api_r = state.get("api_result") or "None"
+    with track_node_latency("reflection"):
+        query = state.get("user_query") or ""
+        plan = str(state.get("plan") or [])
+        completed = str(state.get("completed_steps") or [])
+        sql_q = state.get("sql_query") or "None"
+        sql_r = state.get("sql_result") or "None"
+        rag = "\n".join(state.get("retrieved_context") or [])
+        api_r = state.get("api_result") or "None"
 
-    agent = ReflectionAgent()
-    verdict = agent.evaluate_output(query, plan, completed, sql_q, sql_r, rag, api_r)
-    
-    attempts = state.get("reflection_attempts") or 0
-    new_attempts = attempts + 1
+        agent = ReflectionAgent()
+        verdict = agent.evaluate_output(query, plan, completed, sql_q, sql_r, rag, api_r)
+        
+        attempts = state.get("reflection_attempts") or 0
+        new_attempts = attempts + 1
 
-    feedback = verdict.feedback if not verdict.approved else ""
+        # Track retries in metrics
+        if not verdict.approved:
+            AGENT_RETRIES.inc()
 
-    return {
-        "reflection_feedback": feedback,
-        "reflection_attempts": new_attempts,
-        "messages": [
-            ("assistant", f"[Reflection Review] Approved: {verdict.approved}. Attempts: {new_attempts}. Feedback: {verdict.feedback}")
-        ]
-    }
+        feedback = verdict.feedback if not verdict.approved else ""
+
+        return {
+            "reflection_feedback": feedback,
+            "reflection_attempts": new_attempts,
+            "messages": [
+                ("assistant", f"[Reflection Review] Approved: {verdict.approved}. Attempts: {new_attempts}. Feedback: {verdict.feedback}")
+            ]
+        }

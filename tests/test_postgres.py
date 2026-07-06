@@ -7,15 +7,13 @@ from sqlalchemy.orm import sessionmaker
 
 # Set paths
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-postgres_dir = os.path.join(root_dir, "postgres")
 sys.path.insert(0, root_dir)
-sys.path.insert(0, postgres_dir)
 
-from database import Base
-import models
-import schemas
-from repositories import DepartmentRepository, EmployeeRepository
-from service import seed_db_from_csv
+from postgres.database import Base
+from postgres import models
+from postgres import schemas
+from postgres.repositories import DepartmentRepository, EmployeeRepository
+from postgres.service import seed_db_from_csv
 
 
 class TestPostgreSQLIntegration(unittest.TestCase):

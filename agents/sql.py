@@ -13,6 +13,9 @@ from prompts.agent_prompts import SQL_SYSTEM_PROMPT
 from postgres.database import db_session
 
 
+from monitoring.telemetry import track_node_latency, record_llm_metrics
+
+
 class SQLAgent:
     """
     SQL Agent parses schemas, generates read-only SQL queries, and fetches relational data.
@@ -33,7 +36,12 @@ class SQLAgent:
 
     def generate_sql(self, query: str) -> SQLGeneration:
         chain = self.prompt | self.structured_llm
-        return chain.invoke({"query": query})
+        response = chain.invoke({"query": query})
+        record_llm_metrics("sql", response, settings.llm.default_chat_model)
+        return response
+
+
+from agents.security import validate_sql_syntax_and_whitelist
 
 
 def sql_node(state: AgentState) -> Dict[str, Any]:
@@ -41,33 +49,40 @@ def sql_node(state: AgentState) -> Dict[str, Any]:
     LangGraph node wrapper for the SQL Agent.
     Generates and executes SQL query using SQLTool.
     """
-    query = state.get("user_query") or ""
-    
-    agent = SQLAgent()
-    sql_data = agent.generate_sql(query)
-    generated_query = sql_data.query
+    with track_node_latency("sql"):
+        query = state.get("user_query") or ""
+        
+        agent = SQLAgent()
+        sql_data = agent.generate_sql(query)
+        generated_query = sql_data.query
 
-    result_str = ""
-    # Execute query using the SQLTool inside a DB session
-    try:
-        with db_session() as session:
-            tool = SQLTool(session)
-            cols, rows = tool.execute_query(generated_query)
-            
-            # Format results as a text table for context
-            result_lines = [", ".join(cols)]
-            for r in rows:
-                result_lines.append(", ".join(str(val) for val in r))
-            result_str = "\n".join(result_lines)
-    except Exception as e:
-        result_str = f"SQL Execution Error: {str(e)}"
+        result_str = ""
+        # 1. SQL Guardrail Validation
+        if not validate_sql_syntax_and_whitelist(generated_query):
+            result_str = "SQL Validation Error: Query was blocked. Only read-only SELECT commands on permitted tables are authorized."
+        else:
+            # Execute query using the SQLTool inside a DB session
+            try:
+                from monitoring.telemetry import record_tool_metric
+                record_tool_metric("sql_tool")
+                with db_session() as session:
+                    tool = SQLTool(session)
+                    cols, rows = tool.execute_query(generated_query)
+                    
+                    # Format results as a text table for context
+                    result_lines = [", ".join(cols)]
+                    for r in rows:
+                        result_lines.append(", ".join(str(val) for val in r))
+                    result_str = "\n".join(result_lines)
+            except Exception as e:
+                result_str = f"SQL Execution Error: {str(e)}"
 
-    # Track steps completion via state reducer delta
-    return {
-        "sql_query": generated_query,
-        "sql_result": result_str,
-        "completed_steps": ["sql"],
-        "messages": [
-            ("assistant", f"[SQL Action] Generated Query:\n```sql\n{generated_query}\n```\nExecution Results:\n```\n{result_str}\n```")
-        ]
-    }
+        # Track steps completion via state reducer delta
+        return {
+            "sql_query": generated_query,
+            "sql_result": result_str,
+            "completed_steps": ["sql"],
+            "messages": [
+                ("assistant", f"[SQL Action] Generated Query:\n```sql\n{generated_query}\n```\nExecution Results:\n```\n{result_str}\n```")
+            ]
+        }

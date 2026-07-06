@@ -10,6 +10,9 @@ from state.state import AgentState
 from prompts.agent_prompts import REPORT_SYSTEM_PROMPT
 
 
+from monitoring.telemetry import track_node_latency, record_llm_metrics
+
+
 class ReportAgent:
     """
     Report Agent consolidates all execution outputs (SQL results, RAG contexts, API replies)
@@ -38,6 +41,7 @@ class ReportAgent:
             "rag": rag,
             "api_r": api_r
         })
+        record_llm_metrics("report", response, settings.llm.default_chat_model)
         return response.content
 
 
@@ -46,18 +50,19 @@ def report_node(state: AgentState) -> Dict[str, Any]:
     LangGraph node wrapper for the Report Agent.
     Updates the final_report key in the state.
     """
-    query = state.get("user_query") or ""
-    sql_q = state.get("sql_query") or "None"
-    sql_r = state.get("sql_result") or "None"
-    rag = "\n".join(state.get("retrieved_context") or [])
-    api_r = state.get("api_result") or "None"
+    with track_node_latency("report"):
+        query = state.get("user_query") or ""
+        sql_q = state.get("sql_query") or "None"
+        sql_r = state.get("sql_result") or "None"
+        rag = "\n".join(state.get("retrieved_context") or [])
+        api_r = state.get("api_result") or "None"
 
-    agent = ReportAgent()
-    report = agent.compile_report(query, sql_q, sql_r, rag, api_r)
+        agent = ReportAgent()
+        report = agent.compile_report(query, sql_q, sql_r, rag, api_r)
 
-    return {
-        "final_report": report,
-        "messages": [
-            ("assistant", report)
-        ]
-    }
+        return {
+            "final_report": report,
+            "messages": [
+                ("assistant", report)
+            ]
+        }

@@ -22,11 +22,27 @@ from auth import create_access_token, get_current_user, RoleChecker
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger("gateway-api")
 
+# ----------------------------------------------------
+# OPENTELEMETRY INSTRUMENTATION SETUP
+# ----------------------------------------------------
+from opentelemetry import trace
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
+
+provider = TracerProvider()
+processor = BatchSpanProcessor(ConsoleSpanExporter())
+provider.add_span_processor(processor)
+trace.set_tracer_provider(provider)
+
 gateway = FastAPI(
     title="NovaTech Operations Platform - API Gateway",
     description="API Gateway hosting Chat client workflows, upload ingestion targets, and RBAC authentication.",
     version="1.0.0"
 )
+
+# Instrument the FastAPI app
+FastAPIInstrumentor.instrument_app(gateway)
 
 # CORS configuration
 gateway.add_middleware(
@@ -131,6 +147,7 @@ async def chat(payload: ChatRequest, current_user: Dict[str, Any] = Depends(get_
     initial_state = {
         "messages": [("human", payload.message)],
         "user_query": payload.message,
+        "user_role": current_user.get("role", "User"),
         "route": "",
         "plan": [],
         "completed_steps": [],
@@ -141,6 +158,7 @@ async def chat(payload: ChatRequest, current_user: Dict[str, Any] = Depends(get_
         "api_result": "",
         "reflection_feedback": "",
         "reflection_attempts": 0,
+        "conversation_summary": "",
         "safety_verdict": "",
         "final_report": ""
     }

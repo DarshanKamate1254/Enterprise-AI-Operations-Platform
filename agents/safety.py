@@ -11,6 +11,9 @@ from schemas.agent_schemas import SafetyVerdict
 from prompts.agent_prompts import SAFETY_SYSTEM_PROMPT
 
 
+from monitoring.telemetry import track_node_latency, record_llm_metrics
+
+
 class SafetyAgent:
     """
     Safety Agent monitors model prompts, SQL results, and API outputs to prevent PII leaks
@@ -32,32 +35,48 @@ class SafetyAgent:
 
     def scan_safety(self, query: str, sql_r: str, rag: str, api_r: str) -> SafetyVerdict:
         chain = self.prompt | self.structured_llm
-        return chain.invoke({
+        response = chain.invoke({
             "query": query,
             "sql_r": sql_r,
             "rag": rag,
             "api_r": api_r
         })
+        record_llm_metrics("safety", response, settings.llm.default_chat_model)
+        return response
+
+
+from agents.security import detect_pii_and_redact
 
 
 def safety_node(state: AgentState) -> Dict[str, Any]:
     """
     LangGraph node wrapper for the Safety Agent.
-    Updates the safety_verdict parameter in the state.
+    Updates the safety_verdict parameter in the state and redacts PII.
     """
-    query = state.get("user_query") or ""
-    sql_r = state.get("sql_result") or "None"
-    rag = "\n".join(state.get("retrieved_context") or [])
-    api_r = state.get("api_result") or "None"
+    with track_node_latency("safety"):
+        query = state.get("user_query") or ""
+        sql_r = state.get("sql_result") or "None"
+        rag_chunks = state.get("retrieved_context") or []
+        api_r = state.get("api_result") or "None"
 
-    agent = SafetyAgent()
-    verdict = agent.scan_safety(query, sql_r, rag, api_r)
-    
-    verdict_str = "safe" if verdict.is_safe else "unsafe"
+        # Redact PII from intermediate context datasets
+        redacted_sql_r = detect_pii_and_redact(sql_r)
+        redacted_rag_chunks = [detect_pii_and_redact(chunk) for chunk in rag_chunks]
+        redacted_api_r = detect_pii_and_redact(api_r)
+        
+        rag_str = "\n".join(redacted_rag_chunks)
 
-    return {
-        "safety_verdict": verdict_str,
-        "messages": [
-            ("assistant", f"[Safety Scan] Verdict: '{verdict_str}'. Justification: {verdict.reason}")
-        ]
-    }
+        agent = SafetyAgent()
+        verdict = agent.scan_safety(query, redacted_sql_r, rag_str, redacted_api_r)
+        
+        verdict_str = "safe" if verdict.is_safe else "unsafe"
+
+        return {
+            "safety_verdict": verdict_str,
+            "sql_result": redacted_sql_r,
+            "retrieved_context": redacted_rag_chunks,
+            "api_result": redacted_api_r,
+            "messages": [
+                ("assistant", f"[Safety Scan] Verdict: '{verdict_str}'. Justification: {verdict.reason}")
+            ]
+        }

@@ -141,6 +141,7 @@ class TestLangGraphOrchestration(unittest.TestCase):
         mock_planner.with_structured_output.return_value = lambda x: PlanSteps(
             steps=["sql"], justification="Run database lookup"
         )
+        mock_planner.invoke.return_value = MagicMock(content="Mocked summary of past logs.")
 
         # SQL Agent -> Query
         mock_sql = MagicMock()

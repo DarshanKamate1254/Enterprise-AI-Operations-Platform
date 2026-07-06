@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 from sqlalchemy import String, Text, Numeric, Date, Boolean, ForeignKey, CheckConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from database import Base
+from .database import Base
 
 # 1. Department ORM Model
 class Department(Base):
