@@ -4,7 +4,7 @@ import random
 import datetime
 
 # Setup directories
-base_dir = r"d:\projects\ai_eng\Enterprise-AI-Operations-Platform\data"
+base_dir = r"d:\projects\ai_eng\data"
 doc_dirs = {
     "hr": os.path.join(base_dir, "documents", "hr"),
     "finance": os.path.join(base_dir, "documents", "finance"),
