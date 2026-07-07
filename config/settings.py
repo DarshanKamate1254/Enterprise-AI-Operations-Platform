@@ -1,6 +1,6 @@
 import os
 from typing import Optional
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Resolve absolute path to project root .env file
@@ -42,15 +42,24 @@ class RedisSettings(BaseSettings):
         return f"redis://{pwd}{self.host}:{self.port}/{self.db}"
 
 
-class PineconeSettings(BaseSettings):
+class QdrantSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=env_file_path,
         env_file_encoding="utf-8",
         extra="ignore"
     )
-    api_key: Optional[str] = Field(default=None, alias="PINECONE_API_KEY")
-    environment: Optional[str] = Field(default=None, alias="PINECONE_ENVIRONMENT")
-    index_name: str = Field(default="nova-policies", alias="PINECONE_INDEX_NAME")
+    host: Optional[str] = Field(default=None, alias="QDRANT_HOST")
+    port: Optional[int] = Field(default=None, alias="QDRANT_PORT")
+    path: Optional[str] = Field(default=None, alias="QDRANT_PATH")
+    api_key: Optional[str] = Field(default=None, alias="QDRANT_API_KEY")
+    collection_name: str = Field(default="nova-policies", alias="QDRANT_COLLECTION_NAME")
+
+    @field_validator("path", mode="after")
+    @classmethod
+    def resolve_absolute_path(cls, v: Optional[str]) -> Optional[str]:
+        if v and not os.path.isabs(v):
+            return os.path.abspath(os.path.join(base_dir, v))
+        return v
 
 
 class LLMModelSettings(BaseSettings):
@@ -132,7 +141,7 @@ class Settings(BaseSettings):
     app: AppSettings = AppSettings()
     db: DatabaseSettings = DatabaseSettings()
     redis: RedisSettings = RedisSettings()
-    pinecone: PineconeSettings = PineconeSettings()
+    qdrant: QdrantSettings = QdrantSettings()
     llm: LLMModelSettings = LLMModelSettings()
     observability: ObservabilitySettings = ObservabilitySettings()
     mcp: MCPSettings = MCPSettings()

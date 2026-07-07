@@ -53,9 +53,30 @@ class RetrieverTool:
             else:
                 raise RuntimeError(f"RAG microservice returned status {response.status_code}: {response.text}")
         except Exception as e:
-            # Fallback mock/log on connection errors
-            print(f"RAG service connection error: {e}. Returning empty matches list.")
-            return []
+            print(f"RAG service connection error: {e}. Falling back to local direct retrieval...")
+            try:
+                # Ensure rag-service is in sys.path
+                root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+                rag_dir = os.path.join(root_dir, "rag-service")
+                if root_dir not in sys.path:
+                    sys.path.insert(0, root_dir)
+                if rag_dir not in sys.path:
+                    sys.path.insert(0, rag_dir)
+                
+                from retriever import HybridRetriever
+                local = HybridRetriever()
+                try:
+                    return local.retrieve(
+                        query=query,
+                        category=category,
+                        top_k=top_k,
+                        rerank_top_n=rerank_top_n
+                    )
+                finally:
+                    local.close()
+            except Exception as local_err:
+                print(f"Local direct RAG fallback execution failed: {local_err}", file=sys.stderr)
+                return []
             
     def close(self):
         if self.http_client:

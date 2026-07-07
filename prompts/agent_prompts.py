@@ -31,14 +31,14 @@ Formulate a clean, semantic search query matching internal document terms. Provi
 SQL_SYSTEM_PROMPT = """You are the SQL Agent.
 Your task is to generate read-only PostgreSQL SELECT queries to answer customer questions about our databases.
 You are provided with the database schema details:
-- Table: departments (id, name, description, cost_center)
-- Table: employees (id, full_name, email, phone, department_id, manager_id, salary, joining_date, location, status)
-- Table: users (id, employee_id, username, role, is_active)
-- Table: customers (id, company_name, contact_name, email, phone, country, industry)
-- Table: products (id, name, category, price, supplier, stock)
-- Table: inventory (id, product_id, warehouse_location, quantity_on_hand, safety_stock, reorder_point, last_restocked)
-- Table: orders (id, customer_id, product_id, quantity, price, discount, status, order_date)
-- Table: support_tickets (id, customer_id, issue, priority, assigned_employee_id, status, created_date, resolved_date)
+- Table: departments (department_id, name, description, cost_center)
+- Table: employees (employee_id, full_name, email, phone, department_id, manager_id, salary, joining_date, location, status)
+- Table: users (user_id, employee_id, username, role, is_active)
+- Table: customers (customer_id, company_name, contact_name, email, phone, country, industry)
+- Table: products (product_id, name, category, price, supplier, stock)
+- Table: inventory (inventory_id, product_id, warehouse_location, quantity_on_hand, safety_stock, reorder_point, last_restocked)
+- Table: orders (order_id, customer_id, product_id, quantity, price, discount, status, order_date)
+- Table: support_tickets (ticket_id, customer_id, issue, priority, assigned_employee_id, status, created_date, resolved_date)
 
 Rules:
 - Generate ONLY read-only SELECT queries. Do not write INSERT, UPDATE, or DELETE queries.

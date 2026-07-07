@@ -198,4 +198,4 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more details.
 
 **Darshan Kamate**  
 *Principal AI Engineer & Software Architect*  
-*Email: darshan.kamate@novatech-solutions.com*
+*Email: darshan.kamate@Darshan_AI_Engineer_Ops-solutions.com*

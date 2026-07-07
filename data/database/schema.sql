@@ -1,5 +1,5 @@
 -- PostgreSQL Schema for Enterprise AI Operations Platform
--- NovaTech Solutions Pvt. Ltd.
+-- Darshan_AI_Engineer_Ops Pvt. Ltd.
 
 DROP TABLE IF EXISTS support_tickets CASCADE;
 DROP TABLE IF EXISTS orders CASCADE;

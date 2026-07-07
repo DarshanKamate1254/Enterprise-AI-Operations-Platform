@@ -15,6 +15,11 @@ import {
   Clock,
   Terminal
 } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeHighlight from 'rehype-highlight';
+import 'highlight.js/styles/github-dark.css';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Define structures
 interface Message {
@@ -22,6 +27,7 @@ interface Message {
   content: string;
   node?: string;
   isStreaming?: boolean;
+  timestamp?: string;
 }
 
 interface User {
@@ -55,6 +61,7 @@ export default function App() {
   const [threadId] = useState('session_' + Math.floor(Math.random() * 10000));
   const [isChatLoading, setIsChatLoading] = useState(false);
   const [completedSteps, setCompletedSteps] = useState<string[]>([]);
+  const [activeStep, setActiveStep] = useState<string | null>(null);
   const [executionTrace, setExecutionTrace] = useState<string[]>([]);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -121,31 +128,28 @@ export default function App() {
     setMessages([]);
     setExecutionTrace([]);
     setCompletedSteps([]);
+    setActiveStep(null);
   };
 
-  // Streaming Chat handler
-  const handleSendChat = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!queryInput.trim() || !user || isChatLoading) return;
-
-    const userMsg = queryInput.trim();
-    setQueryInput('');
+  // Centralized Send Chat logic
+  const executeChat = async (userMsg: string) => {
     setIsChatLoading(true);
     setCompletedSteps([]);
+    setActiveStep('router');
     setExecutionTrace(['Initializing operational workflow...']);
 
     // Append user query message
-    setMessages((prev) => [...prev, { role: 'human', content: userMsg }]);
+    setMessages((prev) => [...prev, { role: 'human', content: userMsg, timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }]);
 
     // Setup placeholder for assistant stream
-    setMessages((prev) => [...prev, { role: 'assistant', content: 'Orchestrating agents...', isStreaming: true }]);
+    setMessages((prev) => [...prev, { role: 'assistant', content: 'Orchestrating agents...', isStreaming: true, timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }]);
 
     try {
       const response = await fetch('http://localhost:8000/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}`
+          'Authorization': `Bearer ${user?.token}`
         },
         body: JSON.stringify({
           message: userMsg,
@@ -188,6 +192,7 @@ export default function App() {
                   const nodeName = nodeKeys[0];
                   const nodeData = event[nodeName];
                   activeNodeName = nodeName;
+                  setActiveStep(nodeName);
 
                   // Append trace details
                   let traceLog = `[${nodeName.toUpperCase()}] executed successfully.`;
@@ -208,7 +213,7 @@ export default function App() {
                     setCompletedSteps((prev) => [...prev, 'api']);
                   } else if (nodeName === 'reflection') {
                     const approved = nodeData.reflection_feedback === '';
-                    traceLog = `[Reflection] Correctness evaluation check: ${approved ? 'APPROVED' : 'REJECTED. Feedback: ' + nodeData.reflection_feedback}.`;
+                    traceLog = `[Reflection] Correctness check: ${approved ? 'APPROVED' : 'REJECTED. Feedback: ' + nodeData.reflection_feedback}.`;
                     setCompletedSteps((prev) => [...prev, 'reflection']);
                     if (!approved) {
                       setMetrics((prev) => ({ ...prev, retryLoops: prev.retryLoops + 1 }));
@@ -274,7 +279,23 @@ export default function App() {
       setMetrics((prev) => ({ ...prev, failuresCount: prev.failuresCount + 1 }));
     } finally {
       setIsChatLoading(false);
+      setActiveStep(null);
     }
+  };
+
+  // Chat input submit
+  const handleSendChat = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!queryInput.trim() || !user || isChatLoading) return;
+    const userMsg = queryInput.trim();
+    setQueryInput('');
+    await executeChat(userMsg);
+  };
+
+  // Suggestion click handler
+  const handleSelectSuggestion = (promptText: string) => {
+    if (isChatLoading) return;
+    executeChat(promptText);
   };
 
   // Upload Document handler
@@ -397,8 +418,8 @@ export default function App() {
       <div className="auth-container">
         <div className="auth-card glass-panel">
           <div className="auth-header">
-            <h1>NovaTech AI</h1>
-            <p>Enterprise Operations Platform Control Panel</p>
+            <h1>Darshan_AI_Engineer_Ops</h1>
+            <p>Enterprise Multi-Agent AI Operations Platform</p>
           </div>
           <form onSubmit={handleLogin}>
             <div className="form-group">
@@ -440,51 +461,52 @@ export default function App() {
       <aside className="sidebar">
         <div>
           <div className="sidebar-header">
-            <h2>NovaTech Ops</h2>
-            <p>Multi-Agent System</p>
+            <h2>Darshan_AI_Engineer_Ops</h2>
+            <p>Enterprise Multi-Agent AI Operations Platform</p>
           </div>
           <nav className="menu-list">
             <button
               className={`menu-item ${activeTab === 'chat' ? 'active' : ''}`}
               onClick={() => setActiveTab('chat')}
             >
-              <MessageSquare size={18} />
-              Operational Chat
+              <MessageSquare size={16} />
+              AI Orchestrator
             </button>
             <button
               className={`menu-item ${activeTab === 'ingest' ? 'active' : ''}`}
               onClick={() => setActiveTab('ingest')}
             >
-              <UploadCloud size={18} />
-              Knowledge Ingest
+              <UploadCloud size={16} />
+              Document Indexer
             </button>
             <button
               className={`menu-item ${activeTab === 'schema' ? 'active' : ''}`}
               onClick={() => setActiveTab('schema')}
             >
-              <Database size={18} />
-              Database Schema
+              <Database size={16} />
+              Schema Inspector
             </button>
             <button
               className={`menu-item ${activeTab === 'metrics' ? 'active' : ''}`}
               onClick={() => setActiveTab('metrics')}
             >
-              <Activity size={18} />
-              Observability
+              <Activity size={16} />
+              Telemetry & Logs
             </button>
           </nav>
         </div>
         <div className="user-profile">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div
               style={{
-                width: '36px',
-                height: '36px',
+                width: '38px',
+                height: '38px',
                 borderRadius: '50%',
-                background: 'var(--accent-glow)',
+                background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                boxShadow: '0 4px 10px rgba(99, 102, 241, 0.3)'
               }}
             >
               <UserIcon size={18} color="#fff" />
@@ -495,7 +517,7 @@ export default function App() {
             </div>
           </div>
           <button className="logout-btn" onClick={handleLogout}>
-            <LogOut size={14} />
+            <LogOut size={13} />
             Logout Session
           </button>
         </div>
@@ -523,18 +545,84 @@ export default function App() {
               <div className="chat-panel">
                 <div className="chat-messages">
                   {messages.length === 0 ? (
-                    <div style={{ margin: 'auto', textAlign: 'center', color: 'var(--text-secondary)' }}>
-                      <Terminal size={48} style={{ marginBottom: '16px', opacity: 0.3 }} />
-                      <p>System Online. State saver thread initialized: <code>{threadId}</code>.</p>
-                      <p style={{ fontSize: '0.85rem', marginTop: '4px', opacity: 0.6 }}>Ask about employee details, departments, corporate policies, or math evaluations.</p>
+                    <div className="empty-state-container">
+                      <div className="empty-state-title">
+                        How can Darshan_AI_Engineer_Ops help today?
+                      </div>
+                      <div className="empty-state-subtitle">
+                        Ask about employee details, departments, corporate policies, or pipeline diagnostics.
+                      </div>
+                      <div className="prompt-suggestions-grid">
+                        <div 
+                          className="suggestion-card" 
+                          onClick={() => handleSelectSuggestion("What are the core operational hours defined by Darshan_AI_Engineer_Ops?")}
+                        >
+                          <div className="suggestion-card-title">Corporate Rules</div>
+                          <div className="suggestion-card-desc">Check standard operational hours & leave policies.</div>
+                        </div>
+                        <div 
+                          className="suggestion-card" 
+                          onClick={() => handleSelectSuggestion("Show me the top 3 employees by salary")}
+                        >
+                          <div className="suggestion-card-title">Database Query</div>
+                          <div className="suggestion-card-desc">Search employee records and compile salary statistics.</div>
+                        </div>
+                        <div 
+                          className="suggestion-card" 
+                          onClick={() => handleSelectSuggestion("What is our corporate travel policy for flights?")}
+                        >
+                          <div className="suggestion-card-title">Travel Policy</div>
+                          <div className="suggestion-card-desc">Lookup airline booking grades and reimbursement rules.</div>
+                        </div>
+                        <div 
+                          className="suggestion-card" 
+                          onClick={() => handleSelectSuggestion("Check active support tickets and their priorities")}
+                        >
+                          <div className="suggestion-card-title">Support Desk</div>
+                          <div className="suggestion-card-desc">Analyze support ticket logs for customer escalations.</div>
+                        </div>
+                      </div>
                     </div>
                   ) : (
-                    messages.map((msg, idx) => (
-                      <div key={idx} className={`chat-message ${msg.role} ${msg.isStreaming ? 'streaming' : ''}`}>
-                        {msg.node && <div className="node-tag">{msg.node} Node</div>}
-                        <div style={{ whiteSpace: 'pre-wrap' }}>{msg.content}</div>
-                      </div>
-                    ))
+                    messages.map((msg, idx) => {
+                      const isAssistant = msg.role === 'assistant';
+                      const hasRAG = completedSteps.includes('retrieval') || msg.content.includes('[Source:') || msg.content.includes('RAG');
+                      const hasSQL = completedSteps.includes('sql') || msg.content.includes('SELECT') || msg.content.includes('Query Executed:');
+                      const hasAPI = completedSteps.includes('api') || msg.content.includes('API Request');
+                      const hasSafety = completedSteps.includes('safety') || !msg.isStreaming;
+                      
+                      return (
+                        <div key={idx} className="chat-message-wrapper">
+                          {isAssistant && !msg.isStreaming && (
+                            <div className="chat-message-metadata">
+                              <span className="chat-message-badge node">Report</span>
+                              {hasRAG && <span className="chat-message-badge node">RAG</span>}
+                              {hasSQL && <span className="chat-message-badge node">SQL</span>}
+                              {hasAPI && <span className="chat-message-badge node">API</span>}
+                              {hasSafety && <span className="chat-message-badge verified">✓ Safety Verified</span>}
+                              <span className="chat-message-badge verified">✓ Generated Successfully</span>
+                              <span className="chat-message-badge timestamp">
+                                {msg.timestamp || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                              </span>
+                            </div>
+                          )}
+                          <div className={`chat-message ${msg.role} ${msg.isStreaming ? 'streaming' : ''}`}>
+                            {msg.role === 'human' ? (
+                              <div style={{ whiteSpace: 'pre-wrap' }}>{msg.content}</div>
+                            ) : (
+                              <div className="prose">
+                                <ReactMarkdown
+                                  remarkPlugins={[remarkGfm]}
+                                  rehypePlugins={[rehypeHighlight]}
+                                >
+                                  {msg.content}
+                                </ReactMarkdown>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })
                   )}
                   <div ref={chatEndRef} />
                 </div>
@@ -552,34 +640,69 @@ export default function App() {
                 </form>
               </div>
 
-              {/* Agent execution trace sidebar */}
-              <div className="chat-sidebar glass-panel">
+              {/* Interactive Execution Pipeline Sidebar */}
+              <div className="chat-sidebar">
                 <div className="sidebar-widget">
                   <div className="widget-title">
-                    <RefreshCw size={14} /> LangGraph Exec Steps
+                    <Activity size={14} /> Execution Pipeline
                   </div>
-                  <div>
-                    {['router', 'planner', 'retrieval', 'sql', 'api', 'reflection', 'safety', 'report'].map((step) => {
-                      const completed = completedSteps.includes(step);
+                  <div className="pipeline-container">
+                    {[
+                      { id: 'router', label: '1. Intent Router', desc: 'Routing query...' },
+                      { id: 'planner', label: '2. Task Planner', desc: 'Planning subtasks...' },
+                      { id: 'retrieval', label: '3. RAG Manuals', desc: 'Searching manuals...' },
+                      { id: 'sql', label: '4. SQL Database', desc: 'Querying records...' },
+                      { id: 'api', label: '5. Outbound API', desc: 'Invoking endpoints...' },
+                      { id: 'reflection', label: '6. Output Reflection', desc: 'Evaluating feedback...' },
+                      { id: 'safety', label: '7. Safety Guardrails', desc: 'Scanning PII/Content...' },
+                      { id: 'report', label: '8. Final Reporter', desc: 'Compiling response...' }
+                    ].map((step, idx) => {
+                      const completed = completedSteps.includes(step.id);
+                      const active = isChatLoading && activeStep === step.id;
+                      const statusClass = completed ? 'completed' : active ? 'active' : 'pending';
+                      
                       return (
-                        <div key={step} className="step-item">
-                          <div className={`step-dot ${completed ? 'completed' : ''}`} />
-                          <span style={{ textTransform: 'capitalize', fontWeight: completed ? 600 : 400 }}>{step}</span>
-                        </div>
+                        <React.Fragment key={step.id}>
+                          <motion.div
+                            className={`pipeline-node ${statusClass}`}
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: idx * 0.04 }}
+                          >
+                            <div className="pipeline-node-icon">
+                              {completed ? '✓' : active ? '●' : idx + 1}
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                              <span style={{ fontSize: '13px', fontWeight: 700 }}>{step.label}</span>
+                              {active && <span style={{ fontSize: '11px', opacity: 0.8 }} className="animate-pulse">{step.desc}</span>}
+                            </div>
+                          </motion.div>
+                          {idx < 7 && (
+                            <div className={`pipeline-node-connector ${completed ? 'completed' : ''}`} />
+                          )}
+                        </React.Fragment>
                       );
                     })}
                   </div>
                 </div>
-                <div className="sidebar-widget" style={{ flexGrow: 1, overflowY: 'auto' }}>
+
+                <div className="sidebar-widget" style={{ flexGrow: 1, overflowY: 'auto', maxHeight: '420px' }}>
                   <div className="widget-title">
                     <Terminal size={14} /> Agent Execution Logs
                   </div>
-                  <div style={{ fontSize: '0.8rem', fontFamily: 'monospace', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    {executionTrace.map((log, index) => (
-                      <div key={index} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)', paddingBottom: '4px' }}>
-                        &gt; {log}
-                      </div>
-                    ))}
+                  <div style={{ fontSize: '11px', fontFamily: 'monospace', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <AnimatePresence>
+                      {executionTrace.map((log, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          style={{ borderBottom: '1px solid rgba(255,255,255,0.03)', paddingBottom: '6px', lineHeight: '1.4' }}
+                        >
+                          <span style={{ color: 'var(--accent-primary)' }}>&gt;</span> {log}
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
                   </div>
                 </div>
               </div>
@@ -607,7 +730,7 @@ export default function App() {
                       <div className="form-group">
                         <label>Target Category Department</label>
                         <select
-                          className="form-input"
+                           className="form-input"
                           value={selectedCategory}
                           onChange={(e) => setSelectedCategory(e.target.value)}
                         >

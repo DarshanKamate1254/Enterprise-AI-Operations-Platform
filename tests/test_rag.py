@@ -46,35 +46,36 @@ class TestRAGPipeline(unittest.TestCase):
             self.assertEqual(node.metadata["file_name"], "Leave_Policy.md")
             self.assertTrue(len(node.text) > 0)
 
-    @patch('retriever.Pinecone')
+    @patch('retriever.QdrantClient')
     @patch('retriever.OpenAIEmbeddings')
-    def test_retriever_formatting(self, mock_embeddings, mock_pinecone_class):
+    def test_retriever_formatting(self, mock_embeddings, mock_qdrant_class):
         """
         Verify the HybridRetriever correctly formats retrieved node scores and metadata.
         """
-        # Setup mock Pinecone client and index instances
-        mock_pinecone = MagicMock()
-        mock_pinecone_class.return_value = mock_pinecone
+        # Setup mock Qdrant client instance
+        mock_qdrant = MagicMock()
+        mock_qdrant_class.return_value = mock_qdrant
         
-        mock_index = MagicMock()
-        mock_pinecone.Index.return_value = mock_index
+        # Setup mock embeddings to return list of floats for cosine similarity calculation
+        mock_embed = MagicMock()
+        mock_embeddings.return_value = mock_embed
+        mock_embed.embed_query.return_value = [0.1] * 1536
         
-        # Mock index query response
-        mock_index.query.return_value = {
-            "matches": [
-                {
-                    "id": "point-1",
-                    "score": 0.85,
-                    "values": [0.1] * 1536,
-                    "metadata": {
-                        "text": "Leave policy content details.",
-                        "category": "hr",
-                        "file_name": "Leave_Policy.md",
-                        "chunk_index": 0
-                    }
-                }
-            ]
+        # Mock query_points response
+        mock_point = MagicMock()
+        mock_point.id = "point-1"
+        mock_point.score = 0.85
+        mock_point.vector = {"dense": [0.1] * 1536}
+        mock_point.payload = {
+            "text": "Leave policy content details.",
+            "category": "hr",
+            "file_name": "Leave_Policy.md",
+            "chunk_index": 0
         }
+        
+        mock_response = MagicMock()
+        mock_response.points = [mock_point]
+        mock_qdrant.query_points.return_value = mock_response
         
         # Create retriever
         retriever = HybridRetriever()

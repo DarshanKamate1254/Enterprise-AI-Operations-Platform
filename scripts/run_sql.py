@@ -24,7 +24,7 @@ def test_postgres_connection() -> bool:
 
 def run_query(query: str):
     print("====================================================")
-    print("NovaTech SQL Execution & Test Utility")
+    print("Darshan_AI_Engineer_Ops SQL Execution & Test Utility")
     print("====================================================")
     print(f"SQL Query to execute: \n{query}\n")
 

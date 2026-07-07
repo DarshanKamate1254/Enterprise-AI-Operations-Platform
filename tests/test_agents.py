@@ -70,8 +70,9 @@ class TestAgentNodes(unittest.TestCase):
         self.assertEqual(updates["plan"], ["query db", "generate report"])
 
     # 3. RETRIEVAL NODE TEST
+    @patch('httpx.post', side_effect=Exception("Connection Refused"))
     @patch('agents.retrieval.RetrieverTool')
-    def test_retrieval_node(self, mock_retriever_tool):
+    def test_retrieval_node(self, mock_retriever_tool, mock_httpx_post):
         """Verify the Retrieval node updates context lists."""
         mock_tool_inst = MagicMock()
         mock_retriever_tool.return_value = mock_tool_inst
@@ -82,6 +83,69 @@ class TestAgentNodes(unittest.TestCase):
         updates = retrieval_node(self.state)
         self.assertEqual(len(updates["retrieved_context"]), 1)
         self.assertIn("Leave_Policy.md", updates["retrieved_context"][0])
+
+    @patch('httpx.post', side_effect=Exception("Connection Refused"))
+    @patch('agents.retrieval.RetrieverTool')
+    def test_retrieval_node_restricted_user(self, mock_retriever_tool, mock_httpx_post):
+        """Verify that a standard user's search is restricted to their user_department."""
+        mock_tool_inst = MagicMock()
+        mock_retriever_tool.return_value = mock_tool_inst
+        mock_tool_inst.search_policies.return_value = []
+        
+        # Setup restricted state
+        test_state = self.state.copy()
+        test_state["user_role"] = "User"
+        test_state["user_department"] = "hr"
+        test_state["route"] = "sales"  # Query intent might claim sales but department is HR
+        
+        retrieval_node(test_state)
+        
+        # Verify search_policies was called with category='hr'
+        mock_tool_inst.search_policies.assert_called_once()
+        called_kwargs = mock_tool_inst.search_policies.call_args[1]
+        self.assertEqual(called_kwargs.get("category"), "hr")
+
+    @patch('httpx.post', side_effect=Exception("Connection Refused"))
+    @patch('agents.retrieval.RetrieverTool')
+    def test_retrieval_node_admin_unrestricted(self, mock_retriever_tool, mock_httpx_post):
+        """Verify that an Admin user's search is not restricted to their user_department."""
+        mock_tool_inst = MagicMock()
+        mock_retriever_tool.return_value = mock_tool_inst
+        mock_tool_inst.search_policies.return_value = []
+        
+        # Setup unrestricted Admin state
+        test_state = self.state.copy()
+        test_state["user_role"] = "Admin"
+        test_state["user_department"] = "hr"
+        test_state["route"] = "sales"
+        
+        retrieval_node(test_state)
+        
+        # Verify search_policies was called with category='sales' (from routing logic)
+        mock_tool_inst.search_policies.assert_called_once()
+        called_kwargs = mock_tool_inst.search_policies.call_args[1]
+        self.assertEqual(called_kwargs.get("category"), "sales")
+
+    @patch('httpx.post', side_effect=Exception("Connection Refused"))
+    @patch('agents.retrieval.RetrieverTool')
+    def test_retrieval_node_manager_unrestricted(self, mock_retriever_tool, mock_httpx_post):
+        """Verify that a Manager user's search is not restricted to their user_department."""
+        mock_tool_inst = MagicMock()
+        mock_retriever_tool.return_value = mock_tool_inst
+        mock_tool_inst.search_policies.return_value = []
+        
+        # Setup unrestricted Manager state
+        test_state = self.state.copy()
+        test_state["user_role"] = "Manager"
+        test_state["user_department"] = "hr"
+        test_state["route"] = "sales"
+        
+        retrieval_node(test_state)
+        
+        # Verify search_policies was called with category='sales' (from routing logic)
+        mock_tool_inst.search_policies.assert_called_once()
+        called_kwargs = mock_tool_inst.search_policies.call_args[1]
+        self.assertEqual(called_kwargs.get("category"), "sales")
 
     # 4. SQL NODE TEST
     @patch('agents.sql.db_session')

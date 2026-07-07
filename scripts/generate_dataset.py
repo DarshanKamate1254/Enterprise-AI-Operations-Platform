@@ -29,22 +29,22 @@ docs_metadata = {
     "hr": {
         "Employee_Handbook.md": {
             "title": "Employee Handbook",
-            "purpose": "To serve as a comprehensive reference guide outlining the core values, employment conditions, workplace guidelines, and standard operating expectations at NovaTech Solutions Pvt. Ltd.",
-            "scope": "This handbook applies to all regular full-time, part-time, temporary, and contract employees of NovaTech Solutions Pvt. Ltd., across all locations, subsidiaries, and corporate offices globally.",
+            "purpose": "To serve as a comprehensive reference guide outlining the core values, employment conditions, workplace guidelines, and standard operating expectations at Darshan_AI_Engineer_Ops Pvt. Ltd.",
+            "scope": "This handbook applies to all regular full-time, part-time, temporary, and contract employees of Darshan_AI_Engineer_Ops Pvt. Ltd., across all locations, subsidiaries, and corporate offices globally.",
             "responsibilities": "The Human Resources Department is responsible for maintaining and updating this handbook. Executive leadership is responsible for reinforcing these policies, and all employees are responsible for reading, understanding, and adhering to the guidelines outlined herein.",
-            "policy": "NovaTech Solutions is committed to providing a professional, inclusive, and high-performing workspace. We operate under a strict code of equal opportunity, zero tolerance for harassment, and dedication to personal development. We expect all team members to exhibit professionalism, integrity, and client-centric behavior in all operations.",
+            "policy": "Darshan_AI_Engineer_Ops is committed to providing a professional, inclusive, and high-performing workspace. We operate under a strict code of equal opportunity, zero tolerance for harassment, and dedication to personal development. We expect all team members to exhibit professionalism, integrity, and client-centric behavior in all operations.",
             "procedures": "1. onboarding: All new hires must complete background verification and sign this handbook's acknowledgment within 3 business days.\n2. working hours: Standard business hours are 9:00 AM to 6:00 PM, Monday through Friday, with flexible core hours from 10:00 AM to 4:00 PM.\n3. performance reviews: Done semi-annually in June and December. Review templates must be completed in the HR portal.\n4. reporting grievances: Any violation of workplace policy must be reported immediately to the HR generalist via the anonymous hotline or HR portal.",
             "examples": "If an employee experiences a conflict with a colleague, they should first attempt to resolve it professionally. If unresolved, they must document the incident and schedule a resolution meeting with HR.\nFor flex-time, if an employee needs to start at 8:00 AM, they should log this preference in the HR MS and ensure core-hour availability is maintained.",
             "notes": "This handbook is subject to local employment laws and statutory regulations in India, the USA, and Singapore. In the event of a conflict between this document and local labor laws, local laws will take precedence.",
-            "faq": "Q: Can I work fully remote?\nA: Remote work eligibility is determined by the department head and HR. NovaTech operates on a hybrid model (3 days in-office, 2 days remote).\n\nQ: How do I request a duplicate ID card?\nA: Submit an IT service ticket under the 'Facilities' category.",
+            "faq": "Q: Can I work fully remote?\nA: Remote work eligibility is determined by the department head and HR. Darshan_AI_Engineer_Ops operates on a hybrid model (3 days in-office, 2 days remote).\n\nQ: How do I request a duplicate ID card?\nA: Submit an IT service ticket under the 'Facilities' category.",
             "revision_history": "| Version | Date | Author | Description of Changes |\n| --- | --- | --- | --- |\n| 1.0 | 2026-01-15 | Ananya Sharma (HR Director) | Initial Release for FY 2026 |\n| 1.1 | 2026-06-01 | Ananya Sharma (HR Director) | Updated Hybrid Work Policy guidelines |"
         },
         "Leave_Policy.md": {
             "title": "Leave Policy",
-            "purpose": "To define the types of leaves available to NovaTech Solutions employees, eligibility criteria, accrual methods, and the application and approval processes.",
-            "scope": "Applies to all regular full-time and part-time employees on the NovaTech payroll globally.",
+            "purpose": "To define the types of leaves available to Darshan_AI_Engineer_Ops employees, eligibility criteria, accrual methods, and the application and approval processes.",
+            "scope": "Applies to all regular full-time and part-time employees on the Darshan_AI_Engineer_Ops payroll globally.",
             "responsibilities": "Employees must submit leave requests in advance. Managers are responsible for reviewing and approving leaves in a timely manner while ensuring operational continuity. HR tracks balances and handles compliance.",
-            "policy": "NovaTech Solutions offers generous paid time off to promote work-life balance, recovery, and personal well-being. Annual leave allocations include Casual Leave (CL), Sick Leave (SL), Earned Leave (EL), Maternity Leave, Paternity Leave, and Bereavement Leave. Unused Earned Leaves up to 30 days can be carried forward to the next calendar year.",
+            "policy": "Darshan_AI_Engineer_Ops offers generous paid time off to promote work-life balance, recovery, and personal well-being. Annual leave allocations include Casual Leave (CL), Sick Leave (SL), Earned Leave (EL), Maternity Leave, Paternity Leave, and Bereavement Leave. Unused Earned Leaves up to 30 days can be carried forward to the next calendar year.",
             "procedures": "1. application: Submit leave requests via the HR Portal at least 5 business days in advance for planned leaves (EL).\n2. emergency leave: For unplanned leaves (SL/CL), notify the immediate manager via email/Slack before 9:30 AM on the day of absence.\n3. documentation: Medical certificates are mandatory for sick leaves exceeding 3 consecutive business days.\n4. approval workflow: Requests go to the immediate manager. If approved, the HR portal updates leave balances automatically.",
             "examples": "An employee planning a 10-day vacation must submit the request in the HR Portal at least 2 weeks in advance. The manager reviews team calendar availability and approves, allowing the employee to plan without causing workflow bottleneck.",
             "notes": "Leaves cannot be clubbed in a manner that disrupts critical deliverable milestones. Maternity leave provides 26 weeks of paid leave, and Paternity leave provides 2 weeks of paid leave, in accordance with statutory guidelines.",
@@ -54,9 +54,9 @@ docs_metadata = {
         "Attendance_Policy.md": {
             "title": "Attendance Policy",
             "purpose": "To establish clear guidelines regarding punctuality, daily attendance tracking, core working hours, and the management of unscheduled absences.",
-            "scope": "Applies to all employees working from corporate offices or remote locations on behalf of NovaTech Solutions.",
+            "scope": "Applies to all employees working from corporate offices or remote locations on behalf of Darshan_AI_Engineer_Ops.",
             "responsibilities": "All employees must log their daily attendance. Managers must monitor attendance logs, review timecards weekly, and address chronic punctuality issues with HR guidance.",
-            "policy": "Consistent attendance and punctuality are essential for NovaTech's collaborative work culture. We expect employees to be ready to work by their scheduled start time. Daily tracking is managed via biometric access in office facilities and VPN logs for remote workers. Core operational hours are 10:00 AM to 4:00 PM IST.",
+            "policy": "Consistent attendance and punctuality are essential for Darshan_AI_Engineer_Ops's collaborative work culture. We expect employees to be ready to work by their scheduled start time. Daily tracking is managed via biometric access in office facilities and VPN logs for remote workers. Core operational hours are 10:00 AM to 4:00 PM IST.",
             "procedures": "1. daily check-in: Tap biometric card at the security gate or log into the VPN and check-in on the HR Portal.\n2. core-hour compliance: Be present or online during core hours (10:00 AM - 4:00 PM).\n3. late arrivals: Notify the manager if arriving after 10:30 AM. Accumulating more than 3 late arrivals in a month triggers warning.\n4. tracking corrections: Submit attendance regularization requests within 48 hours in the portal for missed taps.",
             "examples": "If an employee's biometric card fails to register a check-in, they must log into the HR portal, click 'Regularize Attendance', choose the date, input actual check-in/out times, and submit for manager approval.",
             "notes": "Chronic absenteeism or tardiness without justifiable cause is considered a violation of employment terms and will be subject to progressive disciplinary action, up to termination.",
@@ -66,33 +66,33 @@ docs_metadata = {
         "Travel_Policy.md": {
             "title": "Travel Policy",
             "purpose": "To outline rules, approvals, and spending limits for corporate business travel, ensuring employee safety, cost control, and consistent expense recording.",
-            "scope": "Applies to all domestic and international business travel undertaken by NovaTech Solutions employees.",
+            "scope": "Applies to all domestic and international business travel undertaken by Darshan_AI_Engineer_Ops employees.",
             "responsibilities": "Employees must obtain prior travel approval and submit accurate expenses. The Finance travel desk handles bookings. Managers approve travel requests and budget allocations.",
-            "policy": "NovaTech Solutions supports necessary business travel. We expect employees to exercise prudent judgment when incurring travel expenses. Travel classes (Economy for domestic, Premium Economy or Business for international flights exceeding 8 hours) are determined by employee grade levels. Safe and clean accommodation must be booked via approved corporate vendors.",
+            "policy": "Darshan_AI_Engineer_Ops supports necessary business travel. We expect employees to exercise prudent judgment when incurring travel expenses. Travel classes (Economy for domestic, Premium Economy or Business for international flights exceeding 8 hours) are determined by employee grade levels. Safe and clean accommodation must be booked via approved corporate vendors.",
             "procedures": "1. pre-approval: Submit a Travel Request Form (TRF) on the travel portal at least 14 days before domestic and 30 days before international travel.\n2. booking: Once approved, the travel desk shares flight and hotel options. Select options within the grade limits.\n3. daily allowance: Daily out-of-pocket allowances (Per Diem) are provided based on location tier.\n4. expense report: Submit an expense report with original receipts in the Finance portal within 7 business days of return.",
             "examples": "An Engineer travelling to Hyderabad for a client installation submits a TRF. The system routes it to the VP of Engineering. Upon approval, the travel desk books a Tier-1 business hotel and economy flight. The engineer tracks meal receipts during the trip.",
             "notes": "Any corporate credit card utilization during travel must strictly comply with the credit card usage guidelines. Personal travel extensions combined with business trips are allowed but all incremental costs must be paid by the employee.",
-            "faq": "Q: Can I book my own flights?\nA: No, all bookings must be processed by the NovaTech travel desk to avail of corporate discount rates.\n\nQ: What happens if I lose a receipt?\nA: For expenses under INR 500, a written declaration is accepted. Above that, missing receipts require department head approval.",
+            "faq": "Q: Can I book my own flights?\nA: No, all bookings must be processed by the Darshan_AI_Engineer_Ops travel desk to avail of corporate discount rates.\n\nQ: What happens if I lose a receipt?\nA: For expenses under INR 500, a written declaration is accepted. Above that, missing receipts require department head approval.",
             "revision_history": "| Version | Date | Author | Description of Changes |\n| --- | --- | --- | --- |\n| 1.0 | 2026-01-15 | Vikram Sen (VP Finance) | FY26 Unified Corporate Travel Policy |"
         },
         "Code_of_Conduct.md": {
             "title": "Code of Conduct",
-            "purpose": "To define the ethical standards, behavioral expectations, and corporate responsibilities required of all employees and stakeholders at NovaTech Solutions.",
-            "scope": "Applies to all employees, board members, vendors, partners, and contractors representing NovaTech Solutions globally.",
+            "purpose": "To define the ethical standards, behavioral expectations, and corporate responsibilities required of all employees and stakeholders at Darshan_AI_Engineer_Ops.",
+            "scope": "Applies to all employees, board members, vendors, partners, and contractors representing Darshan_AI_Engineer_Ops globally.",
             "responsibilities": "Every individual is responsible for acting with integrity. Managers must foster an ethical work culture and escalate potential violations. The Ethics Committee investigates reports.",
-            "policy": "NovaTech Solutions maintains a zero-tolerance policy for unethical behavior, bribery, conflicts of interest, discrimination, and harassment. We operate transparently and protect intellectual property. We respect diversity and are committed to creating a safe work environment.",
-            "procedures": "1. conflict disclosure: Employees must disclose potential conflicts of interest (e.g., family member working for a competitor) annually or when they arise.\n2. reporting: Report violations to ethics@novatech.com or via the anonymous whistleblower portal.\n3. investigation: The Ethics Committee conducts a confidential inquiry within 15 business days.\n4. disciplinary actions: Violations will lead to disciplinary measures, including warning, suspension, or immediate termination.",
+            "policy": "Darshan_AI_Engineer_Ops maintains a zero-tolerance policy for unethical behavior, bribery, conflicts of interest, discrimination, and harassment. We operate transparently and protect intellectual property. We respect diversity and are committed to creating a safe work environment.",
+            "procedures": "1. conflict disclosure: Employees must disclose potential conflicts of interest (e.g., family member working for a competitor) annually or when they arise.\n2. reporting: Report violations to ethics@Darshan_AI_Engineer_Ops.com or via the anonymous whistleblower portal.\n3. investigation: The Ethics Committee conducts a confidential inquiry within 15 business days.\n4. disciplinary actions: Violations will lead to disciplinary measures, including warning, suspension, or immediate termination.",
             "examples": "If a vendor offers an employee a gift of high value (above INR 2,000) during contract negotiations, the employee must politely decline and report the gesture to the Ethics Committee.",
             "notes": "This policy complies with global anti-bribery statutes, including the FCPA (US) and the Bribery Act (UK). Whistleblowers are protected from any form of retaliation or adverse career impact.",
-            "faq": "Q: Can I take a freelance job on weekends?\nA: External employment is generally not permitted if it conflicts with NovaTech's business or uses company resources. Prior written approval from HR is mandatory.\n\nQ: What should I do if I suspect financial fraud in my team?\nA: File a report through the whistleblower portal immediately. It will be routed directly to the Head of Audit.",
+            "faq": "Q: Can I take a freelance job on weekends?\nA: External employment is generally not permitted if it conflicts with Darshan_AI_Engineer_Ops's business or uses company resources. Prior written approval from HR is mandatory.\n\nQ: What should I do if I suspect financial fraud in my team?\nA: File a report through the whistleblower portal immediately. It will be routed directly to the Head of Audit.",
             "revision_history": "| Version | Date | Author | Description of Changes |\n| --- | --- | --- | --- |\n| 1.0 | 2026-01-15 | Devendra Rao (Chief Legal Officer) | FY26 Global Code of Conduct Launch |"
         }
     },
     "finance": {
         "Finance_Policy.md": {
             "title": "Finance Policy",
-            "purpose": "To establish the core financial controls, authorization matrices, budget allocations, and auditing protocols of NovaTech Solutions.",
-            "scope": "Applies to all financial transactions, procurements, vendor payments, and cost-center allocations within NovaTech Solutions.",
+            "purpose": "To establish the core financial controls, authorization matrices, budget allocations, and auditing protocols of Darshan_AI_Engineer_Ops.",
+            "scope": "Applies to all financial transactions, procurements, vendor payments, and cost-center allocations within Darshan_AI_Engineer_Ops.",
             "responsibilities": "The Chief Financial Officer (CFO) has ultimate oversight. Department heads manage their allocated budgets. The internal audit team conducts quarterly compliance checks.",
             "policy": "All financial operations must be conducted with transparency, strict record-keeping, and compliance with statutory financial reporting standards (GAAP/IFRS). Capital expenditures (CAPEX) and Operational expenditures (OPEX) require explicit sign-offs in accordance with the authorization matrix. No transaction may be processed without a valid purchase order or invoice.",
             "procedures": "1. vendor setup: Submit vendor onboarding forms, tax registration numbers, and banking details to the Finance portal.\n2. purchase requisitions: Raise a PR in the ERP tool for any purchase exceeding INR 10,000.\n3. payment run: Standard vendor payment cycle is Net-30 from invoice approval date, executed weekly on Fridays.\n4. internal audit: Cooperate with the audit team by providing all ledger records, invoices, and bank reconciliation statements.",
@@ -104,9 +104,9 @@ docs_metadata = {
         "Expense_Reimbursement.md": {
             "title": "Expense Reimbursement Policy",
             "purpose": "To define guidelines for claiming reimbursement for business-related expenses incurred by employees during corporate duties.",
-            "scope": "Applies to all employees of NovaTech Solutions claiming reimbursements for business travel, client entertainment, internet allowance, and minor office supplies.",
+            "scope": "Applies to all employees of Darshan_AI_Engineer_Ops claiming reimbursements for business travel, client entertainment, internet allowance, and minor office supplies.",
             "responsibilities": "Employees must submit accurate claims with receipts. Managers must review claims for policy compliance before approval. Finance audits and processes payouts.",
-            "policy": "NovaTech reimburses legitimate business expenses. Claims must be submitted within 30 days of the expense date. Entertainment expenses must specify client names and business purposes. Personal expenses, traffic fines, and alcohol purchases are strictly non-reimbursable.",
+            "policy": "Darshan_AI_Engineer_Ops reimburses legitimate business expenses. Claims must be submitted within 30 days of the expense date. Entertainment expenses must specify client names and business purposes. Personal expenses, traffic fines, and alcohol purchases are strictly non-reimbursable.",
             "procedures": "1. claim submission: Log into the Expense Tool, enter claim details, select cost center, and upload digital receipts.\n2. approval workflow: The claim is routed to the line manager. Claims above INR 25,000 also require VP approval.\n3. auditing: Finance reviews receipts against policy limits. Non-compliant items are rejected or returned for explanation.\n4. payout: Approved claims are processed and paid out on the 10th and 25th of every month.",
             "examples": "An employee hosting a client dinner spends INR 5,000. They request an itemized tax invoice, take a photo, log a claim under 'Client Entertainment', name the client attendees, and submit for manager approval.",
             "notes": "Falsification of receipts, claiming personal expenses, or double-claiming will be treated as serious financial misconduct and may lead to termination.",
@@ -116,9 +116,9 @@ docs_metadata = {
         "Budget_Guidelines.md": {
             "title": "Budget Guidelines",
             "purpose": "To outline the corporate budgeting cycle, methods for department budget planning, tracking rules, and variance management.",
-            "scope": "Applies to all department heads, project managers, and budget owners across NovaTech Solutions.",
+            "scope": "Applies to all department heads, project managers, and budget owners across Darshan_AI_Engineer_Ops.",
             "responsibilities": "The Finance Planning & Analysis (FP&A) team defines the budget calendar. Department heads prepare, submit, and manage their department budgets. CFO approves the master budget.",
-            "policy": "NovaTech operates on an annual budgeting cycle with quarterly reviews. Departments must stick to their allocated budgets. Over-budget spends are not permitted without an approved variance request. Underspent budgets cannot be rolled over to the next year without CFO approval.",
+            "policy": "Darshan_AI_Engineer_Ops operates on an annual budgeting cycle with quarterly reviews. Departments must stick to their allocated budgets. Over-budget spends are not permitted without an approved variance request. Underspent budgets cannot be rolled over to the next year without CFO approval.",
             "procedures": "1. planning: FP&A releases budget templates in October. Department heads submit drafts by November 15.\n2. review: FP&A and CFO conduct review meetings in December to align department budgets with corporate revenue goals.\n3. allocation: Approved budgets are uploaded into the ERP system on January 1.\n4. tracking: Monthly variance reports (Actual vs. Budget) are sent to department heads on the 5th of every month.",
             "examples": "If the engineering team needs to recruit 5 additional developers, the VP must check if the salary budget has variance room. If not, they must submit a budget amendment request to the FP&A team.",
             "notes": "Emergency budget requests are subject to strict scrutiny and require direct approval from the Executive Committee (CEO and CFO).",
@@ -129,9 +129,9 @@ docs_metadata = {
     "sales": {
         "Sales_Guidelines.md": {
             "title": "Sales Guidelines",
-            "purpose": "To define the ethical guidelines, pipeline stages, lead allocation, and performance metrics for the NovaTech Sales team.",
-            "scope": "Applies to all Sales Representatives, Account Executives, and Sales Managers at NovaTech Solutions.",
-            "responsibilities": "Sales team members must represent NovaTech with integrity. Sales managers are responsible for pipeline reviews. The VP of Sales oversees revenue targets and commissions.",
+            "purpose": "To define the ethical guidelines, pipeline stages, lead allocation, and performance metrics for the Darshan_AI_Engineer_Ops Sales team.",
+            "scope": "Applies to all Sales Representatives, Account Executives, and Sales Managers at Darshan_AI_Engineer_Ops.",
+            "responsibilities": "Sales team members must represent Darshan_AI_Engineer_Ops with integrity. Sales managers are responsible for pipeline reviews. The VP of Sales oversees revenue targets and commissions.",
             "policy": "Sales efforts must be conducted with honesty. We do not engage in predatory sales practices, deceptive comparisons, or side-agreements. All client commitments must be written and approved in the formal Master Services Agreement (MSA) or Statement of Work (SOW). Leads are allocated based on geography and industry expertise.",
             "procedures": "1. lead capture: Log all inquiries in the CRM system within 2 hours of receipt.\n2. qualification: Use the BANT framework (Budget, Authority, Need, Timeline) to qualify leads.\n3. proposal: Use corporate proposal templates. Any customization of standard pricing must follow the Pricing Policy.\n4. contract closure: Route all contracts through the Legal team before client signature.",
             "examples": "A sales representative qualifying an enterprise lead identifies a budget of INR 2,000,000. They log it in the CRM under 'Qualified Stage', and assign it to the appropriate Technical Account Executive.",
@@ -141,10 +141,10 @@ docs_metadata = {
         },
         "Pricing_Policy.md": {
             "title": "Pricing Policy",
-            "purpose": "To establish the official product pricing sheets, subscription models, and pricing authority levels at NovaTech Solutions.",
-            "scope": "Applies to all products, SaaS services, and support contracts offered by NovaTech Solutions.",
+            "purpose": "To establish the official product pricing sheets, subscription models, and pricing authority levels at Darshan_AI_Engineer_Ops.",
+            "scope": "Applies to all products, SaaS services, and support contracts offered by Darshan_AI_Engineer_Ops.",
             "responsibilities": "The Product Management and Finance teams set standard prices. Sales representatives must quote prices in alignment with the official pricing sheet. CFO approves any custom price structures.",
-            "policy": "NovaTech Solutions offers transparent subscription-based and usage-based pricing. Standard pricing is updated annually on January 1. Quoted rates are valid for 30 days from the proposal date. All custom bundles or enterprise packages require pricing committee sign-off.",
+            "policy": "Darshan_AI_Engineer_Ops offers transparent subscription-based and usage-based pricing. Standard pricing is updated annually on January 1. Quoted rates are valid for 30 days from the proposal date. All custom bundles or enterprise packages require pricing committee sign-off.",
             "procedures": "1. pricing quote: Retrieve standard pricing from the CRM product catalog.\n2. custom quote: For non-standard deals, compile a pricing proposal using the Custom Deal calculator.\n3. submission: Route custom proposals to the Pricing Committee in the ERP system.\n4. documentation: Attach the approved pricing sheet to the contract draft.",
             "examples": "For a customer requesting 500 licenses of NovaShield Enterprise, the Sales Rep quotes the standard rate of INR 10,000/license/year. For a discount request, they must consult the Discount Policy.",
             "notes": "All prices exclude applicable local sales taxes, VAT, and GST, which are calculated and added at the time of invoicing.",
@@ -153,10 +153,10 @@ docs_metadata = {
         },
         "Discount_Policy.md": {
             "title": "Discount Policy",
-            "purpose": "To define the limits, approval matrices, and criteria for applying discounts to NovaTech Solutions products and services.",
+            "purpose": "To define the limits, approval matrices, and criteria for applying discounts to Darshan_AI_Engineer_Ops products and services.",
             "scope": "Applies to all sales deals, renewals, and enterprise contracts.",
             "responsibilities": "Sales representatives must apply discounts within authorized boundaries. Sales Managers and VPs review and approve higher discounts in CRM.",
-            "policy": "NovaTech discourages excessive discounting to preserve product value and margin. Discounts are categorized as Standard, Manager-approved, or VP-approved. No discount above 30% is allowed without written CFO and VP Sales approval. Multi-year commitments (2+ years) qualify for automatic tier discounts.",
+            "policy": "Darshan_AI_Engineer_Ops discourages excessive discounting to preserve product value and margin. Discounts are categorized as Standard, Manager-approved, or VP-approved. No discount above 30% is allowed without written CFO and VP Sales approval. Multi-year commitments (2+ years) qualify for automatic tier discounts.",
             "procedures": "1. threshold check: Up to 5% discount: Sales Rep auto-approval. 5.1% to 15%: Line Manager approval. 15.1% to 30%: VP Sales approval. > 30%: CFO approval.\n2. request submission: Input the requested discount percentage in the CRM deal record, attaching a business justification.\n3. approval tracking: The system automatically blocks deal progress until approval is logged.\n4. invoicing: The finance billing team verifies the CRM discount approval log before generating the invoice.",
             "examples": "A client requests a 12% discount on a 1-year SaaS contract. The Sales Rep enters the discount in the CRM, which routes to their Manager. The Manager reviews the client's growth potential and approves it.",
             "notes": "Discounts cannot be applied retroactively to invoices that have already been generated or paid.",
@@ -168,19 +168,19 @@ docs_metadata = {
         "IT_SOP.md": {
             "title": "IT Standard Operating Procedures",
             "purpose": "To outline standard operating procedures for IT assets, user onboarding/offboarding, systems management, and hardware replacement.",
-            "scope": "Applies to all IT hardware, software licenses, network infrastructure, and connected devices owned or managed by NovaTech Solutions.",
+            "scope": "Applies to all IT hardware, software licenses, network infrastructure, and connected devices owned or managed by Darshan_AI_Engineer_Ops.",
             "responsibilities": "The IT Operations team implements this SOP. Employees must comply with device handling rules. The IT Manager audits hardware audits quarterly.",
             "policy": "All corporate assets are company property. They must be secured, monitored, and used for professional purposes. Unapproved software installation is strictly prohibited. Operating systems and security agents must be kept up to date automatically.",
             "procedures": "1. hardware provisioning: Onboard new hires with a standard laptop, monitor, and peripherals. Record serial numbers in the IT asset database.\n2. software requests: Raise software license requests through the IT Service Desk. All software must be from the approved catalog.\n3. offboarding: Upon separation, return all hardware to the IT desk on or before the last working day.\n4. patching: Standard OS updates are pushed weekly on Wednesday nights. Laptops must be kept connected.",
             "examples": "An employee needs Docker Desktop. They raise a request on the IT desk. The system checks license availability and installs it automatically via mobile device management (MDM).",
-            "notes": "Loss or theft of hardware must be reported to the IT Security Team (security@novatech.com) within 2 hours of discovery.",
-            "faq": "Q: Can I use my personal laptop for work?\nA: No, only corporate laptops configured with NovaTech MDM and security software are permitted to access corporate resources.\n\nQ: How often is hardware replaced?\nA: Laptops are replaced on a 3-year refresh cycle.",
+            "notes": "Loss or theft of hardware must be reported to the IT Security Team (security@Darshan_AI_Engineer_Ops.com) within 2 hours of discovery.",
+            "faq": "Q: Can I use my personal laptop for work?\nA: No, only corporate laptops configured with Darshan_AI_Engineer_Ops MDM and security software are permitted to access corporate resources.\n\nQ: How often is hardware replaced?\nA: Laptops are replaced on a 3-year refresh cycle.",
             "revision_history": "| Version | Date | Author | Description of Changes |\n| --- | --- | --- | --- |\n| 1.0 | 2026-01-15 | Amit Patel (IT Operations Lead) | Initial FY26 IT Infrastructure SOP |"
         },
         "API_Documentation.md": {
             "title": "API Documentation Guidelines",
-            "purpose": "To standardize the design, authentication, formatting, and deployment documentation of APIs built and consumed by NovaTech Solutions.",
-            "scope": "Applies to all internal and external-facing web APIs developed by NovaTech engineering.",
+            "purpose": "To standardize the design, authentication, formatting, and deployment documentation of APIs built and consumed by Darshan_AI_Engineer_Ops.",
+            "scope": "Applies to all internal and external-facing web APIs developed by Darshan_AI_Engineer_Ops engineering.",
             "responsibilities": "Software Engineers must write API docs. The Architecture Review Board enforces API guidelines during design reviews.",
             "policy": "All APIs must follow RESTful design standards, use JSON payloads, and implement standardized OAuth2 JWT authentication. API documentation must be written in OpenAPI 3.0 specification (YAML/JSON) and rendered via Swagger or Redoc UI. Changes must follow semantic versioning rules.",
             "procedures": "1. design draft: Design the API routes and schemas using OpenAPI templates.\n2. review: Submit the API design to the team lead for architectural approval.\n3. auto-gen: Incorporate code annotations to automatically generate Swagger docs from the codebase.\n4. release notes: Add a summary of endpoint additions, deprecations, and breaking changes to the API changelog.",
@@ -191,32 +191,32 @@ docs_metadata = {
         },
         "Password_Policy.md": {
             "title": "Password Policy",
-            "purpose": "To define security standard criteria for user passwords and authentication mechanics to protect NovaTech Solutions networks and applications.",
-            "scope": "Applies to all user accounts, active directory credentials, database logins, and third-party SaaS accounts at NovaTech.",
+            "purpose": "To define security standard criteria for user passwords and authentication mechanics to protect Darshan_AI_Engineer_Ops networks and applications.",
+            "scope": "Applies to all user accounts, active directory credentials, database logins, and third-party SaaS accounts at Darshan_AI_Engineer_Ops.",
             "responsibilities": "All employees must maintain password confidentiality. IT Security is responsible for auditing and enforcing technical password rules.",
             "policy": "Passwords must be strong, unique, and rotated regularly. Multi-Factor Authentication (MFA) is mandatory for all access. Shared accounts are strictly prohibited. Credentials must not be written down or saved in web browsers.",
             "procedures": "1. strength rules: Minimum 14 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character.\n2. rotation: System accounts expire every 90 days. User directory passwords expire every 180 days.\n3. history restriction: Users cannot reuse their last 12 passwords.\n4. lockout logic: Accounts lock out for 30 minutes after 5 consecutive failed login attempts.",
             "examples": "An employee setting a new password must avoid common dictionary words. A password like `Tr0p1cal!Breeze99` is compliant, whereas `Password123!` will be rejected by the directory service.",
             "notes": "Credential harvesting or sharing passwords via Slack/email is a critical security violation and will result in disciplinary action.",
-            "faq": "Q: Can I use a password manager?\nA: Yes, NovaTech licenses and recommends 1Password Enterprise for all employees to store credentials securely.\n\nQ: Does biometric login bypass MFA?\nA: Biometrics function as the first factor; a secondary authenticator app prompt (MFA) is still required for external logins.",
+            "faq": "Q: Can I use a password manager?\nA: Yes, Darshan_AI_Engineer_Ops licenses and recommends 1Password Enterprise for all employees to store credentials securely.\n\nQ: Does biometric login bypass MFA?\nA: Biometrics function as the first factor; a secondary authenticator app prompt (MFA) is still required for external logins.",
             "revision_history": "| Version | Date | Author | Description of Changes |\n| --- | --- | --- | --- |\n| 1.0 | 2026-01-15 | Amit Patel (IT Operations Lead) | FY26 Enterprise Password Standards |"
         },
         "Security_Policy.md": {
             "title": "Information Security Policy",
-            "purpose": "To establish the cybersecurity posture, data protection rules, access controls, and network security guidelines of NovaTech Solutions.",
-            "scope": "Applies to all data assets, networks, systems, cloud instances, and physical premises of NovaTech.",
+            "purpose": "To establish the cybersecurity posture, data protection rules, access controls, and network security guidelines of Darshan_AI_Engineer_Ops.",
+            "scope": "Applies to all data assets, networks, systems, cloud instances, and physical premises of Darshan_AI_Engineer_Ops.",
             "responsibilities": "The Chief Information Security Officer (CISO) leads the security program. All staff must follow security rules. The SecOps team monitors network alerts.",
-            "policy": "NovaTech follows the principle of least privilege (PoLP) and Zero Trust architecture. Data must be classified into Public, Internal, Confidential, and Restricted. Sensitive data must be encrypted at rest and in transit. Security assessments are mandatory before code deployments.",
+            "policy": "Darshan_AI_Engineer_Ops follows the principle of least privilege (PoLP) and Zero Trust architecture. Data must be classified into Public, Internal, Confidential, and Restricted. Sensitive data must be encrypted at rest and in transit. Security assessments are mandatory before code deployments.",
             "procedures": "1. access provisioning: Raise an Access Request Form (ARF) detailing the business justification for system permissions.\n2. data encryption: Use SSL/TLS 1.3 for communications. Encrypt RDS instances with AES-256 keys.\n3. physical security: Badges must be worn visible at all times. Guests must be escorted.\n4. vulnerability scans: Automated vulnerability scanners run weekly on all cloud infrastructure.",
             "examples": "To access the customer billing database, a developer must request role-based access in the portal. Once approved, the developer is granted read-only access for a limited 30-day window.",
             "notes": "Our security policy aligns with ISO/IEC 27001:2022 and SOC 2 Type II trust principles.",
-            "faq": "Q: What is public data?\nA: Public data includes marketing materials, white papers, and pricing listed on the corporate website. All other data is internal or confidential.\n\nQ: How do I report a phishing email?\nA: Click the 'Report Phishing' button in Outlook or forward it to security-alert@novatech.com.",
+            "faq": "Q: What is public data?\nA: Public data includes marketing materials, white papers, and pricing listed on the corporate website. All other data is internal or confidential.\n\nQ: How do I report a phishing email?\nA: Click the 'Report Phishing' button in Outlook or forward it to security-alert@Darshan_AI_Engineer_Ops.com.",
             "revision_history": "| Version | Date | Author | Description of Changes |\n| --- | --- | --- | --- |\n| 1.0 | 2026-01-15 | Sanjay Mehta (CISO) | FY26 Information Security Policy |"
         },
         "Incident_Response.md": {
             "title": "Incident Response Plan",
             "purpose": "To define the processes for detecting, investigating, containing, and recovering from security breaches and IT system failures.",
-            "scope": "Applies to all security incidents, system outages, data leaks, and cyberattacks at NovaTech Solutions.",
+            "scope": "Applies to all security incidents, system outages, data leaks, and cyberattacks at Darshan_AI_Engineer_Ops.",
             "responsibilities": "The Incident Response Team (IRT) executes this plan. The Incident Commander directs operations. The PR team manages communications.",
             "policy": "All security incidents must be classified by severity: Low, Medium, High, or Critical. The IRT must be activated immediately for High and Critical events. We prioritize containment and data preservation over service availability during a breach. Regulatory notifications must occur within 72 hours of verification.",
             "procedures": "1. identification: Alert from SIEM or employee report via incident ticket.\n2. triage: Incident Commander assesses impact and assigns severity level within 30 minutes.\n3. containment: Isolate affected hosts, disable compromised accounts, and deploy firewall blocks.\n4. eradication & recovery: Remove malware, patch vulnerabilities, and restore systems from clean backups.\n5. lessons learned: Conduct a post-mortem review meeting within 5 days of incident resolution.",
@@ -228,10 +228,10 @@ docs_metadata = {
         "VPN_Setup_Guide.md": {
             "title": "VPN Setup Guide",
             "purpose": "To provide step-by-step instructions for employees to configure, connect, and troubleshoot the corporate Virtual Private Network (VPN).",
-            "scope": "Applies to all employees and contractors requiring remote access to the internal NovaTech network.",
+            "scope": "Applies to all employees and contractors requiring remote access to the internal Darshan_AI_Engineer_Ops network.",
             "responsibilities": "Users are responsible for following this guide. The IT Helpdesk is responsible for provisioning credentials and assisting with connection failures.",
-            "policy": "Access to NovaTech internal networks is restricted to approved corporate VPN clients. The VPN session must run MFA for verification. VPN credentials must not be shared. Split tunneling is disabled; all remote traffic routes through the secure corporate web gateway.",
-            "procedures": "1. download client: Open the IT Self-Service Portal and download the Cisco AnyConnect client for your OS.\n2. configuration: Open client, enter gateway URL: `vpn.novatech-solutions.com`.\n3. authentication: Enter employee username and password, then approve the OKTA push notification on your registered mobile device.\n4. verification: Confirm that the connection status is 'Connected' and security software agent is green.",
+            "policy": "Access to Darshan_AI_Engineer_Ops internal networks is restricted to approved corporate VPN clients. The VPN session must run MFA for verification. VPN credentials must not be shared. Split tunneling is disabled; all remote traffic routes through the secure corporate web gateway.",
+            "procedures": "1. download client: Open the IT Self-Service Portal and download the Cisco AnyConnect client for your OS.\n2. configuration: Open client, enter gateway URL: `vpn.Darshan_AI_Engineer_Ops-solutions.com`.\n3. authentication: Enter employee username and password, then approve the OKTA push notification on your registered mobile device.\n4. verification: Confirm that the connection status is 'Connected' and security software agent is green.",
             "examples": "An employee working from a home broadband connection opens the client, selects the 'IN-WEST-GATEWAY', completes the password login, and clicks 'Approve' on their Okta Verify mobile app to start work.",
             "notes": "VPN sessions will automatically time out and disconnect after 12 hours of continuous connection, requiring re-authentication.",
             "faq": "Q: The connection timed out. What should I do?\nA: Verify your internet connection, restart the client software, and check if Okta services are online at status.okta.com.\n\nQ: Can I connect my mobile phone to the corporate VPN?\nA: Yes, only if the mobile device has been enrolled in the company MDM program.",
@@ -242,19 +242,19 @@ docs_metadata = {
         "Customer_Support_FAQ.md": {
             "title": "Customer Support FAQ",
             "purpose": "To serve as a reference guide for support agents handling customer queries, product questions, and subscription management.",
-            "scope": "Applies to all Customer Support representatives and customer-facing staff at NovaTech.",
+            "scope": "Applies to all Customer Support representatives and customer-facing staff at Darshan_AI_Engineer_Ops.",
             "responsibilities": "Support agents must follow these guidelines. Support leads must review ticket transcripts weekly. Product managers keep FAQs updated.",
             "policy": "Customer interactions must be empathetic, helpful, and clear. First Contact Resolution (FCR) is highly prioritized. Standard SLA response times are determined by customer support tiers: Enterprise (1 hour), Pro (4 hours), Basic (24 hours).",
             "procedures": "1. ticket triage: Categorize inbound tickets (Billing, Technical, Account Access, Sales Inquiry).\n2. lookup: Search this FAQ document for official solutions.\n3. response: Draft responses using standard templates, customizing personal details.\n4. escalation: Escalate unresolved bugs to L2 Engineering in Jira, updating the customer.",
             "examples": "For a customer asking 'How do I upgrade my license capacity?', the agent quotes Section 3 of this FAQ, outlines pricing tiers, and routes the ticket to Sales if a quote is requested.",
             "notes": "Ensure that support agents do not share internal Jira ticket links or developer names with customers.",
-            "faq": "Q: What is our service availability guarantee?\nA: We guarantee a 99.9% uptime for NovaShield SaaS, backed by Service Level Agreements (SLAs).\n\nQ: How do customers reset their account password?\nA: Send them the self-service password reset link: `https://portal.novatech-solutions.com/reset`.",
+            "faq": "Q: What is our service availability guarantee?\nA: We guarantee a 99.9% uptime for NovaShield SaaS, backed by Service Level Agreements (SLAs).\n\nQ: How do customers reset their account password?\nA: Send them the self-service password reset link: `https://portal.Darshan_AI_Engineer_Ops-solutions.com/reset`.",
             "revision_history": "| Version | Date | Author | Description of Changes |\n| --- | --- | --- | --- |\n| 1.0 | 2026-01-15 | Meera Nair (Support Operations Head) | FY26 Customer Service FAQ Master |"
         },
         "Complaint_Handling.md": {
             "title": "Complaint Handling Process",
             "purpose": "To define the workflow for identifying, documenting, escalating, and resolving customer complaints and service escalations.",
-            "scope": "Applies to all support representatives, account managers, and customer success managers at NovaTech Solutions.",
+            "scope": "Applies to all support representatives, account managers, and customer success managers at Darshan_AI_Engineer_Ops.",
             "responsibilities": "Support agents process complaint files. Team Leads monitor escalation timelines. Customer Success Directors sign off on final resolution letters.",
             "policy": "All complaints must be recorded in the CRM. The customer must receive an acknowledgment within 4 hours. Support teams must resolve Level-1 complaints within 24 hours, and Level-2 escalations within 72 hours. We aim for complete resolution and customer satisfaction on every event.",
             "procedures": "1. capture: Record customer details, date, specific issue description, and business impact in the CRM ticketing tool.\n2. acknowledgment: Send automated email with Ticket ID and assigned agent details.\n3. root-cause analysis: Investigate the issue using logs or consulting system administrators.\n4. resolution: Implement correction and send a formal response detailing findings and actions.",
@@ -266,9 +266,9 @@ docs_metadata = {
         "Refund_Policy.md": {
             "title": "Refund Policy",
             "purpose": "To outline standard eligibility criteria, refund calculations, and authorization rules for software licenses and subscriptions.",
-            "scope": "Applies to all software-as-a-service (SaaS) and support purchases made by NovaTech customers.",
+            "scope": "Applies to all software-as-a-service (SaaS) and support purchases made by Darshan_AI_Engineer_Ops customers.",
             "responsibilities": "Support agents gather refund claims. The Finance department processes payments. Sales Directors approve custom exceptions.",
-            "policy": "NovaTech offer a standard 30-day money-back guarantee for annual subscriptions. Monthly subscriptions are non-refundable. Custom professional services or setups are non-refundable. Refunds are calculated pro-rata after deducting processing fees. Approved refunds are returned to the original payment method.",
+            "policy": "Darshan_AI_Engineer_Ops offer a standard 30-day money-back guarantee for annual subscriptions. Monthly subscriptions are non-refundable. Custom professional services or setups are non-refundable. Refunds are calculated pro-rata after deducting processing fees. Approved refunds are returned to the original payment method.",
             "procedures": "1. submission: Customer requests refund via billing portal or email within 30 days of purchase.\n2. eligibility check: Verify purchase date, contract terms, and product utilization metrics.\n3. calculation: Calculate the refund amount using the standard pro-rata formulas.\n4. authorization: Route approval requests through the finance authorization matrix. Payout within 10 business days.",
             "examples": "A customer purchases a Pro plan subscription for INR 120,000/year. After 15 days, they request a refund. Support verifies minimal license usage, calculates 11 months pro-rata return, and submits it to Finance.",
             "notes": "Abuse of the refund policy (e.g., repeatedly signing up and requesting refunds) will result in permanent account blacklisting.",
@@ -279,8 +279,8 @@ docs_metadata = {
     "inventory": {
         "Inventory_Management.md": {
             "title": "Inventory Management Policy",
-            "purpose": "To define guidelines for managing IT physical assets, server hardware, spare parts, and office materials across NovaTech warehouses.",
-            "scope": "Applies to all storage warehouses, server storage facilities, and asset tracking portals of NovaTech.",
+            "purpose": "To define guidelines for managing IT physical assets, server hardware, spare parts, and office materials across Darshan_AI_Engineer_Ops warehouses.",
+            "scope": "Applies to all storage warehouses, server storage facilities, and asset tracking portals of Darshan_AI_Engineer_Ops.",
             "responsibilities": "Warehouse managers track and reconcile stock. Procurement leads process purchase orders. The Operations head audits inventory biannually.",
             "policy": "All physical items must be categorized, labeled, and tracked in the inventory tracking system. We operate under a Just-in-Time (JIT) model with safety buffers for server components. Stock discrepancies must be investigated and reported. Access to storage rooms is restricted to badged staff.",
             "procedures": "1. receiving: Inspect delivered items against purchase orders. Scan barcodes and log quantities in the inventory system.\n2. storage: Store items in designated bins labeled with location codes.\n3. check-out: All assets drawn from stock must be linked to a work order or employee ID.\n4. reconciliation: Conduct physical stock counts on the last weekend of every quarter.",
@@ -291,7 +291,7 @@ docs_metadata = {
         },
         "Warehouse_SOP.md": {
             "title": "Warehouse Standard Operating Procedures",
-            "purpose": "To document safety regulations, material handling procedures, and security checks for the main NovaTech logistics center.",
+            "purpose": "To document safety regulations, material handling procedures, and security checks for the main Darshan_AI_Engineer_Ops logistics center.",
             "scope": "Applies to all warehouse personnel, technicians, and delivery staff.",
             "responsibilities": "The Warehouse Lead enforces safety protocols. Personnel must wear PPE. Security staff audit visitors.",
             "policy": "Safety is our priority. We maintain clean workspaces. Access is restricted. Material movement must be recorded. Employees must wear safety shoes and high-visibility vests. Any accidents must be reported immediately.",
@@ -337,7 +337,7 @@ def generate_policy_document(category, filename, doc_meta):
 
     # Generate additional descriptive text to fill the word count target with realistic business language
     expanded_purpose = (
-        f"{purpose_text} This document serves as a foundational pillar of governance within NovaTech Solutions Pvt. Ltd., "
+        f"{purpose_text} This document serves as a foundational pillar of governance within Darshan_AI_Engineer_Ops Pvt. Ltd., "
         "ensuring that all operational milestones are met with the highest standard of professionalism, corporate discipline, "
         "and ethical execution. In an era of rapid technological advancement and changing market demands, having a clear and "
         "well-defined framework is crucial. This document acts as a guide to mitigate operational risk, align individual employee "
@@ -353,7 +353,7 @@ def generate_policy_document(category, filename, doc_meta):
         "is exempt from the provisions detailed within. The rules apply equally to executive leadership, senior managers, technical "
         "leads, and junior associates, fostering a culture of mutual accountability and transparent operational metrics. "
         "Furthermore, temporary contractors, vendor representatives, and third-party auditors must also adhere to relevant sections "
-        "of this document during their engagement with NovaTech Solutions."
+        "of this document during their engagement with Darshan_AI_Engineer_Ops."
     )
     
     expanded_resp = (
@@ -366,7 +366,7 @@ def generate_policy_document(category, filename, doc_meta):
     )
 
     expanded_policy = (
-        f"{policy_text} NovaTech Solutions Pvt. Ltd. believes in fostering an environment of trust, safety, and mutual respect. "
+        f"{policy_text} Darshan_AI_Engineer_Ops Pvt. Ltd. believes in fostering an environment of trust, safety, and mutual respect. "
         "Our core policy principles dictate that all assets, files, client data, and internal resources are protected under "
         "strict access controls and monitoring. We emphasize clear reporting lines, performance metrics, and compliance logs. "
         "Every corporate transaction and communication must reflect our focus on quality, respect for data privacy, and zero "
@@ -379,7 +379,7 @@ def generate_policy_document(category, filename, doc_meta):
     expanded_proc = (
         "In order to implement the policy rules effectively, all staff must execute the following procedures:\n\n"
         f"{proc_text}\n\n"
-        "5. Auditing and Logging: All activities related to this workflow are logged in the NovaTech central compliance database. "
+        "5. Auditing and Logging: All activities related to this workflow are logged in the Darshan_AI_Engineer_Ops central compliance database. "
         "Log files are reviewed monthly by the internal audit team to identify anomalies or process bottlenecks.\n"
         "6. Exception Management: If an employee requires an exception to the standard procedures, they must file an "
         "Exception Request Form (ERF) in the corporate intranet portal, specifying the business justification, duration, and potential "
@@ -394,13 +394,13 @@ def generate_policy_document(category, filename, doc_meta):
         "Another scenario involves a project lead who identifies a potential conflict during vendor evaluation. "
         "Instead of proceeding, the lead immediately updates the conflict register and requests a peer review to "
         "ensure objectivity. This quick escalation prevents future legal complications and maintains the integrity "
-        "of NovaTech's procurement pipeline."
+        "of Darshan_AI_Engineer_Ops's procurement pipeline."
     )
 
     expanded_notes = (
         f"{notes_text} Additional legal and compliance notes:\n"
         "- All communication logs, invoices, and files are subject to disclosure under applicable subpoena or regulatory review.\n"
-        "- NovaTech Solutions protects employee privacy, but corporate devices and networks are monitored for security compliance.\n"
+        "- Darshan_AI_Engineer_Ops protects employee privacy, but corporate devices and networks are monitored for security compliance.\n"
         "- Violations of local laws will result in immediate termination of the engagement and referral to law enforcement authorities.\n"
         "- Regular updates to this document are distributed through the company intranet, and continued work constitutes agreement to terms."
     )
@@ -414,7 +414,7 @@ def generate_policy_document(category, filename, doc_meta):
         "A: You must refuse the request and report the incident directly to the internal ethics helpline or the legal department."
     )
 
-    doc_content = f"""# {title} - NovaTech Solutions Pvt. Ltd.
+    doc_content = f"""# {title} - Darshan_AI_Engineer_Ops Pvt. Ltd.
 
 ## Purpose
 {expanded_purpose}
@@ -510,7 +510,7 @@ employees = []
 employees.append({
     "employee_id": 1,
     "full_name": "Devendra Rao",
-    "email": "devendra.rao@novatech-solutions.com",
+    "email": "devendra.rao@Darshan_AI_Engineer_Ops-solutions.com",
     "phone": "+91-98765-43210",
     "department_id": 1,
     "manager_id": None,
@@ -522,11 +522,11 @@ employees.append({
 
 # VPs / Directors for depts 2 to 6
 vps = {
-    2: {"name": "Neha Gupta", "title": "VP of Engineering", "salary": 2900000.00, "email": "neha.gupta@novatech-solutions.com", "phone": "+91-98765-43211"},
-    3: {"name": "Ananya Sharma", "title": "HR Director", "salary": 2100000.00, "email": "ananya.sharma@novatech-solutions.com", "phone": "+91-98765-43212"},
-    4: {"name": "Vikram Sen", "title": "VP of Finance", "salary": 2600000.00, "email": "vikram.sen@novatech-solutions.com", "phone": "+91-98765-43213"},
-    5: {"name": "Sarah Jenkins", "title": "VP of Sales", "salary": 2800000.00, "email": "sarah.jenkins@novatech-solutions.com", "phone": "+91-98765-43214"},
-    6: {"name": "Meera Nair", "title": "Head of Customer Support", "salary": 2000000.00, "email": "meera.nair@novatech-solutions.com", "phone": "+91-98765-43215"}
+    2: {"name": "Neha Gupta", "title": "VP of Engineering", "salary": 2900000.00, "email": "neha.gupta@Darshan_AI_Engineer_Ops-solutions.com", "phone": "+91-98765-43211"},
+    3: {"name": "Ananya Sharma", "title": "HR Director", "salary": 2100000.00, "email": "ananya.sharma@Darshan_AI_Engineer_Ops-solutions.com", "phone": "+91-98765-43212"},
+    4: {"name": "Vikram Sen", "title": "VP of Finance", "salary": 2600000.00, "email": "vikram.sen@Darshan_AI_Engineer_Ops-solutions.com", "phone": "+91-98765-43213"},
+    5: {"name": "Sarah Jenkins", "title": "VP of Sales", "salary": 2800000.00, "email": "sarah.jenkins@Darshan_AI_Engineer_Ops-solutions.com", "phone": "+91-98765-43214"},
+    6: {"name": "Meera Nair", "title": "Head of Customer Support", "salary": 2000000.00, "email": "meera.nair@Darshan_AI_Engineer_Ops-solutions.com", "phone": "+91-98765-43215"}
 }
 
 for dept_id, vp_data in vps.items():
@@ -559,7 +559,7 @@ for i in range(7, 51):
     first = first_names[i % len(first_names)]
     last = last_names[i % len(last_names)]
     name = f"{first} {last}"
-    email = f"{first.lower()}.{last.lower()}{i}@novatech-solutions.com"
+    email = f"{first.lower()}.{last.lower()}{i}@Darshan_AI_Engineer_Ops-solutions.com"
     phone = f"+91-98555-{i:05d}"
     
     # Manager is either the VP of that department (ids 2-6) or another manager
@@ -645,7 +645,7 @@ for i in range(1, 41):
     name = f"{product_names[(i - 1) % len(product_names)]} v{i}.0"
     category = random.choice(product_categories)
     price = float(random.randint(50, 1500) * 100)  # price between 5000 and 150000
-    supplier = f"NovaTech Internal Systems" if "SaaS" in category or "Services" in category else f"Hardware Vendor {i%3+1}"
+    supplier = f"Darshan_AI_Engineer_Ops Internal Systems" if "SaaS" in category or "Services" in category else f"Hardware Vendor {i%3+1}"
     stock = 999999 if "SaaS" in category or "Services" in category else random.randint(10, 200)
     products.append({
         "product_id": i,
@@ -759,7 +759,7 @@ write_csv("support_tickets.csv", ["ticket_id", "customer_id", "issue", "priority
 # ----------------------------------------------------
 
 schema_sql = """-- PostgreSQL Schema for Enterprise AI Operations Platform
--- NovaTech Solutions Pvt. Ltd.
+-- Darshan_AI_Engineer_Ops Pvt. Ltd.
 
 DROP TABLE IF EXISTS support_tickets CASCADE;
 DROP TABLE IF EXISTS orders CASCADE;
@@ -874,7 +874,7 @@ print("Written database schema.sql")
 # Generate seed.sql statements
 seed_sql = []
 seed_sql.append("-- Seed Data for Enterprise AI Operations Platform")
-seed_sql.append("-- NovaTech Solutions Pvt. Ltd.\n")
+seed_sql.append("-- Darshan_AI_Engineer_Ops Pvt. Ltd.\n")
 
 # Departments
 seed_sql.append("-- 1. Departments")

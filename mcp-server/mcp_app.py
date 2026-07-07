@@ -18,7 +18,7 @@ from tools.retriever import RetrieverTool
 from tools.sql import SQLTool
 
 app = FastAPI(
-    title="NovaTech MCP Server",
+    title="Darshan_AI_Engineer_Ops MCP Server",
     description="Model Context Protocol Server exposing platform tools (SQL, RAG, API, Filesystem, Calculator, Memory).",
     version="1.0.0"
 )

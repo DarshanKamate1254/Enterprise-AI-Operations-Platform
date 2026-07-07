@@ -40,7 +40,7 @@ def detect_pii_and_redact(text: str) -> str:
     text = re.sub(bcrypt_pattern, "[REDACTED_PASSWORD_HASH]", text)
     
     # 3. Emails
-    email_pattern = r"\b[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+\b"
+    email_pattern = r"\b[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-_]+\.[a-zA-Z0-9-._]+\b"
     text = re.sub(email_pattern, "[REDACTED_EMAIL]", text)
     
     return text

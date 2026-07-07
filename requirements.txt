@@ -22,7 +22,7 @@ flashrank
 sqlalchemy>=2.0.0
 psycopg2-binary>=2.9.9
 redis>=5.0.3
-pinecone>=5.0.0
+qdrant-client>=1.8.0
 
 # Observability & Monitoring
 prometheus-client>=0.20.0

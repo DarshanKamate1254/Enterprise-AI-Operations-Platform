@@ -23,6 +23,7 @@ class AgentState(TypedDict):
     # Core user query and routing decisions
     user_query: str
     user_role: str  # "Admin", "Manager", "User"
+    user_department: Optional[str]
     route: str  # "sql", "rag", "api", "general", "unsafe"
     
     # Planning variables

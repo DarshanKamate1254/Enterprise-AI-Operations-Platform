@@ -56,8 +56,11 @@ class RetrievalAgent:
         except Exception:
             pass
             
-        if not mcp_success:
-            results = self.tool.search_policies(query=query, category=category)
+        if not mcp_success or not results:
+            # Secondary fallback: if MCP returned no results, try direct local retrieval
+            local_results = self.tool.search_policies(query=query, category=category)
+            if local_results:
+                results = local_results
         
         # Format results as string segments
         context_blocks = []
@@ -78,10 +81,17 @@ def retrieval_node(state: AgentState) -> Dict[str, Any]:
     """
     with track_node_latency("retrieval"):
         query = state.get("user_query") or ""
-        # Category can be inferred from query or routing category filters
-        category = state.get("route")
-        if category not in {"hr", "finance", "sales", "it", "customer_support", "inventory"}:
-            category = None
+        role = state.get("user_role") or "User"
+        user_dept = state.get("user_department")
+        
+        # Only 'User' role is restricted to their own department category. 'Admin' and 'Manager' can access all categories.
+        if role == "User" and user_dept:
+            category = user_dept
+        else:
+            # Category can be inferred from query or routing category filters
+            category = state.get("route")
+            if category not in {"hr", "finance", "sales", "it", "customer_support", "inventory"}:
+                category = None
 
         # Load tool and run
         agent = RetrievalAgent()

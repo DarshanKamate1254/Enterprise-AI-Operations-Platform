@@ -9,11 +9,11 @@ sys.path.insert(0, rag_dir)
 
 from loader import DocumentLoader
 from chunker import DocumentChunker
-from vector_store import PineconeManager
+from vector_store import QdrantManager
 
 def run_ingestion():
     print("====================================================")
-    print("NovaTech RAG Pipeline Ingestion Utility")
+    print("Darshan_AI_Engineer_Ops RAG Pipeline Ingestion Utility")
     print("====================================================")
     
     docs_path = os.path.join(root_dir, "data", "documents")
@@ -33,9 +33,9 @@ def run_ingestion():
         chunker = DocumentChunker()
         nodes = chunker.split_documents(documents)
         
-        # 3. Index to Pinecone
-        print("Uploading vectors and indexing in Pinecone Vector Store...")
-        manager = PineconeManager()
+        # 3. Index to Qdrant
+        print("Uploading vectors and indexing in Qdrant Vector Store...")
+        manager = QdrantManager()
         manager.index_chunks(nodes)
         
         print(f"Successfully processed and indexed {len(nodes)} chunks.")

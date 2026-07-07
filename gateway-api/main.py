@@ -54,7 +54,7 @@ async def lifespan(app: FastAPI):
         logger.error(f"Error during OpenTelemetry TracerProvider shutdown: {e}")
 
 gateway = FastAPI(
-    title="NovaTech Operations Platform - API Gateway",
+    title="Darshan_AI_Engineer_Ops Operations Platform - API Gateway",
     description="API Gateway hosting Chat client workflows, upload ingestion targets, and RBAC authentication.",
     version="1.0.0",
     lifespan=lifespan
@@ -172,11 +172,33 @@ async def chat(payload: ChatRequest, current_user: Dict[str, Any] = Depends(get_
     """
     logger.info(f"User '{current_user['username']}' initiated operational chat thread '{payload.thread_id}'.")
     
+    # Resolve user's department from the database to enforce role/department-based access control
+    user_category = None
+    try:
+        with db_session() as session:
+            repo = UserRepository(session)
+            db_user = repo.get_by_username(current_user["username"])
+            if db_user and db_user.employee and db_user.employee.department:
+                dept_name = db_user.employee.department.name
+                # Map department name to RAG category code
+                dept_to_cat = {
+                    "Executive Leadership": "executive",
+                    "Engineering & IT": "it",
+                    "Human Resources": "hr",
+                    "Finance & Accounting": "finance",
+                    "Sales & Marketing": "sales",
+                    "Customer Support": "customer_support"
+                }
+                user_category = dept_to_cat.get(dept_name)
+    except Exception as e:
+        logger.error(f"Failed to query department for user '{current_user['username']}': {e}")
+
     # Initialize initial state inputs
     initial_state = {
         "messages": [("human", payload.message)],
         "user_query": payload.message,
         "user_role": current_user.get("role", "User"),
+        "user_department": user_category,
         "route": "",
         "plan": [],
         "completed_steps": [],

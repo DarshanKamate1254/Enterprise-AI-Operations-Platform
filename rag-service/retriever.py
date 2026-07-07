@@ -5,7 +5,7 @@ import numpy as np
 from typing import List, Dict, Any, Optional
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from pinecone import Pinecone
+from qdrant_client import QdrantClient
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from config import settings
 from vector_store import HashingTFEncoder
@@ -21,8 +21,12 @@ def get_ranker():
 
 # Lazy loader for Redis connection
 _redis_client = None
+_redis_disabled = False
+
 def get_redis_client():
-    global _redis_client
+    global _redis_client, _redis_disabled
+    if _redis_disabled:
+        return None
     if _redis_client is None:
         try:
             import redis
@@ -32,26 +36,27 @@ def get_redis_client():
                     port=settings.redis.port,
                     db=settings.redis.db,
                     password=settings.redis.password,
-                    socket_timeout=2.0
+                    socket_timeout=1.0
                 )
                 # Test connection
                 _redis_client.ping()
         except Exception as e:
             print(f"Redis connection failed (semantic cache disabled): {e}")
             _redis_client = None
+            _redis_disabled = True
     return _redis_client
 
 
 class HybridRetriever:
     """
-    HybridRetriever implements semantic search over Pinecone, integrating:
+    HybridRetriever implements semantic search over Qdrant, integrating:
     1. Redis Semantic Cache
     2. Corrective RAG (CRAG) query rewrite fallback
     3. HashingTFEncoder (sparse-dense hybrid search)
     4. Dartboard Retrieval (MMR-based relevance + diversity)
     5. Relevant Segment Extraction (RSE chunk stitching)
     
-    Replaces the legacy Qdrant-based HybridRetriever class.
+    Replaces the legacy Pinecone-based HybridRetriever class.
     """
     def __init__(self):
         # Retrieve OpenAI Embeddings
@@ -68,11 +73,38 @@ class HybridRetriever:
             api_key=api_key
         )
         
-        # Initialize Pinecone Client
-        pc_api_key = settings.pinecone.api_key or "mock_key"
-        self.pc = Pinecone(api_key=pc_api_key)
-        self.index_name = settings.pinecone.index_name
+        # Initialize Qdrant Client
+        if settings.qdrant.path:
+            self.client = QdrantClient(path=settings.qdrant.path)
+        else:
+            try:
+                # Try connecting to Qdrant server if host is defined
+                if settings.qdrant.host:
+                    self.client = QdrantClient(
+                        host=settings.qdrant.host,
+                        port=settings.qdrant.port or 6333,
+                        api_key=settings.qdrant.api_key,
+                        timeout=3.0
+                    )
+                    # Force a connectivity check
+                    self.client.get_collections()
+                else:
+                    raise ValueError("No host specified")
+            except Exception as e:
+                # Fallback to local disk storage
+                db_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "qdrant_db"))
+                print(f"[!] Qdrant server connection failed ({e}). Falling back to local storage: {db_path}")
+                self.client = QdrantClient(path=db_path)
+
+        self.collection_name = settings.qdrant.collection_name
         self.sparse_encoder = HashingTFEncoder()
+
+    def close(self):
+        if hasattr(self, "client") and self.client:
+            try:
+                self.client.close()
+            except Exception:
+                pass
 
     def _cosine_similarity(self, v1: List[float], v2: List[float]) -> float:
         a = np.array(v1)
@@ -130,40 +162,75 @@ class HybridRetriever:
         except Exception as e:
             print(f"Error writing to semantic cache: {e}")
 
-    def _query_pinecone(self, query: str, category: Optional[str], top_k: int) -> List[Dict[str, Any]]:
+    def _query_qdrant(self, query: str, category: Optional[str], top_k: int, query_dense: Optional[List[float]] = None) -> List[Dict[str, Any]]:
         """
-        Executes a sparse-dense hybrid vector query on Pinecone with role/category filtering.
+        Executes a sparse-dense hybrid vector query on Qdrant with role/category filtering.
         """
-        index = self.pc.Index(self.index_name)
+        from qdrant_client.models import Filter, FieldCondition, MatchValue, Prefetch, FusionQuery, Fusion, SparseVector
         
-        # Embed query text (dense)
-        query_dense = self.embed_model.embed_query(query)
+        # Embed query text (dense) if not already provided
+        if query_dense is None:
+            query_dense = self.embed_model.embed_query(query)
+            
         # Generate query text (sparse)
         query_sparse = self.sparse_encoder.encode(query)
         
-        # Build Pinecone metadata filter (preserves RBAC metadata restriction)
-        filter_dict = {}
+        # Build Qdrant metadata filter
+        query_filter = None
         if category:
-            filter_dict["category"] = category
+            query_filter = Filter(
+                must=[
+                    FieldCondition(
+                        key="category",
+                        match=MatchValue(value=category)
+                    )
+                ]
+            )
             
-        # Execute index query
-        response = index.query(
-            vector=query_dense,
-            sparse_vector=query_sparse,
-            filter=filter_dict if filter_dict else None,
-            top_k=top_k,
-            include_metadata=True,
-            include_values=True
+        # Execute hybrid query on Qdrant
+        response = self.client.query_points(
+            collection_name=self.collection_name,
+            prefetch=[
+                Prefetch(
+                    query=query_dense,
+                    using="dense",
+                    limit=top_k,
+                ),
+                Prefetch(
+                    query=SparseVector(
+                        indices=query_sparse["indices"],
+                        values=query_sparse["values"]
+                    ),
+                    using="sparse",
+                    limit=top_k,
+                ),
+            ],
+            query=FusionQuery(fusion=Fusion.RRF),
+            query_filter=query_filter,
+            limit=top_k,
+            with_vectors=["dense"],
+            with_payload=True
         )
         
         results = []
-        for match in response.get("matches", []):
-            meta = match.get("metadata", {})
+        for point in response.points:
+            meta = point.payload or {}
+            dense_vec = None
+            if isinstance(point.vector, dict):
+                dense_vec = point.vector.get("dense")
+            elif isinstance(point.vector, list):
+                dense_vec = point.vector
+                
+            score = point.score
+            # Recompute score as cosine similarity to be compatible with other components (e.g. CRAG 0.6 threshold check)
+            if dense_vec and query_dense:
+                score = self._cosine_similarity(query_dense, dense_vec)
+                
             results.append({
-                "id": match.get("id"),
+                "id": point.id,
                 "text": meta.get("text", ""),
-                "score": match.get("score", 0.0),
-                "vector": match.get("values", []),
+                "score": score,
+                "vector": dense_vec,
                 "metadata": meta
             })
         return results
@@ -177,7 +244,7 @@ class HybridRetriever:
     ) -> List[Dict[str, Any]]:
         """
         Executes the full upgraded retrieval pipeline:
-        Redis Semantic Cache -> CRAG Rewrite -> Pinecone Hybrid Search -> Flashrank -> MMR Diversity -> RSE Stitching
+        Redis Semantic Cache -> CRAG Rewrite -> Qdrant Hybrid Search -> Flashrank -> MMR Diversity -> RSE Stitching
         """
         # 1. Generate query dense vector for semantic cache checks
         query_dense = self.embed_model.embed_query(query)
@@ -187,8 +254,8 @@ class HybridRetriever:
         if cached_results is not None:
             return cached_results
 
-        # 3. Baseline Pinecone hybrid search
-        search_results = self._query_pinecone(query, category, top_k)
+        # 3. Baseline Qdrant hybrid search
+        search_results = self._query_qdrant(query, category, top_k, query_dense=query_dense)
         
         # 4. Technique: Corrective RAG (CRAG)
         # Trigger query rewrite fallback if the top hit similarity falls below the threshold
@@ -205,7 +272,7 @@ class HybridRetriever:
                 print(f"Technique [CRAG]: Rewritten query is '{rewritten_query}'")
                 
                 # Fetch second set of results using rewritten query
-                fallback_results = self._query_pinecone(rewritten_query, category, top_k)
+                fallback_results = self._query_qdrant(rewritten_query, category, top_k)
                 
                 # Merge and deduplicate by point ID, keeping highest score
                 merged_map = {item["id"]: item for item in search_results}
@@ -245,7 +312,7 @@ class HybridRetriever:
                 
             search_results = ordered_results
         except Exception as e:
-            print(f"Flashrank reranking failed: {e}. Defaulting to Pinecone cosine similarity.")
+            print(f"Flashrank reranking failed: {e}. Defaulting to Qdrant/Cosine similarity.")
 
         # 6. Technique: Dartboard Retrieval (Maximal Marginal Relevance - MMR)
         # Select top diverse and relevant chunks using vector similarities

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Darshan_AI_Engineer_Ops - RAG Retrieval Evaluation Interface</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            outfit: ['Outfit', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #0b0f19;
+      color: #f3f4f6;
+    }
+    .glass {
+      background: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .neon-border {
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(17, 24, 39, 0.3);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(59, 130, 246, 0.3);
+      border-radius: 3px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(59, 130, 246, 0.5);
+    }
+  </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="h-9 w-9 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-xl text-white font-outfit shadow-lg shadow-blue-500/20">
+        N
+      </div>
+      <div>
+        <h1 class="text-lg font-semibold tracking-wide text-white font-outfit">Darshan_AI_Engineer_Ops AI</h1>
+        <p class="text-xs text-gray-400">RAG Diagnostic & Evaluation Dashboard</p>
+      </div>
+    </div>
+    
+    <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-2 bg-gray-800/80 px-3 py-1.5 rounded-full border border-gray-700 text-xs">
+        <span class="text-gray-400">RAG API Status:</span>
+        <span id="status-dot" class="h-2 w-2 rounded-full bg-gray-500 animate-pulse"></span>
+        <span id="status-text" class="font-medium text-gray-300">Checking...</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-grow max-w-7xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+    
+    <!-- Controls Sidebar (Left) -->
+    <div class="lg:col-span-4 space-y-6">
+      
+      <!-- Query Config Card -->
+      <div class="glass rounded-xl p-5 shadow-2xl">
+        <h2 class="text-md font-bold text-white mb-4 flex items-center space-x-2 font-outfit">
+          <svg class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+          </svg>
+          <span>Evaluation Parameters</span>
+        </h2>
+        
+        <form id="rag-form" class="space-y-4" onsubmit="event.preventDefault(); performSearch();">
+          
+          <!-- Category Filter -->
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5">Document Category Filter</label>
+            <select id="category" class="w-full bg-gray-950/80 text-sm text-white border border-gray-800 rounded-lg px-3 py-2.5 outline-none focus:border-blue-500 transition">
+              <option value="">All Categories (No Filter)</option>
+              <option value="hr">Human Resources (hr)</option>
+              <option value="sales">Sales & Marketing (sales)</option>
+              <option value="finance">Finance & Accounting (finance)</option>
+              <option value="it">Engineering & IT (it)</option>
+              <option value="customer_support">Customer Support (customer_support)</option>
+              <option value="inventory">Inventory & Logistics (inventory)</option>
+            </select>
+          </div>
+
+          <!-- Top K Parameter -->
+          <div>
+            <div class="flex justify-between items-center mb-1">
+              <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400">Baseline Retrieve (Top K)</label>
+              <span id="top_k_val" class="text-xs font-bold text-blue-400 bg-blue-900/20 px-2 py-0.5 rounded">10</span>
+            </div>
+            <input type="range" id="top_k" min="1" max="20" value="10" 
+              class="w-full h-1.5 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-blue-500"
+              oninput="document.getElementById('top_k_val').innerText = this.value">
+            <span class="text-[10px] text-gray-500">Number of chunks to fetch initially from Qdrant</span>
+          </div>
+
+          <!-- Rerank N Parameter -->
+          <div>
+            <div class="flex justify-between items-center mb-1">
+              <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400">Post-Rerank Output (Top N)</label>
+              <span id="rerank_top_n_val" class="text-xs font-bold text-blue-400 bg-blue-900/20 px-2 py-0.5 rounded">4</span>
+            </div>
+            <input type="range" id="rerank_top_n" min="1" max="10" value="4" 
+              class="w-full h-1.5 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-blue-500"
+              oninput="document.getElementById('rerank_top_n_val').innerText = this.value">
+            <span class="text-[10px] text-gray-500">Final chunks returned after Flashrank reranking</span>
+          </div>
+
+          <!-- Divider -->
+          <div class="border-t border-gray-800/80 my-4"></div>
+
+          <!-- Test Query -->
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5">Search Query</label>
+            <textarea id="query" rows="4" required placeholder="Type a policy query to evaluate (e.g. 'What is the leave policy?' or 'Core operational hours')..." 
+              class="w-full bg-gray-950/80 text-sm text-white border border-gray-800 rounded-lg p-3 outline-none focus:border-blue-500 transition resize-none custom-scrollbar"></textarea>
+          </div>
+
+          <!-- LLM Toggle -->
+          <div class="flex items-center space-x-2 py-1">
+            <input type="checkbox" id="generate-answer" checked class="h-4 w-4 bg-gray-900 border-gray-800 rounded accent-blue-600 cursor-pointer">
+            <label for="generate-answer" class="text-xs text-gray-300 select-none cursor-pointer">Synthesize LLM Answer (RAG)</label>
+          </div>
+
+          <button type="submit" id="search-btn" class="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-medium text-sm py-3 rounded-lg shadow-lg shadow-blue-500/10 transition duration-150 flex items-center justify-center space-x-2">
+            <span>Query Vector Index</span>
+          </button>
+
+        </form>
+      </div>
+
+      <!-- Quick Test Prompt Panel -->
+      <div class="glass rounded-xl p-5 shadow-2xl">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 font-outfit">Quick Evaluation Targets</h3>
+        <div class="space-y-2">
+          <button onclick="setQuickPrompt('What are the core operational hours defined by Darshan_AI_Engineer_Ops?', 'hr')" 
+            class="w-full text-left bg-gray-950/40 hover:bg-gray-800/60 p-2.5 rounded border border-gray-800 text-xs text-gray-300 transition truncate">
+            🕒 Core operational hours? (HR)
+          </button>
+          <button onclick="setQuickPrompt('Under what circumstances are medical certificates mandatory for sick leave?', 'hr')" 
+            class="w-full text-left bg-gray-950/40 hover:bg-gray-800/60 p-2.5 rounded border border-gray-800 text-xs text-gray-300 transition truncate">
+            💼 Medical certificates guidelines? (HR)
+          </button>
+          <button onclick="setQuickPrompt('What is the standard procedure for applying discounts in CRM?', 'sales')" 
+            class="w-full text-left bg-gray-950/40 hover:bg-gray-800/60 p-2.5 rounded border border-gray-800 text-xs text-gray-300 transition truncate">
+            🏷️ Discount approval matrix? (Sales)
+          </button>
+          <button onclick="setQuickPrompt('What is the budget planning guideline for travel bookings?', 'finance')" 
+            class="w-full text-left bg-gray-950/40 hover:bg-gray-800/60 p-2.5 rounded border border-gray-800 text-xs text-gray-300 transition truncate">
+            ✈️ Budget and Travel guidelines? (Finance)
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Output Dashboard (Right) -->
+    <div class="lg:col-span-8 flex flex-col space-y-6">
+      
+      <!-- Diagnostic Log Card -->
+      <div class="glass rounded-xl p-5 flex flex-col justify-between flex-shrink-0">
+        <div class="flex justify-between items-center mb-3">
+          <h2 class="text-md font-bold text-white font-outfit">Diagnostic Execution Log</h2>
+          <span id="latency-badge" class="hidden text-xs bg-emerald-950/80 text-emerald-400 border border-emerald-800/60 px-2.5 py-1 rounded-full font-mono">0ms</span>
+        </div>
+        <div class="bg-gray-950 rounded-lg p-3 border border-gray-800 font-mono text-xs text-gray-400 min-h-[60px] flex items-center" id="diagnostic-log">
+          <span class="text-gray-500">Submit a query parameter configuration to fetch execution traces.</span>
+        </div>
+      </div>
+
+      <!-- Synthesized LLM Answer Panel -->
+      <div id="answer-card" class="hidden glass rounded-xl p-5 border border-blue-900/35 shadow-lg shadow-blue-955/20">
+        <h2 class="text-md font-bold text-white mb-3 font-outfit flex items-center space-x-2">
+          <svg class="h-5 w-5 text-blue-400 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+          </svg>
+          <span>Synthesized LLM Answer</span>
+        </h2>
+        <div id="answer-content" class="text-sm text-gray-200 leading-relaxed bg-gray-950/80 p-4 rounded-lg border border-gray-900 font-sans whitespace-pre-wrap select-all">
+          <!-- Answer will render here -->
+        </div>
+      </div>
+
+      <!-- Results Display Panel -->
+      <div class="glass rounded-xl p-5 flex-grow flex flex-col">
+        <h2 class="text-md font-bold text-white mb-4 font-outfit flex items-center space-x-2">
+          <svg class="h-5 w-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span>Retrieved Document Context</span>
+        </h2>
+
+        <!-- Placeholder -->
+        <div id="results-placeholder" class="flex-grow flex flex-col items-center justify-center py-16 text-center">
+          <div class="h-16 w-16 bg-gray-800/50 rounded-full flex items-center justify-center text-gray-500 mb-4 border border-gray-800">
+            <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+            </svg>
+          </div>
+          <h3 class="text-sm font-semibold text-gray-300">No retrieval results loaded</h3>
+          <p class="text-xs text-gray-500 mt-1 max-w-sm">Configure the parameters on the left and click "Query Vector Index" to execute evaluation.</p>
+        </div>
+
+        <!-- Chunks List -->
+        <div id="results-list" class="hidden space-y-4 flex-grow overflow-y-auto max-h-[500px] pr-2 custom-scrollbar">
+          <!-- Dynamic Content -->
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-gray-800 bg-gray-950/80 px-6 py-4 text-center text-xs text-gray-500">
+    &copy; 2026 Darshan_AI_Engineer_Ops Pvt. Ltd. | Internal RAG Diagnostic Pipeline evaluation tool
+  </footer>
+
+  <!-- Script logic -->
+  <script>
+    const RAG_SERVICE_URL = "http://localhost:8001";
+
+    // 1. Check health of RAG service on load
+    async function checkRagHealth() {
+      const dot = document.getElementById("status-dot");
+      const text = document.getElementById("status-text");
+
+      try {
+        const res = await fetch(`${RAG_SERVICE_URL}/health`, { timeout: 2000 });
+        if (res.ok) {
+          dot.className = "h-2 w-2 rounded-full bg-emerald-500 shadow-md shadow-emerald-500/50";
+          text.className = "font-medium text-emerald-400";
+          text.innerText = "Online (Local)";
+        } else {
+          throw new Error("HTTP failure");
+        }
+      } catch (err) {
+        dot.className = "h-2 w-2 rounded-full bg-rose-500 shadow-md shadow-rose-500/50";
+        text.className = "font-medium text-rose-500";
+        text.innerText = "Offline (Local)";
+      }
+    }
+
+    // Initialize health checking
+    checkRagHealth();
+    setInterval(checkRagHealth, 5000);
+
+    // 2. Set Quick prompt selections
+    function setQuickPrompt(prompt, category) {
+      document.getElementById("query").value = prompt;
+      document.getElementById("category").value = category;
+    }
+
+    // 3. Trigger Semantic Search Request
+    async function performSearch() {
+      const query = document.getElementById("query").value.trim();
+      const category = document.getElementById("category").value;
+      const top_k = parseInt(document.getElementById("top_k").value);
+      const rerank_top_n = parseInt(document.getElementById("rerank_top_n").value);
+      const generateAnswer = document.getElementById("generate-answer").checked;
+
+      const btn = document.getElementById("search-btn");
+      const diagLog = document.getElementById("diagnostic-log");
+      const latencyBadge = document.getElementById("latency-badge");
+      const placeholder = document.getElementById("results-placeholder");
+      const listContainer = document.getElementById("results-list");
+
+      const answerCard = document.getElementById("answer-card");
+      const answerContent = document.getElementById("answer-content");
+
+      // UI state updates
+      btn.disabled = true;
+      btn.innerText = "Querying Vector Store...";
+      diagLog.className = "bg-gray-950 rounded-lg p-3 border border-gray-800 font-mono text-xs text-blue-400 min-h-[60px] flex items-center";
+      
+      const endpoint = generateAnswer ? "/answer" : "/retrieve";
+      diagLog.innerText = `[${new Date().toISOString()}] Posting semantic payload to ${RAG_SERVICE_URL}${endpoint}...`;
+      latencyBadge.classList.add("hidden");
+      answerCard.classList.add("hidden");
+
+      const startTime = performance.now();
+
+      try {
+        const payload = {
+          query: query,
+          top_k: top_k,
+          rerank_top_n: rerank_top_n
+        };
+        if (category) {
+          payload.category = category;
+        }
+
+        const response = await fetch(`${RAG_SERVICE_URL}${endpoint}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const elapsed = Math.round(performance.now() - startTime);
+
+        if (!response.ok) {
+          const errMsg = await response.text();
+          throw new Error(`RAG API returned status ${response.status}: ${errMsg}`);
+        }
+
+        const data = await response.json();
+        const results = data.results || [];
+
+        // Log completion details
+        latencyBadge.innerText = `${elapsed}ms`;
+        latencyBadge.classList.remove("hidden");
+        diagLog.className = "bg-gray-950 rounded-lg p-3 border border-gray-800 font-mono text-xs text-emerald-400 min-h-[60px] flex flex-col justify-center items-start";
+        diagLog.innerHTML = `
+          <div><span class="text-gray-500">[Timestamp]</span> ${new Date().toISOString()}</div>
+          <div><span class="text-gray-500">[Latency]</span> ${elapsed}ms</div>
+          <div><span class="text-gray-500">[Response]</span> HTTP 200 OK | Fetched ${results.length} matches ${generateAnswer ? "and synthesized response" : ""}.</div>
+        `;
+
+        if (generateAnswer && data.answer) {
+          answerContent.innerText = data.answer;
+          answerCard.classList.remove("hidden");
+        } else {
+          answerCard.classList.add("hidden");
+        }
+
+        renderResults(results);
+
+      } catch (err) {
+        latencyBadge.classList.add("hidden");
+        diagLog.className = "bg-gray-950 rounded-lg p-3 border border-rose-900/60 font-mono text-xs text-rose-500 min-h-[60px] flex items-center";
+        diagLog.innerText = `[ERROR] RAG evaluation query failed: ${err.message}`;
+
+        answerCard.classList.add("hidden");
+        listContainer.classList.add("hidden");
+        placeholder.classList.remove("hidden");
+        placeholder.innerHTML = `
+          <div class="h-16 w-16 bg-rose-900/20 rounded-full flex items-center justify-center text-rose-500 mb-4 border border-rose-800/60">
+            <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+          </div>
+          <h3 class="text-sm font-semibold text-rose-400">Search Ingestion Query Failed</h3>
+          <p class="text-xs text-gray-500 mt-1 max-w-sm">${err.message}</p>
+        `;
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Query Vector Index";
+      }
+    }
+
+    // 4. Render matched document chunks
+    function renderResults(results) {
+      const placeholder = document.getElementById("results-placeholder");
+      const listContainer = document.getElementById("results-list");
+
+      listContainer.innerHTML = "";
+
+      if (results.length === 0) {
+        listContainer.classList.add("hidden");
+        placeholder.classList.remove("hidden");
+        placeholder.innerHTML = `
+          <div class="h-16 w-16 bg-gray-800/50 rounded-full flex items-center justify-center text-gray-500 mb-4 border border-gray-800">
+            <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-sm font-semibold text-gray-300">No policy chunks matched</h3>
+          <p class="text-xs text-gray-500 mt-1 max-w-sm">The semantic search returned zero similarity matches. Adjust your keywords or category filters.</p>
+        `;
+        return;
+      }
+
+      placeholder.classList.add("hidden");
+      listContainer.classList.remove("hidden");
+
+      results.forEach((chunk, index) => {
+        const score = chunk.score;
+        let scoreClass = "bg-rose-950/80 text-rose-400 border-rose-800/40";
+        if (score >= 0.8) {
+          scoreClass = "bg-emerald-950/80 text-emerald-400 border-emerald-800/40";
+        } else if (score >= 0.5) {
+          scoreClass = "bg-amber-950/80 text-amber-400 border-amber-800/40";
+        }
+
+        const fileName = chunk.metadata.file_name || "unknown_file";
+        const categoryName = chunk.metadata.category || "general";
+        const chunkIdx = chunk.metadata.chunk_index !== undefined ? chunk.metadata.chunk_index : "N/A";
+
+        const card = document.createElement("div");
+        card.className = "bg-gray-900/60 border border-gray-800/80 rounded-lg p-4 hover:border-gray-700/60 hover:bg-gray-900/80 transition duration-150 flex flex-col space-y-3";
+        card.innerHTML = `
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-800/50 pb-2">
+            
+            <div class="flex items-center space-x-2">
+              <span class="text-xs font-bold font-mono px-2 py-0.5 rounded ${scoreClass} border">
+                Score: ${score.toFixed(4)}
+              </span>
+              <span class="text-xs text-gray-300 font-semibold font-outfit truncate max-w-[200px]" title="${fileName}">
+                📂 ${fileName}
+              </span>
+            </div>
+
+            <div class="flex items-center space-x-1.5">
+              <span class="bg-gray-800 text-gray-400 font-medium text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border border-gray-700">
+                Cat: ${categoryName}
+              </span>
+              <span class="bg-gray-800 text-gray-400 font-medium text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border border-gray-700 font-mono">
+                Idx: ${chunkIdx}
+              </span>
+            </div>
+
+          </div>
+
+          <div class="text-sm text-gray-300 leading-relaxed font-sans whitespace-pre-wrap select-all bg-gray-950/50 p-3 rounded border border-gray-900 font-mono text-[11px] leading-relaxed custom-scrollbar max-h-[150px] overflow-y-auto">
+            ${escapeHtml(chunk.text)}
+          </div>
+        `;
+
+        listContainer.appendChild(card);
+      });
+    }
+
+    // Simple HTML escape utility
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>
