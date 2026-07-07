@@ -1,0 +1,212 @@
+version: '3.8'
+
+services:
+  # --- Relational Database (PostgreSQL) ---
+  postgres:
+    image: postgres:16-alpine
+    container_name: enterprise-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_secure_pass
+      POSTGRES_DB: enterprise_ai_ops
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - platform-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d enterprise_ai_ops"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # --- Caching Layer (Redis) ---
+  redis:
+    image: redis:7-alpine
+    container_name: enterprise-redis
+    restart: unless-stopped
+    command: redis-server --requirepass redis_secure_pass
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - platform-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "redis_secure_pass", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # --- Vector Database (Qdrant) ---
+  qdrant:
+    image: qdrant/qdrant:v1.8.4
+    container_name: enterprise-qdrant
+    restart: unless-stopped
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    environment:
+      QDRANT__SERVICE__API_KEY: qdrant_secure_api_key_here
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - platform-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # --- Model Context Protocol (MCP) Server ---
+  mcp-server:
+    build:
+      context: .
+      dockerfile: docker/mcp-server.Dockerfile
+    container_name: enterprise-mcp
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres_secure_pass
+      - POSTGRES_DB=enterprise_ai_ops
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=redis_secure_pass
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - QDRANT_API_KEY=qdrant_secure_api_key_here
+    networks:
+      - platform-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # --- RAG Service ---
+  rag-service:
+    build:
+      context: .
+      dockerfile: docker/rag-service.Dockerfile
+    container_name: enterprise-rag
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      - API_PORT=8001
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres_secure_pass
+      - POSTGRES_DB=enterprise_ai_ops
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - QDRANT_API_KEY=qdrant_secure_api_key_here
+    networks:
+      - platform-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+
+  # --- API Gateway ---
+  gateway-api:
+    build:
+      context: .
+      dockerfile: docker/gateway-api.Dockerfile
+    container_name: enterprise-gateway
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - API_PORT=8000
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres_secure_pass
+      - POSTGRES_DB=enterprise_ai_ops
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=redis_secure_pass
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - QDRANT_API_KEY=qdrant_secure_api_key_here
+      - MCP_SERVER_URL=http://mcp-server:8080/mcp
+      - RAG_SERVICE_URL=http://rag-service:8001
+    networks:
+      - platform-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+      mcp-server:
+        condition: service_started
+      rag-service:
+        condition: service_started
+
+  # --- Frontend Client ---
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+    container_name: enterprise-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    networks:
+      - platform-network
+    depends_on:
+      - gateway-api
+
+  # --- Metrics Aggregation (Prometheus) ---
+  prometheus:
+    image: prom/prometheus:v2.50.1
+    container_name: enterprise-prometheus
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - platform-network
+    depends_on:
+      - postgres
+      - redis
+      - qdrant
+
+  # --- Observability Dashboards (Grafana) ---
+  grafana:
+    image: grafana/grafana:10.4.1
+    container_name: enterprise-grafana
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin_secure_pass
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - platform-network
+    depends_on:
+      - prometheus
+
+networks:
+  platform-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  qdrant_data:
+  prometheus_data:
+  grafana_data:
