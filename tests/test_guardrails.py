@@ -46,7 +46,7 @@ class TestOperationalGuardrails(unittest.TestCase):
     def test_pii_detection_redaction(self):
         """Verify that credit card numbers, password hashes, and emails are redacted."""
         raw_text = (
-            "Here is the manager contact: ananya.sharma@aioops-solutions.com. "
+            "Here is the manager contact: ananya.sharma@bia-solutions.com. "
             "Her card on file is 1111-2222-3333-4444. "
             "Her password hash is $2b$12$K35u/W93mGf8gE4vLpQ.Oe8tQv8eX.xR0n2r3D4e5f6g7h8i9j1k2."
         )
@@ -54,7 +54,7 @@ class TestOperationalGuardrails(unittest.TestCase):
         redacted = detect_pii_and_redact(raw_text)
         
         # Verify redactions happened
-        self.assertNotIn("ananya.sharma@aioops-solutions.com", redacted)
+        self.assertNotIn("ananya.sharma@bia-solutions.com", redacted)
         self.assertNotIn("1111-2222-3333-4444", redacted)
         self.assertNotIn("$2b$12$K35u/W93mGf8gE4vLpQ", redacted)
         

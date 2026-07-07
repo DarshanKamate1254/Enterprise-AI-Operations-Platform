@@ -47,7 +47,7 @@ class RetrieverTool:
         }
         
         try:
-            response = self.http_client.post(self.api_url, json=payload)
+            response = self.http_client.post(self.api_url, json=payload, timeout=30.0)
             if response.status_code == 200:
                 return response.json().get("results", [])
             else:

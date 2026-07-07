@@ -13,7 +13,7 @@ from vector_store import QdrantManager
 
 def run_ingestion():
     print("====================================================")
-    print("AI_OOPS RAG Pipeline Ingestion Utility")
+    print("bia RAG Pipeline Ingestion Utility")
     print("====================================================")
     
     docs_path = os.path.join(root_dir, "data", "documents")

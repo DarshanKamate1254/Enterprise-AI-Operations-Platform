@@ -1,6 +1,6 @@
 # Platform Architecture
 
-This document describes the architectural layout of **AI_OOPS's Multi-Agent AI Operations Platform**.
+This document describes the architectural layout of **bia's Multi-Agent AI Operations Platform**.
 
 The platform is designed around a decoupled, microservices-first architecture to ensure scalability, fault isolation, and independent deployment of the frontend client, API Gateway, RAG pipeline, and Model Context Protocol (MCP) server.
 

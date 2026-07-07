@@ -96,7 +96,7 @@ def api_node(state: AgentState) -> Dict[str, Any]:
                     "payload": payload_dict
                 }
             }
-            response = httpx.post(settings.mcp.server_url, json=payload, headers=headers, timeout=5.0)
+            response = httpx.post(settings.mcp.server_url, json=payload, headers=headers, timeout=30.0)
             if response.status_code == 200:
                 data = response.json()
                 if data.get("success"):

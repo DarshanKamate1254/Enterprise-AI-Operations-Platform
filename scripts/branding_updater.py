@@ -2,19 +2,21 @@ import os
 import re
 
 replacements = [
-    (re.compile(r'Darshan_AI_Engineer_Ops Pvt\. Ltd\.', re.IGNORECASE), 'AI_OOPS Pvt. Ltd.'),
-    (re.compile(r'Darshan_AI_Engineer_Ops-solutions\.com', re.IGNORECASE), 'aioops-solutions.com'),
-    (re.compile(r'Darshan_AI_Engineer_Ops', re.IGNORECASE), 'AI_OOPS'),
-    (re.compile(r'darshan-ai-engineer-ops\.com', re.IGNORECASE), 'ai-oops.com'),
-    (re.compile(r'darshan_ai_engineer_ops', re.IGNORECASE), 'ai_oops'),
-    (re.compile(r"Darshan's", re.IGNORECASE), "AI_OOPS's"),
-    # Keep legacy NovaTech ones just in case
-    (re.compile(r'NovaTech Solutions Pvt\. Ltd\.', re.IGNORECASE), 'AI_OOPS Pvt. Ltd.'),
-    (re.compile(r'NovaTech Solutions', re.IGNORECASE), 'AI_OOPS'),
-    (re.compile(r'NovaTech Ops', re.IGNORECASE), 'AI_OOPS'),
-    (re.compile(r'NovaTech', re.IGNORECASE), 'AI_OOPS'),
-    (re.compile(r'novatech-solutions\.com', re.IGNORECASE), 'ai-oops.com'),
-    (re.compile(r'novatech\.com', re.IGNORECASE), 'ai-oops.com'),
+    (re.compile(r'AI_OOPS Pvt\. Ltd\.', re.IGNORECASE), 'BIA Pvt. Ltd.'),
+    (re.compile(r'AI_OOPS Solutions Pvt\. Ltd\.', re.IGNORECASE), 'BIA Solutions Pvt. Ltd.'),
+    (re.compile(r'aioops-solutions\.com', re.IGNORECASE), 'bia-solutions.com'),
+    (re.compile(r'ai-oops\.com', re.IGNORECASE), 'bia.com'),
+    (re.compile(r'ai_oops', re.IGNORECASE), 'bia'),
+    (re.compile(r"AI_OOPS's", re.IGNORECASE), "BIA's"),
+    (re.compile(r'AI_OOPS', re.IGNORECASE), 'BIA'),
+
+    (re.compile(r'NovaTech Solutions Pvt\. Ltd\.', re.IGNORECASE), 'BIA Pvt. Ltd.'),
+    (re.compile(r'NovaTech Solutions', re.IGNORECASE), 'BIA'),
+    (re.compile(r'NovaTech Ops', re.IGNORECASE), 'BIA'),
+    (re.compile(r'NovaTech', re.IGNORECASE), 'BIA'),
+    (re.compile(r'novatech-solutions\.com', re.IGNORECASE), 'bia-solutions.com'),
+    (re.compile(r'novatech\.com', re.IGNORECASE), 'bia.com'),
+    (re.compile(r'Novatech', re.IGNORECASE), 'BIA'),
 ]
 
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))

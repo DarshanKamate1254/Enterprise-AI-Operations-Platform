@@ -418,7 +418,7 @@ export default function App() {
       <div className="auth-container">
         <div className="auth-card glass-panel">
           <div className="auth-header">
-            <h1>AI_OOPS</h1>
+            <h1>bia</h1>
             <p>Enterprise Multi-Agent AI Operations Platform</p>
           </div>
           <form onSubmit={handleLogin}>
@@ -461,7 +461,7 @@ export default function App() {
       <aside className="sidebar">
         <div>
           <div className="sidebar-header">
-            <h2>AI_OOPS</h2>
+            <h2>bia</h2>
             <p>Enterprise Multi-Agent AI Operations Platform</p>
           </div>
           <nav className="menu-list">
@@ -547,7 +547,7 @@ export default function App() {
                   {messages.length === 0 ? (
                     <div className="empty-state-container">
                       <div className="empty-state-title">
-                        How can AI_OOPS help today?
+                        How can bia help today?
                       </div>
                       <div className="empty-state-subtitle">
                         Ask about employee details, departments, corporate policies, or pipeline diagnostics.
@@ -555,7 +555,7 @@ export default function App() {
                       <div className="prompt-suggestions-grid">
                         <div 
                           className="suggestion-card" 
-                          onClick={() => handleSelectSuggestion("What are the core operational hours defined by AI_OOPS?")}
+                          onClick={() => handleSelectSuggestion("What are the core operational hours defined by bia?")}
                         >
                           <div className="suggestion-card-title">Corporate Rules</div>
                           <div className="suggestion-card-desc">Check standard operational hours & leave policies.</div>

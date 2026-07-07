@@ -19,7 +19,7 @@ from langchain_core.messages import SystemMessage, HumanMessage
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
-    title="AI_OOPS RAG Service",
+    title="bia RAG Service",
     description="RAG service for document loading, indexing, and hybrid retrieval with reranking.",
     version="1.0.0"
 )

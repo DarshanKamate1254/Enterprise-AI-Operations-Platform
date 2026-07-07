@@ -106,7 +106,9 @@ class HybridRetriever:
             except Exception:
                 pass
 
-    def _cosine_similarity(self, v1: List[float], v2: List[float]) -> float:
+    def _cosine_similarity(self, v1: Optional[List[float]], v2: Optional[List[float]]) -> float:
+        if v1 is None or v2 is None:
+            return 0.0
         a = np.array(v1)
         b = np.array(v2)
         denom = (np.linalg.norm(a) * np.linalg.norm(b))
@@ -332,7 +334,7 @@ class HybridRetriever:
                     # Calculate similarity with already selected points
                     max_sim = -1.0
                     for sel_idx in selected_indices:
-                        sim = self._cosine_similarity(candidate["vector"], search_results[sel_idx]["vector"])
+                        sim = self._cosine_similarity(candidate.get("vector"), search_results[sel_idx].get("vector"))
                         if sim > max_sim:
                             max_sim = sim
                             
@@ -363,14 +365,23 @@ class HybridRetriever:
                 file_groups.setdefault(fn, []).append(item)
                 
             stitched_results = []
+            def get_chunk_idx(x):
+                val = x.get("metadata", {}).get("chunk_index")
+                if val is None:
+                    return 0
+                try:
+                    return int(val)
+                except (ValueError, TypeError):
+                    return 0
+
             for fn, group in file_groups.items():
                 # Sort group by chunk index
-                group_sorted = sorted(group, key=lambda x: x["metadata"].get("chunk_index", 0))
+                group_sorted = sorted(group, key=get_chunk_idx)
                 
                 temp_chunk = group_sorted[0]
                 for next_chunk in group_sorted[1:]:
-                    idx_curr = temp_chunk["metadata"].get("chunk_index", 0)
-                    idx_next = next_chunk["metadata"].get("chunk_index", 0)
+                    idx_curr = get_chunk_idx(temp_chunk)
+                    idx_next = get_chunk_idx(next_chunk)
                     
                     # If chunks are consecutive (difference of 1), stitch them together
                     if idx_next - idx_curr <= 1:

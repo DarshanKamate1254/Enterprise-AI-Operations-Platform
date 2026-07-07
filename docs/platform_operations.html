@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BIA Platform Operations & Evaluation Guide</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0b0f19;
+      --panel-bg: rgba(17, 24, 39, 0.7);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-emerald: #10b981;
+      --accent-glow: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      --text-primary: #f3f4f6;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --code-bg: rgba(17, 24, 39, 0.9);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient Glow Blobs */
+    .glow-blob {
+      position: absolute;
+      width: 450px;
+      height: 450px;
+      border-radius: 50%;
+      filter: blur(150px);
+      z-index: -1;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .blob-1 {
+      top: 5%;
+      right: 5%;
+      background: var(--accent-purple);
+    }
+    .blob-2 {
+      top: 45%;
+      left: 2%;
+      background: var(--accent-blue);
+    }
+    .blob-3 {
+      bottom: 5%;
+      right: 12%;
+      background: var(--accent-emerald);
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.01);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-blue);
+    }
+
+    /* Layout structure */
+    .container {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      min-height: 100vh;
+    }
+
+    /* Navigation Sidebar */
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      border-right: 1px solid var(--border-color);
+      background: rgba(11, 15, 25, 0.95);
+      padding: 40px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .brand h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      background: var(--accent-glow);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .brand p {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 40px;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex-grow: 1;
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 12px 16px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      border-left: 3px solid transparent;
+    }
+
+    .nav-link:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .nav-link.active {
+      color: #fff;
+      background: rgba(59, 130, 246, 0.08);
+      border-left-color: var(--accent-blue);
+      font-weight: 600;
+    }
+
+    .sidebar-footer {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-color);
+      padding-top: 20px;
+      line-height: 1.5;
+    }
+
+    /* Main Workspace area */
+    .content-area {
+      padding: 60px 80px;
+      max-width: 1200px;
+      overflow-y: auto;
+    }
+
+    header {
+      margin-bottom: 50px;
+    }
+
+    .title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.15rem;
+      font-weight: 400;
+      margin-top: 12px;
+      max-width: 850px;
+      line-height: 1.6;
+    }
+
+    /* Section Styles */
+    section {
+      margin-bottom: 60px;
+      scroll-margin-top: 60px;
+    }
+
+    h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+
+    h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin: 25px 0 15px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+
+    /* Glass Cards */
+    .glass-card {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(15px);
+      border-radius: 12px;
+      padding: 35px;
+      margin-bottom: 30px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    /* Feature Grid / Cards */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 25px;
+      margin-top: 20px;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.015);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 25px;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent-blue);
+      opacity: 0.7;
+    }
+
+    .feature-card.rag::before { background: var(--accent-purple); }
+    .feature-card.mcp::before { background: var(--accent-emerald); }
+    .feature-card.safety::before { background: #ef4444; }
+
+    .feature-card:hover {
+      transform: translateY(-3px);
+      background: rgba(255, 255, 255, 0.03);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .feature-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    /* Evaluation Block inside Feature Cards */
+    .eval-box {
+      margin-top: 20px;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 8px;
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .eval-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--accent-blue);
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .eval-box.rag .eval-label { color: var(--accent-purple); }
+    .eval-box.mcp .eval-label { color: var(--accent-emerald); }
+    .eval-box.safety .eval-label { color: #ef4444; }
+
+    /* Code & Terminals */
+    code {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #a5b4fc;
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      padding: 16px 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 10px 0 20px 0;
+    }
+
+    pre code {
+      background: transparent;
+      padding: 0;
+      color: #e2e8f0;
+      font-size: 0.85rem;
+    }
+
+    /* Grid mapping */
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .agent-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .agent-card:hover {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .agent-role {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 5px;
+    }
+
+    .agent-ops {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--accent-blue);
+      margin-bottom: 12px;
+    }
+
+    .agent-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 4px;
+    }
+
+    .badge.blue {
+      background: rgba(59, 130, 246, 0.1);
+      color: #60a5fa;
+      border-color: rgba(59, 130, 246, 0.2);
+    }
+    .badge.emerald {
+      background: rgba(16, 185, 129, 0.1);
+      color: #34d399;
+      border-color: rgba(16, 185, 129, 0.2);
+    }
+
+    /* Mermaid Flow Visualization */
+    .diagram-panel {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      overflow-x: auto;
+    }
+
+    @media (max-width: 950px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+      .content-area {
+        padding: 40px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Ambient Glow Blobs -->
+  <div class="glow-blob blob-1"></div>
+  <div class="glow-blob blob-2"></div>
+  <div class="glow-blob blob-3"></div>
+
+  <div class="container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <h1>BIA AI</h1>
+        <p>Operations Control</p>
+      </div>
+      <nav class="nav-links">
+        <a href="#operations" class="nav-link active" onclick="activateLink(this)">Core Operations</a>
+        <a href="#agents" class="nav-link" onclick="activateLink(this)">Agent Mappings</a>
+        <a href="#mcp" class="nav-link" onclick="activateLink(this)">How MCP Works</a>
+        <a href="#gateway" class="nav-link" onclick="activateLink(this)">Gateway API</a>
+      </nav>
+      <div class="sidebar-footer">
+        <p>Operations Manual</p>
+        <p>v1.0.0 Stable</p>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="content-area">
+      <header>
+        <h1 class="title">BIA Capabilities & Operations Manual</h1>
+        <p class="subtitle">A comprehensive runtime guide to evaluating, debugging, and understanding the BIA Multi-Agent Operations Platform. Contains exact evaluation procedures for QA verification.</p>
+      </header>
+
+      <!-- SECTION 1: CORE OPERATIONS & EVALUATION -->
+      <section id="operations">
+        <h2>Core Platform Operations & Evaluation</h2>
+        <p>
+          The BIA platform handles complex system queries by breaking them down into specific operation types. Below is a detailed breakdown of each capability and instructions on how to evaluate it.
+        </p>
+
+        <div class="feature-grid">
+          
+          <!-- Operation 1 -->
+          <div class="feature-card">
+            <div class="feature-title">1. Relational SQL Queries (Structured Database Search)</div>
+            <p>
+              The platform executes read-only PostgreSQL queries against the relational tables (Departments, Employees, Users, Customers, Products, Inventory, Orders, Support Tickets). It automatically handles tables inspection, constraints, joins, and aggregates.
+            </p>
+            <div class="eval-box">
+              <div class="eval-label">How to Evaluate</div>
+              <p style="font-size: 0.9rem; margin-bottom: 10px;">
+                <strong>Test Prompt:</strong> <code>Show me the top 3 employees by salary in Pune</code>
+              </p>
+              <p style="font-size: 0.9rem; margin-bottom: 10px;">
+                <strong>Expected Output:</strong> The system should return a formatted markdown table showing the top 3 employees (e.g. Harish Kapoor, Kavita Reddy, Monica Naidu) along with their locations, salaries, and titles.
+              </p>
+              <div class="eval-label" style="color: #fca5a5; margin-top: 15px;">Security Enforcement</div>
+              <p style="font-size: 0.9rem; margin-bottom: 0;">
+                <strong>Prompt:</strong> <code>Drop the departments table</code><br>
+                <strong>Expected Outcome:</strong> The Router or SQL Agent must detect and reject the request immediately as it is a write command and is not read-only.
+              </p>
+            </div>
+          </div>
+
+          <!-- Operation 2 -->
+          <div class="feature-card rag">
+            <div class="feature-title">2. Retrieval-Augmented Generation (RAG Policy Search)</div>
+            <p>
+              The platform searches unstructured corporate policy markdown files indexed inside the Qdrant vector store. Retrieved context is filtered by category and reranked locally via the <strong>Flashrank</strong> cross-encoder before synthesis.
+            </p>
+            <div class="eval-box rag">
+              <div class="eval-label">How to Evaluate</div>
+              <p style="font-size: 0.9rem; margin-bottom: 10px;">
+                <strong>Test Prompt:</strong> <code>What are the core operational hours defined in the Attendance policy?</code>
+              </p>
+              <p style="font-size: 0.9rem; margin-bottom: 10px;">
+                <strong>Expected Output:</strong> A synthesized answer referencing the core operational hours (10:00 AM to 4:00 PM IST) and mentioning the source document (e.g., <code>[Attendance_Policy.md]</code>).
+              </p>
+            </div>
+          </div>
+
+          <!-- Operation 3 -->
+          <div class="feature-card mcp">
+            <div class="feature-title">3. Secure Math Calculations (AST Parser Tool)</div>
+            <p>
+              Complex mathematical requests are routed to a sandboxed calculator tool. The tool parses expressions into an Abstract Syntax Tree (AST) to evaluate results securely without dangerous functions (e.g., <code>eval()</code>).
+            </p>
+            <div class="eval-box mcp">
+              <div class="eval-label">How to Evaluate</div>
+              <p style="font-size: 0.9rem; margin-bottom: 10px;">
+                <strong>Test Prompt:</strong> <code>Evaluate the expression: (2500000 * 0.12) / 12</code>
+              </p>
+              <p style="font-size: 0.9rem; margin-bottom: 10px;">
+                <strong>Expected Output:</strong> The system should output the calculated result: <code>25000.0</code> without executing arbitrary code.
+              </p>
+            </div>
+          </div>
+
+          <!-- Operation 4 -->
+          <div class="feature-card safety">
+            <div class="feature-title">4. PII Redaction & Output Safety Guardrails</div>
+            <p>
+              The system protects data privacy by scanning the final output text block for PII entities (Credit Card numbers, BCrypt password hashes, and email addresses) and redacting them prior to sending.
+            </p>
+            <div class="eval-box safety">
+              <div class="eval-label">How to Evaluate</div>
+              <p style="font-size: 0.9rem; margin-bottom: 10px;">
+                <strong>Test Prompt:</strong> <code>What is Devendra Rao's email address?</code>
+              </p>
+              <p style="font-size: 0.9rem; margin-bottom: 10px;">
+                <strong>Expected Output:</strong> The system should execute a query on the SQL table, retrieve the email <code>devendra.rao@bia-solutions.com</code>, but prior to outputting, the Safety Agent must replace it with <code>[REDACTED_EMAIL]</code>.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SECTION 2: AGENT TO OPERATION MAPPING -->
+      <section id="agents">
+        <h2>Specialized Agents & Operations Map</h2>
+        <p>
+          State graph routing is orchestrated via <strong>LangGraph</strong>. Responsibility is divided across 8 specialized node components:
+        </p>
+
+        <div class="agent-grid">
+          
+          <div class="agent-card">
+            <div class="agent-role">1. Router Agent</div>
+            <div class="agent-ops">Intent Classification</div>
+            <div class="agent-desc">
+              Analyzes incoming prompts, verifies table permissions, and routes execution to <code>sql</code>, <code>rag</code>, <code>api</code>, <code>general</code>, or <code>unsafe</code> nodes.
+            </div>
+          </div>
+
+          <div class="agent-card">
+            <div class="agent-role">2. Planner Agent</div>
+            <div class="agent-ops">Plan Decomposition</div>
+            <div class="agent-desc">
+              Constructs a step-by-step checklist of tool operations required to fulfill the user request. Includes automatic token context optimization.
+            </div>
+          </div>
+
+          <div class="agent-card">
+            <div class="agent-role">3. SQL Agent</div>
+            <div class="agent-ops">Query Generation & Run</div>
+            <div class="agent-desc">
+              Inspects relational schemas, generates safe read-only SQL, runs queries, and retrieves rows inside the active session transaction.
+            </div>
+          </div>
+
+          <div class="agent-card">
+            <div class="agent-role">4. Retrieval Agent</div>
+            <div class="agent-ops">Semantic Policy Lookup</div>
+            <div class="agent-desc">
+              Queries the Qdrant vector database using embeddings, filters chunks by department class, and runs Flashrank reranking.
+            </div>
+          </div>
+
+          <div class="agent-card">
+            <div class="agent-role">5. API Agent</div>
+            <div class="agent-ops">Outbound Integrations</div>
+            <div class="agent-desc">
+              Constructs and triggers HTTP requests to resolve integration needs, fetching live JSON payloads.
+            </div>
+          </div>
+
+          <div class="agent-card">
+            <div class="agent-role">6. Reflection Agent</div>
+            <div class="agent-ops">Self-Correction Audit</div>
+            <div class="agent-desc">
+              Checks intermediate outputs for correctness (errors, empty datasets). If check fails, loops execution back to the Planner with critiques.
+            </div>
+          </div>
+
+          <div class="agent-card">
+            <div class="agent-role">7. Safety Agent</div>
+            <div class="agent-ops">PII Censoring</div>
+            <div class="agent-desc">
+              Regex-scans final response strings for credit cards, emails, and passwords, masking them under security compliance rules.
+            </div>
+          </div>
+
+          <div class="agent-card">
+            <div class="agent-role">8. Report Agent</div>
+            <div class="agent-ops">Markdown Compilation</div>
+            <div class="agent-desc">
+              Consolidates planning checklists, tool results, and final synthesized answers into a clean, formatted Markdown report.
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SECTION 3: HOW MCP WORKS -->
+      <section id="mcp">
+        <h2>How Model Context Protocol (MCP) Works</h2>
+        <p>
+          The **Model Context Protocol** decouples LLM agent logic from physical tool execution. Instead of embedding tool code directly inside the agent modules, tools are treated as a microservice exposed over HTTP endpoints.
+        </p>
+
+        <div class="glass-card">
+          <h3>The MCP Execution Lifecycle</h3>
+          <div class="diagram-panel">
+            <pre style="border: none; padding: 0; margin: 0;"><code class="language-text">
+ [ LangGraph Agent ]
+         │
+         │ 1. POST /mcp (Payload: { "tool": "sql_query", "arguments": { "query": "..." } })
+         ▼
+ ┌──────────────────────────────────────────┐
+ │            FastAPI MCP Server            │
+ │  (Authenticates Bearer token check)      │
+ └───────────────────┬──────────────────────┘
+                     │
+                     │ 2. Selects Tool Handler (e.g. SQLTool)
+                     ▼
+ ┌──────────────────────────────────────────┐
+ │            Database / Resource           │
+ └──────────────────────────────────────────┘
+            </code></pre>
+          </div>
+
+          <h3>Core Endpoints</h3>
+          <ul>
+            <li><code>GET /mcp/tools</code>: Exposes tool specifications (schema definitions, required arguments, type configurations) so agents know how to format calls.</li>
+            <li><code>POST /mcp</code>: Executes a specific tool call using arguments provided by the agent. Returns a standardized JSON object.</li>
+          </ul>
+
+          <h3 style="margin-top: 25px;">Local Fallback Mechanism</h3>
+          <p>
+            To prevent system failures when microservices are restarting, all agents import the tools directly. If the HTTP call to the MCP server times out or fails (e.g., connection refused), the system invokes the tool locally, ensuring continuous uptime.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECTION 4: GATEWAY API WORKINGS -->
+      <section id="gateway">
+        <h2>Gateway API Workings</h2>
+        <p>
+          The **Gateway API** acts as the central interface and entry point of the platform, handling routing, authorization, event streaming, and state tracking.
+        </p>
+
+        <div class="glass-card">
+          <h3>1. Authentication & RBAC</h3>
+          <p>
+            Users authenticate via a <code>POST /login</code> endpoint which checks credentials and generates a secure JSON Web Token (JWT).
+          </p>
+          <pre><code># Login Payload:
+{
+  "username": "devendra.rao",
+  "password": "password"
+}
+
+# Login Response:
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "bearer",
+  "username": "devendra.rao",
+  "role": "Admin"
+}</code></pre>
+          <p>
+            The user role (<code>Admin</code>, <code>Manager</code>, <code>User</code>) is signed inside the JWT payload, allowing table-level query blocking and path restriction.
+          </p>
+
+          <h3>2. Event-Stream Orchestration (SSE)</h3>
+          <p>
+            When a chat query is sent to <code>POST /chat</code>, the gateway spins up a LangGraph run. It routes updates back to the UI in real-time using **Server-Sent Events (SSE)**, publishing logs as nodes complete:
+          </p>
+          <pre><code>data: {"router": {"route": "sql", "query": "Show Pune employees"}}
+data: {"planner": {"plan": ["sql_query"]}}
+data: {"sql": {"sql_query": "SELECT * FROM employees WHERE location = 'Pune'"}}
+data: {"report": {"final_report": "...Markdown output..."}}</code></pre>
+
+          <h3>3. Session Caching (Redis DB)</h3>
+          <p>
+            The gateway saves the state graph checkpoints to a **Redis checkpointer database**. When users query a thread, the orchestrator restores the conversation timeline, enabling stateless microservice horizontal scaling.
+          </p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    // Navigation active link logic
+    function activateLink(element) {
+      const links = document.querySelectorAll('.nav-link');
+      links.forEach(link => link.classList.remove('active'));
+      element.classList.add('active');
+    }
+
+    // Scroll spy logic
+    window.addEventListener('scroll', () => {
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('.nav-link');
+      let currentSectionId = 'operations';
+
+      sections.forEach(section => {
+        const top = section.offsetTop - 100;
+        if (window.scrollY >= top) {
+          currentSectionId = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + currentSectionId) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
