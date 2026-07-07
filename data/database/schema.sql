@@ -1,5 +1,5 @@
 -- PostgreSQL Schema for Enterprise AI Operations Platform
--- Darshan_AI_Engineer_Ops Pvt. Ltd.
+-- AI_OOPS Pvt. Ltd.
 
 DROP TABLE IF EXISTS support_tickets CASCADE;
 DROP TABLE IF EXISTS orders CASCADE;

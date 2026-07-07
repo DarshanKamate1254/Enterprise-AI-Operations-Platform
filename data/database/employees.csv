@@ -1,51 +1,51 @@
 employee_id,full_name,email,phone,department_id,manager_id,salary,joining_date,location,status
-1,Devendra Rao,devendra.rao@novatech-solutions.com,+91-98765-43210,1,,3800000.0,2020-01-10,Bengaluru,Active
-2,Neha Gupta,neha.gupta@novatech-solutions.com,+91-98765-43211,2,1,2900000.0,2021-01-24,Bengaluru,Active
-3,Ananya Sharma,ananya.sharma@novatech-solutions.com,+91-98765-43212,3,1,2100000.0,2022-04-08,Bengaluru,Active
-4,Vikram Sen,vikram.sen@novatech-solutions.com,+91-98765-43213,4,1,2600000.0,2021-12-04,Bengaluru,Active
-5,Sarah Jenkins,sarah.jenkins@novatech-solutions.com,+91-98765-43214,5,1,2800000.0,2021-10-14,Bengaluru,Active
-6,Meera Nair,meera.nair@novatech-solutions.com,+91-98765-43215,6,1,2000000.0,2021-01-03,Bengaluru,Active
-7,Neha Nair,neha.nair7@novatech-solutions.com,+91-98555-00007,3,3,1029903.0,2025-01-18,Pune,On Leave
-8,Sanjay Mehta,sanjay.mehta8@novatech-solutions.com,+91-98555-00008,3,3,1117889.0,2024-01-25,Pune,On Leave
-9,Deepika Kumar,deepika.kumar9@novatech-solutions.com,+91-98555-00009,4,4,663032.0,2023-06-04,Bengaluru,On Leave
-10,Karan Singh,karan.singh10@novatech-solutions.com,+91-98555-00010,2,2,1321327.0,2025-05-26,Bengaluru,On Leave
-11,Kavita Reddy,kavita.reddy11@novatech-solutions.com,+91-98555-00011,6,6,796922.0,2023-09-10,Delhi NCR,Active
-12,Amit Choudhury,amit.choudhury12@novatech-solutions.com,+91-98555-00012,6,6,472933.0,2023-11-08,Mumbai,Active
-13,Priya Das,priya.das13@novatech-solutions.com,+91-98555-00013,3,3,898591.0,2024-08-21,Mumbai,Active
-14,Rajesh Bose,rajesh.bose14@novatech-solutions.com,+91-98555-00014,4,4,719684.0,2025-05-23,Bengaluru,Active
-15,Swati Mishra,swati.mishra15@novatech-solutions.com,+91-98555-00015,6,6,656702.0,2023-08-13,Mumbai,Active
-16,Devendra Pillai,devendra.pillai16@novatech-solutions.com,+91-98555-00016,4,14,740174.0,2023-06-13,Mumbai,Active
-17,Meera Deshmukh,meera.deshmukh17@novatech-solutions.com,+91-98555-00017,3,7,829963.0,2023-11-16,Hyderabad,On Leave
-18,Vijay Nair,vijay.nair18@novatech-solutions.com,+91-98555-00018,3,8,646413.0,2023-12-18,Delhi NCR,Active
-19,Shalini Iyer,shalini.iyer19@novatech-solutions.com,+91-98555-00019,6,12,1011878.0,2024-06-08,Pune,On Leave
-20,Pranav Pandey,pranav.pandey20@novatech-solutions.com,+91-98555-00020,2,2,829950.0,2023-11-06,Hyderabad,Active
-21,Divya Saxena,divya.saxena21@novatech-solutions.com,+91-98555-00021,5,5,1849668.0,2024-09-09,Delhi NCR,Active
-22,Suresh Roy,suresh.roy22@novatech-solutions.com,+91-98555-00022,2,2,1726108.0,2024-11-11,Bengaluru,Active
-23,Ritu Banerjee,ritu.banerjee23@novatech-solutions.com,+91-98555-00023,5,21,1551527.0,2023-12-24,Mumbai,Active
-24,Ankit Soni,ankit.soni24@novatech-solutions.com,+91-98555-00024,6,19,1055674.0,2024-11-17,Delhi NCR,Active
-25,Nisha Vyas,nisha.vyas25@novatech-solutions.com,+91-98555-00025,3,13,669396.0,2025-09-01,Delhi NCR,Active
-26,Manoj Dubey,manoj.dubey26@novatech-solutions.com,+91-98555-00026,5,21,834603.0,2024-05-08,Bengaluru,Active
-27,Aarti Shetty,aarti.shetty27@novatech-solutions.com,+91-98555-00027,6,6,489814.0,2025-08-27,Bengaluru,Active
-28,Harish Kapoor,harish.kapoor28@novatech-solutions.com,+91-98555-00028,3,3,998369.0,2025-03-09,Delhi NCR,On Leave
-29,Komal Chatterjee,komal.chatterjee29@novatech-solutions.com,+91-98555-00029,3,25,710922.0,2025-05-13,Mumbai,On Leave
-30,Sandip Mahajan,sandip.mahajan30@novatech-solutions.com,+91-98555-00030,6,27,526882.0,2023-04-03,Mumbai,Active
-31,Preeti Kulkarni,preeti.kulkarni31@novatech-solutions.com,+91-98555-00031,6,19,641292.0,2025-04-01,Bengaluru,Active
-32,Sunil Prasad,sunil.prasad32@novatech-solutions.com,+91-98555-00032,3,3,532938.0,2024-02-17,Pune,Active
-33,Monica Naidu,monica.naidu33@novatech-solutions.com,+91-98555-00033,5,5,1730855.0,2023-12-19,Delhi NCR,On Leave
-34,Abhishek Menon,abhishek.menon34@novatech-solutions.com,+91-98555-00034,3,18,926833.0,2023-02-04,Hyderabad,Active
-35,Jyoti Dave,jyoti.dave35@novatech-solutions.com,+91-98555-00035,5,21,1579421.0,2025-01-22,Bengaluru,Active
-36,Yogesh Kaur,yogesh.kaur36@novatech-solutions.com,+91-98555-00036,5,35,829153.0,2023-04-07,Delhi NCR,On Leave
-37,Kiran Dutta,kiran.dutta37@novatech-solutions.com,+91-98555-00037,3,17,692401.0,2024-08-08,Bengaluru,On Leave
-38,Gaurav Bhalerao,gaurav.bhalerao38@novatech-solutions.com,+91-98555-00038,6,12,453045.0,2025-09-27,Bengaluru,Active
-39,Sneha Kamate,sneha.kamate39@novatech-solutions.com,+91-98555-00039,3,37,926156.0,2024-08-07,Hyderabad,Active
-40,Alok Sharma,alok.sharma40@novatech-solutions.com,+91-98555-00040,3,28,502260.0,2024-05-26,Hyderabad,Active
-41,Priyanka Verma,priyanka.verma41@novatech-solutions.com,+91-98555-00041,5,33,924632.0,2023-05-07,Bengaluru,Active
-42,Nitin Gupta,nitin.gupta42@novatech-solutions.com,+91-98555-00042,4,16,552578.0,2025-08-17,Delhi NCR,Active
-43,Poonam Sen,poonam.sen43@novatech-solutions.com,+91-98555-00043,2,2,768005.0,2023-02-20,Bengaluru,Active
-44,Rakesh Patel,rakesh.patel44@novatech-solutions.com,+91-98555-00044,5,21,1794695.0,2023-10-20,Bengaluru,Active
-45,Sonal Joshi,sonal.joshi45@novatech-solutions.com,+91-98555-00045,5,21,1146865.0,2023-11-23,Mumbai,Active
-46,Manish Rao,manish.rao46@novatech-solutions.com,+91-98555-00046,4,9,637235.0,2025-11-10,Hyderabad,Active
-47,Riddhi Nair,riddhi.nair47@novatech-solutions.com,+91-98555-00047,2,43,1561094.0,2025-10-04,Bengaluru,Active
-48,Varun Mehta,varun.mehta48@novatech-solutions.com,+91-98555-00048,6,6,538890.0,2024-02-08,Mumbai,Active
-49,Tanuja Kumar,tanuja.kumar49@novatech-solutions.com,+91-98555-00049,3,40,1069605.0,2025-05-20,Delhi NCR,Active
-50,Arjun Singh,arjun.singh50@novatech-solutions.com,+91-98555-00050,6,24,1095613.0,2023-03-09,Bengaluru,Active
+1,Devendra Rao,devendra.rao@aioops-solutions.com,+91-98765-43210,1,,3800000.0,2020-01-10,Bengaluru,Active
+2,Neha Gupta,neha.gupta@aioops-solutions.com,+91-98765-43211,2,1,2900000.0,2021-01-24,Bengaluru,Active
+3,Ananya Sharma,ananya.sharma@aioops-solutions.com,+91-98765-43212,3,1,2100000.0,2022-04-08,Bengaluru,Active
+4,Vikram Sen,vikram.sen@aioops-solutions.com,+91-98765-43213,4,1,2600000.0,2021-12-04,Bengaluru,Active
+5,Sarah Jenkins,sarah.jenkins@aioops-solutions.com,+91-98765-43214,5,1,2800000.0,2021-10-14,Bengaluru,Active
+6,Meera Nair,meera.nair@aioops-solutions.com,+91-98765-43215,6,1,2000000.0,2021-01-03,Bengaluru,Active
+7,Neha Nair,neha.nair7@aioops-solutions.com,+91-98555-00007,3,3,1029903.0,2025-01-18,Pune,On Leave
+8,Sanjay Mehta,sanjay.mehta8@aioops-solutions.com,+91-98555-00008,3,3,1117889.0,2024-01-25,Pune,On Leave
+9,Deepika Kumar,deepika.kumar9@aioops-solutions.com,+91-98555-00009,4,4,663032.0,2023-06-04,Bengaluru,On Leave
+10,Karan Singh,karan.singh10@aioops-solutions.com,+91-98555-00010,2,2,1321327.0,2025-05-26,Bengaluru,On Leave
+11,Kavita Reddy,kavita.reddy11@aioops-solutions.com,+91-98555-00011,6,6,796922.0,2023-09-10,Delhi NCR,Active
+12,Amit Choudhury,amit.choudhury12@aioops-solutions.com,+91-98555-00012,6,6,472933.0,2023-11-08,Mumbai,Active
+13,Priya Das,priya.das13@aioops-solutions.com,+91-98555-00013,3,3,898591.0,2024-08-21,Mumbai,Active
+14,Rajesh Bose,rajesh.bose14@aioops-solutions.com,+91-98555-00014,4,4,719684.0,2025-05-23,Bengaluru,Active
+15,Swati Mishra,swati.mishra15@aioops-solutions.com,+91-98555-00015,6,6,656702.0,2023-08-13,Mumbai,Active
+16,Devendra Pillai,devendra.pillai16@aioops-solutions.com,+91-98555-00016,4,14,740174.0,2023-06-13,Mumbai,Active
+17,Meera Deshmukh,meera.deshmukh17@aioops-solutions.com,+91-98555-00017,3,7,829963.0,2023-11-16,Hyderabad,On Leave
+18,Vijay Nair,vijay.nair18@aioops-solutions.com,+91-98555-00018,3,8,646413.0,2023-12-18,Delhi NCR,Active
+19,Shalini Iyer,shalini.iyer19@aioops-solutions.com,+91-98555-00019,6,12,1011878.0,2024-06-08,Pune,On Leave
+20,Pranav Pandey,pranav.pandey20@aioops-solutions.com,+91-98555-00020,2,2,829950.0,2023-11-06,Hyderabad,Active
+21,Divya Saxena,divya.saxena21@aioops-solutions.com,+91-98555-00021,5,5,1849668.0,2024-09-09,Delhi NCR,Active
+22,Suresh Roy,suresh.roy22@aioops-solutions.com,+91-98555-00022,2,2,1726108.0,2024-11-11,Bengaluru,Active
+23,Ritu Banerjee,ritu.banerjee23@aioops-solutions.com,+91-98555-00023,5,21,1551527.0,2023-12-24,Mumbai,Active
+24,Ankit Soni,ankit.soni24@aioops-solutions.com,+91-98555-00024,6,19,1055674.0,2024-11-17,Delhi NCR,Active
+25,Nisha Vyas,nisha.vyas25@aioops-solutions.com,+91-98555-00025,3,13,669396.0,2025-09-01,Delhi NCR,Active
+26,Manoj Dubey,manoj.dubey26@aioops-solutions.com,+91-98555-00026,5,21,834603.0,2024-05-08,Bengaluru,Active
+27,Aarti Shetty,aarti.shetty27@aioops-solutions.com,+91-98555-00027,6,6,489814.0,2025-08-27,Bengaluru,Active
+28,Harish Kapoor,harish.kapoor28@aioops-solutions.com,+91-98555-00028,3,3,998369.0,2025-03-09,Delhi NCR,On Leave
+29,Komal Chatterjee,komal.chatterjee29@aioops-solutions.com,+91-98555-00029,3,25,710922.0,2025-05-13,Mumbai,On Leave
+30,Sandip Mahajan,sandip.mahajan30@aioops-solutions.com,+91-98555-00030,6,27,526882.0,2023-04-03,Mumbai,Active
+31,Preeti Kulkarni,preeti.kulkarni31@aioops-solutions.com,+91-98555-00031,6,19,641292.0,2025-04-01,Bengaluru,Active
+32,Sunil Prasad,sunil.prasad32@aioops-solutions.com,+91-98555-00032,3,3,532938.0,2024-02-17,Pune,Active
+33,Monica Naidu,monica.naidu33@aioops-solutions.com,+91-98555-00033,5,5,1730855.0,2023-12-19,Delhi NCR,On Leave
+34,Abhishek Menon,abhishek.menon34@aioops-solutions.com,+91-98555-00034,3,18,926833.0,2023-02-04,Hyderabad,Active
+35,Jyoti Dave,jyoti.dave35@aioops-solutions.com,+91-98555-00035,5,21,1579421.0,2025-01-22,Bengaluru,Active
+36,Yogesh Kaur,yogesh.kaur36@aioops-solutions.com,+91-98555-00036,5,35,829153.0,2023-04-07,Delhi NCR,On Leave
+37,Kiran Dutta,kiran.dutta37@aioops-solutions.com,+91-98555-00037,3,17,692401.0,2024-08-08,Bengaluru,On Leave
+38,Gaurav Bhalerao,gaurav.bhalerao38@aioops-solutions.com,+91-98555-00038,6,12,453045.0,2025-09-27,Bengaluru,Active
+39,Sneha Kamate,sneha.kamate39@aioops-solutions.com,+91-98555-00039,3,37,926156.0,2024-08-07,Hyderabad,Active
+40,Alok Sharma,alok.sharma40@aioops-solutions.com,+91-98555-00040,3,28,502260.0,2024-05-26,Hyderabad,Active
+41,Priyanka Verma,priyanka.verma41@aioops-solutions.com,+91-98555-00041,5,33,924632.0,2023-05-07,Bengaluru,Active
+42,Nitin Gupta,nitin.gupta42@aioops-solutions.com,+91-98555-00042,4,16,552578.0,2025-08-17,Delhi NCR,Active
+43,Poonam Sen,poonam.sen43@aioops-solutions.com,+91-98555-00043,2,2,768005.0,2023-02-20,Bengaluru,Active
+44,Rakesh Patel,rakesh.patel44@aioops-solutions.com,+91-98555-00044,5,21,1794695.0,2023-10-20,Bengaluru,Active
+45,Sonal Joshi,sonal.joshi45@aioops-solutions.com,+91-98555-00045,5,21,1146865.0,2023-11-23,Mumbai,Active
+46,Manish Rao,manish.rao46@aioops-solutions.com,+91-98555-00046,4,9,637235.0,2025-11-10,Hyderabad,Active
+47,Riddhi Nair,riddhi.nair47@aioops-solutions.com,+91-98555-00047,2,43,1561094.0,2025-10-04,Bengaluru,Active
+48,Varun Mehta,varun.mehta48@aioops-solutions.com,+91-98555-00048,6,6,538890.0,2024-02-08,Mumbai,Active
+49,Tanuja Kumar,tanuja.kumar49@aioops-solutions.com,+91-98555-00049,3,40,1069605.0,2025-05-20,Delhi NCR,Active
+50,Arjun Singh,arjun.singh50@aioops-solutions.com,+91-98555-00050,6,24,1095613.0,2023-03-09,Bengaluru,Active

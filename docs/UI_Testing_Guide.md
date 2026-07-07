@@ -1,6 +1,6 @@
 # User Interface (UI) Testing Guide
 
-This guide describes how to manually test the **Darshan_AI_Engineer_Ops AI Enterprise Operations Platform Control Panel** dashboard, validating core features such as multi-agent chat workflows, role-based access control (RBAC) document ingestion, database schema inspection, and real-time observability metrics.
+This guide describes how to manually test the **AI_OOPS AI Enterprise Operations Platform Control Panel** dashboard, validating core features such as multi-agent chat workflows, role-based access control (RBAC) document ingestion, database schema inspection, and real-time observability metrics.
 
 ---
 

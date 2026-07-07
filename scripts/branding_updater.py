@@ -2,19 +2,26 @@ import os
 import re
 
 replacements = [
-    (re.compile(r'NovaTech Solutions Pvt\. Ltd\.', re.IGNORECASE), 'Darshan_AI_Engineer_Ops Pvt. Ltd.'),
-    (re.compile(r'NovaTech Solutions', re.IGNORECASE), 'Darshan_AI_Engineer_Ops'),
-    (re.compile(r'NovaTech Ops', re.IGNORECASE), 'Darshan_AI_Engineer_Ops'),
-    (re.compile(r'NovaTech', re.IGNORECASE), 'Darshan_AI_Engineer_Ops'),
-    (re.compile(r'novatech-solutions\.com', re.IGNORECASE), 'darshan-ai-engineer-ops.com'),
-    (re.compile(r'novatech\.com', re.IGNORECASE), 'darshan-ai-engineer-ops.com'),
+    (re.compile(r'Darshan_AI_Engineer_Ops Pvt\. Ltd\.', re.IGNORECASE), 'AI_OOPS Pvt. Ltd.'),
+    (re.compile(r'Darshan_AI_Engineer_Ops-solutions\.com', re.IGNORECASE), 'aioops-solutions.com'),
+    (re.compile(r'Darshan_AI_Engineer_Ops', re.IGNORECASE), 'AI_OOPS'),
+    (re.compile(r'darshan-ai-engineer-ops\.com', re.IGNORECASE), 'ai-oops.com'),
+    (re.compile(r'darshan_ai_engineer_ops', re.IGNORECASE), 'ai_oops'),
+    (re.compile(r"Darshan's", re.IGNORECASE), "AI_OOPS's"),
+    # Keep legacy NovaTech ones just in case
+    (re.compile(r'NovaTech Solutions Pvt\. Ltd\.', re.IGNORECASE), 'AI_OOPS Pvt. Ltd.'),
+    (re.compile(r'NovaTech Solutions', re.IGNORECASE), 'AI_OOPS'),
+    (re.compile(r'NovaTech Ops', re.IGNORECASE), 'AI_OOPS'),
+    (re.compile(r'NovaTech', re.IGNORECASE), 'AI_OOPS'),
+    (re.compile(r'novatech-solutions\.com', re.IGNORECASE), 'ai-oops.com'),
+    (re.compile(r'novatech\.com', re.IGNORECASE), 'ai-oops.com'),
 ]
 
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 exclude_dirs = {'.git', 'node_modules', 'dist', '.venv', 'site-packages', 'venv', '__pycache__', '.pytest_cache'}
 exclude_files = {'branding_updater.py'}
-extensions = {'.py', '.md', '.html', '.css', '.json', '.ts', '.tsx', '.sql', '.txt'}
+extensions = {'.py', '.md', '.html', '.css', '.json', '.ts', '.tsx', '.sql', '.txt', '.csv'}
 
 print("Starting branding refactoring...")
 updated_count = 0

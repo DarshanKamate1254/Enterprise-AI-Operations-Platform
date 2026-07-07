@@ -81,7 +81,7 @@ class TestPostgreSQLIntegration(unittest.TestCase):
         with self.assertRaises(ValueError) as ctx:
             schemas.EmployeeCreate(
                 full_name="John Doe",
-                email="john.doe@Darshan_AI_Engineer_Ops.com",
+                email="john.doe@AI_OOPS.com",
                 phone="+1-555-1234",
                 department_id=1,
                 salary=80000.0,
@@ -95,7 +95,7 @@ class TestPostgreSQLIntegration(unittest.TestCase):
         with self.assertRaises(ValueError) as ctx:
             schemas.EmployeeCreate(
                 full_name="John Doe",
-                email="john.doe@Darshan_AI_Engineer_Ops.com",
+                email="john.doe@AI_OOPS.com",
                 phone="+1-555-1234",
                 department_id=1,
                 salary=-500.0,

@@ -1,4 +1,4 @@
-# Darshan's Multi-Agent AI Engineer
+# AI_OOPS's Multi-Agent AI Engineer
 
 ### Flagship Enterprise Multi-Agent Operations Platform
 
@@ -198,4 +198,4 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more details.
 
 **Darshan Kamate**  
 *Principal AI Engineer & Software Architect*  
-*Email: darshan.kamate@Darshan_AI_Engineer_Ops-solutions.com*
+*Email: darshan.kamate@aioops-solutions.com*

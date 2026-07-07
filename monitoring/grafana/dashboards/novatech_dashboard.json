@@ -288,7 +288,7 @@
   "schemaVersion": 38,
   "style": "dark",
   "tags": [
-    "Darshan_AI_Engineer_Ops",
+    "AI_OOPS",
     "agents",
     "langgraph"
   ],
@@ -301,6 +301,6 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Darshan_AI_Engineer_Ops Pvt. Ltd. - AI Operations Dashboard",
+  "title": "AI_OOPS Pvt. Ltd. - AI Operations Dashboard",
   "version": 1
 }

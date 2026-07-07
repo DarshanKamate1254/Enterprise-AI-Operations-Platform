@@ -48,7 +48,23 @@ def api_node(state: AgentState) -> Dict[str, Any]:
     """
     with track_node_latency("api"):
         query = state.get("user_query") or ""
+        route = state.get("route")
+        plan = state.get("plan") or []
         
+        # Check if an API step is planned or if the route is explicitly api
+        api_keywords = {"api", "endpoint", "webhook", "http", "trigger", "url", "request", "post", "get", "put", "delete", "fetch", "external"}
+        has_api_step = any(any(kw in step.lower() for kw in api_keywords) for step in plan)
+        
+        if route != "api" and not has_api_step:
+            return {
+                "api_payload": "None required",
+                "api_result": "No API operations required by the current execution plan.",
+                "completed_steps": ["api"],
+                "messages": [
+                    ("assistant", "[API Action] Bypassed. No API operations were required by the execution plan.")
+                ]
+            }
+            
         agent = APIAgent()
         api_call = agent.generate_api_call(query)
         

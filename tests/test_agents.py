@@ -190,6 +190,7 @@ class TestAgentNodes(unittest.TestCase):
         mock_api_tool_context = mock_api_tool_class.return_value
         mock_api_tool_context.__enter__.return_value = mock_api_tool
         
+        self.state["route"] = "api"
         updates = api_node(self.state)
         self.assertIn("http://local-gw/health", updates["api_payload"])
         self.assertIn("status_code", updates["api_result"])

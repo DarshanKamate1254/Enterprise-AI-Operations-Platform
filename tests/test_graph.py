@@ -115,6 +115,7 @@ class TestLangGraphOrchestration(unittest.TestCase):
         self.assertEqual(result["plan"], [])  # Planner was bypassed
 
     # 3. TEST REFLECTION RETRY LOOP
+    @patch('agents.retrieval.RetrievalAgent')
     @patch('agents.sql.db_session')
     @patch('agents.api.APITool')
     @patch('agents.router.ChatOpenAI')
@@ -125,9 +126,14 @@ class TestLangGraphOrchestration(unittest.TestCase):
     @patch('agents.safety.ChatOpenAI')
     @patch('agents.report.ChatOpenAI')
     def test_reflection_retry_loop(
-        self, mock_report_llm, mock_safety_llm, mock_reflection_llm, mock_api_llm, mock_sql_llm, mock_planner_llm, mock_router_llm, mock_api_tool, mock_db_session
+        self, mock_report_llm, mock_safety_llm, mock_reflection_llm, mock_api_llm, mock_sql_llm, mock_planner_llm, mock_router_llm, mock_api_tool, mock_db_session, mock_retrieval_agent_class
     ):
         """Verify that failures in Reflection route back to the Planner for revisions."""
+        # Mock RetrievalAgent to prevent unmocked semantic embeddings / RAG backend calls
+        mock_retrieval_agent = MagicMock()
+        mock_retrieval_agent_class.return_value = mock_retrieval_agent
+        mock_retrieval_agent.execute_retrieval.return_value = []
+
         # Router -> sql
         mock_router = MagicMock()
         mock_router_llm.return_value = mock_router

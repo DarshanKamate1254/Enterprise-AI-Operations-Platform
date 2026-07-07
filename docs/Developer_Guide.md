@@ -1,6 +1,6 @@
 # Developer Setup Guide
 
-This guide provides instructions to run and test **Darshan's Multi-Agent AI Operations Platform** locally.
+This guide provides instructions to run and test **AI_OOPS's Multi-Agent AI Operations Platform** locally.
 
 ---
 

@@ -54,7 +54,7 @@ async def lifespan(app: FastAPI):
         logger.error(f"Error during OpenTelemetry TracerProvider shutdown: {e}")
 
 gateway = FastAPI(
-    title="Darshan_AI_Engineer_Ops Operations Platform - API Gateway",
+    title="AI_OOPS Operations Platform - API Gateway",
     description="API Gateway hosting Chat client workflows, upload ingestion targets, and RBAC authentication.",
     version="1.0.0",
     lifespan=lifespan
