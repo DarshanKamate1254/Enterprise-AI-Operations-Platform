@@ -1,6 +1,6 @@
 # Developer Setup Guide
 
-This guide provides instructions to run and test **bia's Multi-Agent AI Operations Platform** locally.
+This guide provides instructions to run and test **AI_OOPS's Multi-Agent AI Operations Platform** locally.
 
 ---
 
@@ -94,11 +94,7 @@ python mcp-server/mcp_app.py
 *Exposes tools on port `8080`.*
 
 ### B. Start the RAG Service
-On macOS/Linux:
-```bash
-export API_PORT=8001
-python rag-service/main.py
-```
+
 On Windows PowerShell:
 ```powershell
 $env:API_PORT="8001"
@@ -144,4 +140,45 @@ pytest -v
 pytest tests/test_agents.py -v
 
 # Run MCP server tests
+pytest tests/test_mcp.py -v
 ```
+
+---
+
+## 7. RAG Pipeline Evaluation (Ragas Metrics)
+
+The system includes a dedicated RAG evaluation suite located in `tests/test_rag_evaluation.py` that utilizes **Ragas metrics** (Faithfulness, Answer Relevancy, Context Precision, and Context Recall) to grade the pipeline.
+
+### How to Run the Evaluation
+
+1. **Via CLI (Command Line)**:
+   Run the evaluation test using `pytest`:
+   ```bash
+   pytest tests/test_rag_evaluation.py -v
+   ```
+   Or via `unittest`:
+   ```bash
+   python -m unittest tests/test_rag_evaluation.py
+   ```
+
+2. **Via API Gateways**:
+   Trigger the evaluation dynamically via a `POST` request to the API Gateway:
+   ```bash
+   curl -X POST http://localhost:8000/run-evaluation
+   ```
+
+### Modes of Execution
+
+- **Live Mode**: If a valid `OPENAI_API_KEY` is present in your `.env` file, the script connects to the OpenAI API and Ragas to compute standard LLM-based evaluation metrics.
+- **Simulated Mode**: If the key is invalid or has expired, the test script automatically detects the authentication issue, falls back to Simulated Mode using local text-similarity and coverage matching, and marks the report with a warning badge.
+
+### Viewing the Results
+
+The evaluation results are generated in two files in the project root:
+- `evaluation_report.html` (visual interactive report)
+- `evaluation_report.json` (raw metrics summary)
+
+You can view the dashboard report:
+1. **Directly**: Double-click or open `evaluation_report.html` in your browser.
+2. **Via Gateway**: Access the dashboard served by the API Gateway at `http://localhost:8000/evaluation`.
+3. **Inside React UI**: Log into the React Dashboard (`http://localhost:5173`) and navigate to the **Evaluation Center** tab to view the live dashboard and trigger evaluations on demand.

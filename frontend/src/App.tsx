@@ -53,7 +53,7 @@ export default function App() {
   const [authLoading, setAuthLoading] = useState(false);
 
   // Layout states
-  const [activeTab, setActiveTab] = useState<'chat' | 'ingest' | 'schema' | 'metrics'>('chat');
+  const [activeTab, setActiveTab] = useState<'chat' | 'ingest' | 'schema' | 'metrics' | 'evaluation'>('chat');
 
   // Chat workflow states
   const [messages, setMessages] = useState<Message[]>([]);
@@ -493,6 +493,13 @@ export default function App() {
               <Activity size={16} />
               Telemetry & Logs
             </button>
+            <button
+              className={`menu-item ${activeTab === 'evaluation' ? 'active' : ''}`}
+              onClick={() => setActiveTab('evaluation')}
+            >
+              <Cpu size={16} />
+              Evaluation Center
+            </button>
           </nav>
         </div>
         <div className="user-profile">
@@ -904,6 +911,24 @@ export default function App() {
                   </div>
                 </div>
               </div>
+            </div>
+          )}
+
+          {/* 5. EVALUATION CENTRE */}
+          {activeTab === 'evaluation' && (
+            <div style={{ height: 'calc(100vh - 180px)', width: '100%' }}>
+              <iframe 
+                src="http://localhost:8000/evaluation" 
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  border: 'none',
+                  borderRadius: '12px',
+                  background: 'var(--panel-bg)',
+                  boxShadow: '0 8px 30px rgba(0, 0, 0, 0.3)'
+                }}
+                title="BIA Evaluation Dashboard"
+              />
             </div>
           )}
         </div>

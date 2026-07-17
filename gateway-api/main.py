@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 import httpx
 from fastapi import FastAPI, Depends, HTTPException, status, UploadFile, File, Form, Response
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST
@@ -318,6 +318,54 @@ def metrics():
     Exposes Prometheus system status statistics.
     """
     return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
+
+
+# --- 6. RAG Evaluation Console & Runner (/evaluation) ---
+@gateway.get("/evaluation", response_class=HTMLResponse, tags=["Evaluation"])
+def get_evaluation():
+    """
+    Serves the HTML report for RAG evaluation.
+    """
+    root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    report_path = os.path.join(root_dir, "evaluation_report.html")
+    if not os.path.exists(report_path):
+        return HTMLResponse(
+            content="<html><body style='background-color:#080b13; color:#fff; font-family:sans-serif; text-align:center; padding-top:100px;'>"
+                    "<h1>Evaluation Report Not Generated Yet</h1>"
+                    "<p>Please click 'Run Re-Evaluation' inside the dashboard or trigger /run-evaluation via POST.</p>"
+                    "</body></html>"
+        )
+    with open(report_path, "r", encoding="utf-8") as f:
+        return HTMLResponse(content=f.read())
+
+
+@gateway.post("/run-evaluation", tags=["Evaluation"])
+def run_evaluation():
+    """
+    Runs the RAG evaluation test suite and updates the HTML report.
+    """
+    import subprocess
+    root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    python_exe = os.path.join(root_dir, ".venv", "Scripts", "python.exe")
+    if not os.path.exists(python_exe):
+        python_exe = "python"
+    
+    test_file = os.path.join(root_dir, "tests", "test_rag_evaluation.py")
+    try:
+        res = subprocess.run(
+            [python_exe, "-m", "unittest", test_file],
+            cwd=root_dir,
+            capture_output=True,
+            text=True
+        )
+        if res.returncode != 0:
+            logger.error(f"Evaluation run failed: {res.stderr}")
+            raise HTTPException(status_code=500, detail=f"Evaluation failed: {res.stderr or res.stdout}")
+        return {"success": True, "message": "Evaluation completed successfully."}
+    except Exception as e:
+        logger.error(f"Error running evaluation process: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 
 if __name__ == "__main__":

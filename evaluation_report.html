@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BIA RAG System Evaluation Dashboard</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-color: #080b13;
+      --panel-bg: rgba(13, 18, 33, 0.7);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-red: #ef4444;
+      --text-primary: #f3f4f6;
+      --text-secondary: #a0aec0;
+      --text-muted: #718096;
+      --code-bg: #030712;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      padding-bottom: 60px;
+    }
+
+    .ambient-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      filter: blur(160px);
+      z-index: -1;
+      opacity: 0.08;
+      pointer-events: none;
+    }
+    .glow-1 { top: -100px; right: 5%; background: var(--accent-purple); }
+    .glow-2 { bottom: 10%; left: 5%; background: var(--accent-blue); }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .brand h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 0%, #c7d2fe 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .brand p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .status-badge {
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-badge.live {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .status-badge.simulated {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-amber);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .refresh-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .refresh-btn:hover {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Warning alert */
+    .warning-alert {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+      margin-bottom: 30px;
+    }
+
+    .warning-icon {
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+
+    .warning-content {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .warning-content code {
+      font-family: 'Fira Code', monospace;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #fff;
+    }
+
+    /* Global Metrics Gauges */
+    .metrics-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 45px;
+    }
+
+    .summary-card {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .gauge-wrapper {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      margin-bottom: 15px;
+    }
+
+    .gauge-svg {
+      transform: rotate(-90deg);
+      width: 100%;
+      height: 100%;
+    }
+
+    .gauge-bg {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.04);
+      stroke-width: 10;
+    }
+
+    .gauge-fill {
+      fill: none;
+      stroke-width: 10;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s ease-out;
+    }
+
+    .gauge-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .summary-card h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .summary-card p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    /* Detailed Cases Section */
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .section-meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .eval-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .eval-card {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    .eval-card:hover {
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .eval-header {
+      padding: 20px 24px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.01);
+      user-select: none;
+    }
+
+    .eval-title-group {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-grow: 1;
+    }
+
+    .eval-index {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: rgba(59, 130, 246, 0.12);
+      color: #60a5fa;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .eval-query {
+      font-weight: 600;
+      color: #fff;
+      font-size: 1.05rem;
+    }
+
+    .eval-score-summary {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .avg-badge {
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      padding: 4px 12px;
+      border-radius: 6px;
+    }
+
+    .chevron {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      transition: transform 0.3s ease;
+    }
+
+    .eval-card.open .chevron {
+      transform: rotate(180deg);
+    }
+
+    .eval-details {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+      background: rgba(0, 0, 0, 0.15);
+      border-top: 1px solid var(--border-color);
+    }
+
+    .eval-card.open .eval-details {
+      max-height: 2000px;
+      transition: max-height 0.3s cubic-bezier(0.5, 0, 1, 0.5);
+    }
+
+    .eval-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 30px;
+      padding: 24px;
+    }
+
+    .eval-text-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .panel-section h5 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .truth-text {
+      background: rgba(16, 185, 129, 0.04);
+      border: 1px solid rgba(16, 185, 129, 0.12);
+      color: #a7f3d0;
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+
+    .response-text {
+      background: rgba(59, 130, 246, 0.04);
+      border: 1px solid rgba(59, 130, 246, 0.12);
+      color: #bfdbfe;
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+
+    .context-list {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .context-list li {
+      background: rgba(255, 255, 255, 0.015);
+      border: 1px solid var(--border-color);
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      font-family: 'Fira Code', monospace;
+      line-height: 1.5;
+    }
+
+    .eval-metrics-panel {
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .eval-metrics-panel h5 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    .metric-bar-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .metric-bar-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .metric-bar-name {
+      color: var(--text-secondary);
+    }
+
+    .metric-bar-track {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .metric-bar-fill {
+      height: 100%;
+      border-radius: 10px;
+      transition: width 1s ease-out;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <div class="container">
+    <header>
+      <div class="brand">
+        <h1>RAG System Evaluation</h1>
+        <p>Telemetry, manual verification, and metrics dashboard</p>
+      </div>
+      <div class="header-actions">
+        <span class="status-badge live">Live Mode (Ragas + OpenAI)</span>
+        <button class="refresh-btn" id="run-eval-btn" onclick="triggerEvaluation()">
+          <span style="font-size: 1.1rem; line-height: 1;">⚙️</span> Run Re-Evaluation
+        </button>
+      </div>
+    </header>
+
+    
+
+    <!-- Overall Summary Gauges -->
+    <div class="metrics-summary-grid">
+      <!-- Faithfulness Gauge -->
+      <div class="summary-card">
+        <div class="gauge-wrapper">
+          <svg class="gauge-svg" viewBox="0 0 100 100">
+            <circle class="gauge-bg" cx="50" cy="50" r="40"></circle>
+            <circle class="gauge-fill" cx="50" cy="50" r="40" stroke="#10b981" 
+                    stroke-dasharray="251.2" stroke-dashoffset="86.7238095238095"></circle>
+          </svg>
+          <div class="gauge-text">65%</div>
+        </div>
+        <h4>Faithfulness</h4>
+        <p>Checks if generated response matches retrieved context facts</p>
+      </div>
+
+      <!-- Answer Relevancy Gauge -->
+      <div class="summary-card">
+        <div class="gauge-wrapper">
+          <svg class="gauge-svg" viewBox="0 0 100 100">
+            <circle class="gauge-bg" cx="50" cy="50" r="40"></circle>
+            <circle class="gauge-fill" cx="50" cy="50" r="40" stroke="#3b82f6" 
+                    stroke-dasharray="251.2" stroke-dashoffset="38.897359243956004"></circle>
+          </svg>
+          <div class="gauge-text">84%</div>
+        </div>
+        <h4>Answer Relevancy</h4>
+        <p>Checks if response aligns directly to user's question intent</p>
+      </div>
+
+      <!-- Context Precision Gauge -->
+      <div class="summary-card">
+        <div class="gauge-wrapper">
+          <svg class="gauge-svg" viewBox="0 0 100 100">
+            <circle class="gauge-bg" cx="50" cy="50" r="40"></circle>
+            <circle class="gauge-fill" cx="50" cy="50" r="40" stroke="#8b5cf6" 
+                    stroke-dasharray="251.2" stroke-dashoffset="8.373333350498655"></circle>
+          </svg>
+          <div class="gauge-text">96%</div>
+        </div>
+        <h4>Context Precision</h4>
+        <p>Measures if relevant retrieved chunks are ranked at the top</p>
+      </div>
+
+      <!-- Context Recall Gauge -->
+      <div class="summary-card">
+        <div class="gauge-wrapper">
+          <svg class="gauge-svg" viewBox="0 0 100 100">
+            <circle class="gauge-bg" cx="50" cy="50" r="40"></circle>
+            <circle class="gauge-fill" cx="50" cy="50" r="40" stroke="#eab308" 
+                    stroke-dasharray="251.2" stroke-dashoffset="50.23999999999998"></circle>
+          </svg>
+          <div class="gauge-text">80%</div>
+        </div>
+        <h4>Context Recall</h4>
+        <p>Measures if retriever pulled all facts to answer the question</p>
+      </div>
+    </div>
+
+    <!-- Case by Case Section -->
+    <div class="section-title">
+      <span>Evaluation Dataset Results</span>
+      <span class="section-meta">Total cases: 5 &nbsp;|&nbsp; Latency: 74.37s</span>
+    </div>
+
+    <div class="eval-list">
+      
+            <div class="eval-card">
+                <div class="eval-header" onclick="toggleDetails(0)">
+                    <div class="eval-title-group">
+                        <span class="eval-index">Case #1</span>
+                        <span class="eval-query">What are the core operational hours defined in the Attendance Policy?</span>
+                    </div>
+                    <div class="eval-score-summary">
+                        <span class="avg-badge">Avg Score: 79%</span>
+                        <span class="chevron" id="chevron-0">▼</span>
+                    </div>
+                </div>
+                <div class="eval-details" id="details-0">
+                    <div class="eval-grid">
+                        <div class="eval-text-panel">
+                            <div class="panel-section">
+                                <h5>Expected Ground Truth</h5>
+                                <p class="truth-text">The core operational hours are 10:00 AM to 4:00 PM IST.</p>
+                            </div>
+                            <div class="panel-section">
+                                <h5>Generated Answer</h5>
+                                <p class="response-text">The core operational hours defined in the Attendance Policy are from 10:00 AM to 4:00 PM IST (Indian Standard Time) (Doc: Attendance_Policy.md).</p>
+                            </div>
+                            <div class="panel-section">
+                                <h5>Retrieved Context Chunks</h5>
+                                <ul class="context-list">
+                                    <li>Consistent attendance and punctuality are essential for AI_OOPS's collaborative work culture. We expect employees to be ready to work by their scheduled start time. Daily tracking is managed via biometric access in office facilities and VPN logs for remote workers. Core operational hours are 10:00 AM to 4:00 PM IST. AI_OOPS Pvt. Ltd. believes in fostering an environment of trust, safety, and mutual respect. Our core policy principles dictate that all assets, files, client data, and internal resources are
+...
+Consistent attendance and punctuality are essential for AI_OOPS's collaborative work culture. We expect employees to be ready to work by their scheduled start time. Daily tracking is managed via biometric access in office facilities and VPN logs for remote workers. Core operational hours are 10:00 AM to 4:00 PM IST. AI_OOPS Pvt. Ltd. believes in fostering an environment of trust, safety, and mutual respect. Our core policy principles dictate that all assets, files, client data, and internal resources are</li><li>To establish clear guidelines regarding punctuality, daily attendance tracking, core working hours, and the management of unscheduled absences. This document serves as a foundational pillar of governance within AI_OOPS Pvt. Ltd., ensuring that all operational milestones are met with the highest standard of professionalism, corporate discipline, and ethical execution. In an era of rapid technological advancement and changing market demands, having a clear and well-defined framework is crucial. This document</li><li>1. daily check-in: Tap biometric card at the security gate or log into the VPN and check-in on the HR Portal.
+2. core-hour compliance: Be present or online during core hours (10:00 AM - 4:00 PM).
+3. late arrivals: Notify the manager if arriving after 10:30 AM. Accumulating more than 3 late arrivals in a month triggers warning.
+4. tracking corrections: Submit attendance regularization requests within 48 hours in the portal for missed taps.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="eval-metrics-panel">
+                            <h5>Ragas Metric Evaluation</h5>
+                            
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Faithfulness</span>
+                        <span class="metric-bar-value" style="color: #ef4444">33%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 33%; background-color: #ef4444"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Answer relevancy</span>
+                        <span class="metric-bar-value" style="color: #10b981">99%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 99%; background-color: #10b981"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Context precision</span>
+                        <span class="metric-bar-value" style="color: #f59e0b">83%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 83%; background-color: #f59e0b"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Context recall</span>
+                        <span class="metric-bar-value" style="color: #10b981">100%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 100%; background-color: #10b981"></div>
+                    </div>
+                </div>
+                
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="eval-card">
+                <div class="eval-header" onclick="toggleDetails(1)">
+                    <div class="eval-title-group">
+                        <span class="eval-index">Case #2</span>
+                        <span class="eval-query">Can I book my own flights for corporate travel?</span>
+                    </div>
+                    <div class="eval-score-summary">
+                        <span class="avg-badge">Avg Score: 71%</span>
+                        <span class="chevron" id="chevron-1">▼</span>
+                    </div>
+                </div>
+                <div class="eval-details" id="details-1">
+                    <div class="eval-grid">
+                        <div class="eval-text-panel">
+                            <div class="panel-section">
+                                <h5>Expected Ground Truth</h5>
+                                <p class="truth-text">No, all bookings must be processed by the BIA travel desk to avail of corporate discount rates.</p>
+                            </div>
+                            <div class="panel-section">
+                                <h5>Generated Answer</h5>
+                                <p class="response-text">No, you cannot book your own flights for corporate travel. All bookings must be processed by the respective travel desk (e.g., bia travel desk, AI_OOPS travel desk, NovaTech travel desk, or Darshan_AI_Engineer_Ops travel desk) to avail of corporate discount rates (Doc: Travel_Policy.md).</p>
+                            </div>
+                            <div class="panel-section">
+                                <h5>Retrieved Context Chunks</h5>
+                                <ul class="context-list">
+                                    <li>## Frequently Asked Questions
+Below are answers to common questions regarding the interpretation and application of this policy:
+
+Q: Can I book my own flights?
+A: No, all bookings must be processed by the bia travel desk to avail of corporate discount rates.
+
+Q: What happens if I lose a receipt?
+A: For expenses under INR 500, a written declaration is accepted. Above that, missing receipts require department head approval.
+...
+## Frequently Asked Questions
+Below are answers to common questions regarding the interpretation and application of this policy:
+
+Q: Can I book my own flights?
+A: No, all bookings must be processed by the AI_OOPS travel desk to avail of corporate discount rates.
+
+Q: What happens if I lose a receipt?
+A: For expenses under INR 500, a written declaration is accepted. Above that, missing receipts require department head approval.</li><li>## Frequently Asked Questions
+Below are answers to common questions regarding the interpretation and application of this policy:
+
+Q: Can I book my own flights?
+A: No, all bookings must be processed by the NovaTech travel desk to avail of corporate discount rates.
+
+Q: What happens if I lose a receipt?
+A: For expenses under INR 500, a written declaration is accepted. Above that, missing receipts require department head approval.
+...
+## Frequently Asked Questions
+Below are answers to common questions regarding the interpretation and application of this policy:
+
+Q: Can I book my own flights?
+A: No, all bookings must be processed by the Darshan_AI_Engineer_Ops travel desk to avail of corporate discount rates.
+
+Q: What happens if I lose a receipt?
+A: For expenses under INR 500, a written declaration is accepted. Above that, missing receipts require department head approval.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="eval-metrics-panel">
+                            <h5>Ragas Metric Evaluation</h5>
+                            
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Faithfulness</span>
+                        <span class="metric-bar-value" style="color: #10b981">85%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 85%; background-color: #10b981"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Answer relevancy</span>
+                        <span class="metric-bar-value" style="color: #10b981">98%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 98%; background-color: #10b981"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Context precision</span>
+                        <span class="metric-bar-value" style="color: #10b981">99%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 99%; background-color: #10b981"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Context recall</span>
+                        <span class="metric-bar-value" style="color: #ef4444">0%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 0%; background-color: #ef4444"></div>
+                    </div>
+                </div>
+                
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="eval-card">
+                <div class="eval-header" onclick="toggleDetails(2)">
+                    <div class="eval-title-group">
+                        <span class="eval-index">Case #3</span>
+                        <span class="eval-query">Can I encash my leaves?</span>
+                    </div>
+                    <div class="eval-score-summary">
+                        <span class="avg-badge">Avg Score: 85%</span>
+                        <span class="chevron" id="chevron-2">▼</span>
+                    </div>
+                </div>
+                <div class="eval-details" id="details-2">
+                    <div class="eval-grid">
+                        <div class="eval-text-panel">
+                            <div class="panel-section">
+                                <h5>Expected Ground Truth</h5>
+                                <p class="truth-text">Earned leaves can be encashed only at the time of separation from the company, up to a maximum of 45 days.</p>
+                            </div>
+                            <div class="panel-section">
+                                <h5>Generated Answer</h5>
+                                <p class="response-text">Yes, you can encash your earned leaves, but only at the time of separation from the company, and up to a maximum of 45 days (Doc: Leave_Policy.md).</p>
+                            </div>
+                            <div class="panel-section">
+                                <h5>Retrieved Context Chunks</h5>
+                                <ul class="context-list">
+                                    <li>## Frequently Asked Questions
+Below are answers to common questions regarding the interpretation and application of this policy:
+
+Q: Can I encash my leaves?
+A: Earned leaves can be encashed only at the time of separation from the company, up to a maximum of 45 days.
+
+Q: What happens if I take leave without approval?
+A: Unauthorized absences are treated as loss of pay (LOP) and may lead to disciplinary action.</li><li>## Frequently Asked Questions
+Below are answers to common questions regarding the interpretation and application of this policy:
+
+Q: Can I encash my leaves?
+A: Earned leaves can be encashed only at the time of separation from the company, up to a maximum of 45 days.
+
+Q: What happens if I take leave without approval?
+A: Unauthorized absences are treated as loss of pay (LOP) and may lead to disciplinary action.
+...
+## Frequently Asked Questions
+Below are answers to common questions regarding the interpretation and application of this policy:
+
+Q: Can I encash my leaves?
+A: Earned leaves can be encashed only at the time of separation from the company, up to a maximum of 45 days.
+
+Q: What happens if I take leave without approval?
+A: Unauthorized absences are treated as loss of pay (LOP) and may lead to disciplinary action.
+...
+## Frequently Asked Questions
+Below are answers to common questions regarding the interpretation and application of this policy:
+
+Q: Can I encash my leaves?
+A: Earned leaves can be encashed only at the time of separation from the company, up to a maximum of 45 days.
+
+Q: What happens if I take leave without approval?
+A: Unauthorized absences are treated as loss of pay (LOP) and may lead to disciplinary action.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="eval-metrics-panel">
+                            <h5>Ragas Metric Evaluation</h5>
+                            
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Faithfulness</span>
+                        <span class="metric-bar-value" style="color: #ef4444">50%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 50%; background-color: #ef4444"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Answer relevancy</span>
+                        <span class="metric-bar-value" style="color: #10b981">91%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 91%; background-color: #10b981"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Context precision</span>
+                        <span class="metric-bar-value" style="color: #10b981">99%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 99%; background-color: #10b981"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Context recall</span>
+                        <span class="metric-bar-value" style="color: #10b981">100%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 100%; background-color: #10b981"></div>
+                    </div>
+                </div>
+                
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="eval-card">
+                <div class="eval-header" onclick="toggleDetails(3)">
+                    <div class="eval-title-group">
+                        <span class="eval-index">Case #4</span>
+                        <span class="eval-query">What is BIA's hybrid remote work model?</span>
+                    </div>
+                    <div class="eval-score-summary">
+                        <span class="avg-badge">Avg Score: 88%</span>
+                        <span class="chevron" id="chevron-3">▼</span>
+                    </div>
+                </div>
+                <div class="eval-details" id="details-3">
+                    <div class="eval-grid">
+                        <div class="eval-text-panel">
+                            <div class="panel-section">
+                                <h5>Expected Ground Truth</h5>
+                                <p class="truth-text">BIA operates on a hybrid model consisting of 3 days in-office and 2 days remote.</p>
+                            </div>
+                            <div class="panel-section">
+                                <h5>Generated Answer</h5>
+                                <p class="response-text">BIA operates on a hybrid work model where employees are expected to work 3 days in-office and 2 days remotely. Remote work eligibility is determined by the department head and HR. (Source: Employee_Handbook.md)</p>
+                            </div>
+                            <div class="panel-section">
+                                <h5>Retrieved Context Chunks</h5>
+                                <ul class="context-list">
+                                    <li>## Frequently Asked Questions
+Below are answers to common questions regarding the interpretation and application of this policy:
+
+Q: Can I work fully remote?
+A: Remote work eligibility is determined by the department head and HR. bia operates on a hybrid model (3 days in-office, 2 days remote).
+
+Q: How do I request a duplicate ID card?
+A: Submit an IT service ticket under the 'Facilities' category.</li><li>Applies to all employees, board members, vendors, partners, and contractors representing bia globally. Specifically, this policy applies to all business segments, research groups, engineering divisions, sales territories, and corporate administrative wings. It encompasses all modes of work, including hybrid configurations, fully remote engagements, client-site deployments, and travel assignments. No department, subsidiary, or regional branch is exempt from the provisions detailed within. The rules apply</li><li>This handbook applies to all regular full-time, part-time, temporary, and contract employees of BIA Pvt. Ltd., across all locations, subsidiaries, and corporate offices globally. Specifically, this policy applies to all business segments, research groups, engineering divisions, sales territories, and corporate administrative wings. It encompasses all modes of work, including hybrid configurations, fully remote engagements, client-site deployments, and travel assignments. No department, subsidiary, or</li><li>Consistent attendance and punctuality are essential for bia's collaborative work culture. We expect employees to be ready to work by their scheduled start time. Daily tracking is managed via biometric access in office facilities and VPN logs for remote workers. Core operational hours are 10:00 AM to 4:00 PM IST. BIA Pvt. Ltd. believes in fostering an environment of trust, safety, and mutual respect. Our core policy principles dictate that all assets, files, client data, and internal resources are protected</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="eval-metrics-panel">
+                            <h5>Ragas Metric Evaluation</h5>
+                            
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Faithfulness</span>
+                        <span class="metric-bar-value" style="color: #f59e0b">83%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 83%; background-color: #f59e0b"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Answer relevancy</span>
+                        <span class="metric-bar-value" style="color: #f59e0b">71%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 71%; background-color: #f59e0b"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Context precision</span>
+                        <span class="metric-bar-value" style="color: #10b981">99%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 99%; background-color: #10b981"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Context recall</span>
+                        <span class="metric-bar-value" style="color: #10b981">100%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 100%; background-color: #10b981"></div>
+                    </div>
+                </div>
+                
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="eval-card">
+                <div class="eval-header" onclick="toggleDetails(4)">
+                    <div class="eval-title-group">
+                        <span class="eval-index">Case #5</span>
+                        <span class="eval-query">Can I claim broadband expenses?</span>
+                    </div>
+                    <div class="eval-score-summary">
+                        <span class="avg-badge">Avg Score: 83%</span>
+                        <span class="chevron" id="chevron-4">▼</span>
+                    </div>
+                </div>
+                <div class="eval-details" id="details-4">
+                    <div class="eval-grid">
+                        <div class="eval-text-panel">
+                            <div class="panel-section">
+                                <h5>Expected Ground Truth</h5>
+                                <p class="truth-text">Employees on hybrid/remote setups can claim internet reimbursement up to INR 1,500 monthly by uploading the service bill.</p>
+                            </div>
+                            <div class="panel-section">
+                                <h5>Generated Answer</h5>
+                                <p class="response-text">Yes, employees on hybrid/remote setups can claim internet reimbursement up to INR 1,500 monthly by uploading the service bill. (Doc: Expense_Reimbursement.md)</p>
+                            </div>
+                            <div class="panel-section">
+                                <h5>Retrieved Context Chunks</h5>
+                                <ul class="context-list">
+                                    <li>## Frequently Asked Questions
+Below are answers to common questions regarding the interpretation and application of this policy:
+
+Q: Can I claim broadband expenses?
+A: Yes, employees on hybrid/remote setups can claim internet reimbursement up to INR 1,500 monthly by uploading the service bill.
+
+Q: Is there a limit on client lunch expenses?
+A: Yes, client meals are capped at INR 1,500 per person. Exceptions require pre-approval from the department head.
+...
+## Frequently Asked Questions
+Below are answers to common questions regarding the interpretation and application of this policy:
+
+Q: Can I claim broadband expenses?
+A: Yes, employees on hybrid/remote setups can claim internet reimbursement up to INR 1,500 monthly by uploading the service bill.
+
+Q: Is there a limit on client lunch expenses?
+A: Yes, client meals are capped at INR 1,500 per person. Exceptions require pre-approval from the department head.
+...
+## Frequently Asked Questions
+Below are answers to common questions regarding the interpretation and application of this policy:
+
+Q: Can I claim broadband expenses?
+A: Yes, employees on hybrid/remote setups can claim internet reimbursement up to INR 1,500 monthly by uploading the service bill.
+
+Q: Is there a limit on client lunch expenses?
+A: Yes, client meals are capped at INR 1,500 per person. Exceptions require pre-approval from the department head.
+...
+## Frequently Asked Questions
+Below are answers to common questions regarding the interpretation and application of this policy:
+
+Q: Can I claim broadband expenses?
+A: Yes, employees on hybrid/remote setups can claim internet reimbursement up to INR 1,500 monthly by uploading the service bill.
+
+Q: Is there a limit on client lunch expenses?
+A: Yes, client meals are capped at INR 1,500 per person. Exceptions require pre-approval from the department head.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="eval-metrics-panel">
+                            <h5>Ragas Metric Evaluation</h5>
+                            
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Faithfulness</span>
+                        <span class="metric-bar-value" style="color: #f59e0b">75%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 75%; background-color: #f59e0b"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Answer relevancy</span>
+                        <span class="metric-bar-value" style="color: #ef4444">60%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 60%; background-color: #ef4444"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Context precision</span>
+                        <span class="metric-bar-value" style="color: #10b981">99%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 99%; background-color: #10b981"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-bar-group">
+                    <div class="metric-bar-labels">
+                        <span class="metric-bar-name">Context recall</span>
+                        <span class="metric-bar-value" style="color: #10b981">100%</span>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div class="metric-bar-fill" style="width: 100%; background-color: #10b981"></div>
+                    </div>
+                </div>
+                
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+    </div>
+  </div>
+
+  <script>
+    function toggleDetails(index) {
+      const card = document.querySelectorAll('.eval-card')[index];
+      card.classList.toggle('open');
+    }
+
+    async function triggerEvaluation() {
+      const btn = document.getElementById('run-eval-btn');
+      btn.innerHTML = '⚙️ Running Evaluation...';
+      btn.disabled = true;
+      btn.style.opacity = '0.7';
+      btn.style.cursor = 'wait';
+      
+      try {
+        const response = await fetch('http://localhost:8000/run-evaluation', {
+          method: 'POST'
+        });
+        
+        if (response.ok) {
+          // Reload page to see new results
+          window.location.reload();
+        } else {
+          const data = await response.json();
+          alert('Evaluation run failed: ' + (data.detail || response.statusText));
+          btn.innerHTML = '⚙️ Run Re-Evaluation';
+          btn.disabled = false;
+          btn.style.opacity = '1';
+          btn.style.cursor = 'pointer';
+        }
+      } catch (err) {
+        alert('Communication failed: ' + err.message);
+        btn.innerHTML = '⚙️ Run Re-Evaluation';
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.style.cursor = 'pointer';
+      }
+    }
+  </script>
+</body>
+</html>
