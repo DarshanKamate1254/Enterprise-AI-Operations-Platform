@@ -13,6 +13,51 @@ Developed by **Darshan Kamate** (*Principal AI Engineer & Software Architect*).
 
 ---
 
+## 🖼️ Application Showcase & UI Screenshots
+
+<div align="center">
+  <img src="ui.png" alt="bia Operations Platform Dashboard" width="100%" />
+  <p><i>Figure 1: Main Control Panel — Interactive glassmorphic agent chat interface and workflow stream.</i></p>
+</div>
+
+<br>
+
+<table width="100%">
+  <tr>
+    <td width="50%" align="center">
+      <img src="LOGIN.png" alt="Login & RBAC Authentication" width="100%"/>
+      <br>
+      <b>Figure 2: Secure JWT Login & Role Selection</b>
+    </td>
+    <td width="50%" align="center">
+      <img src="SQL_Agent.png" alt="SQL Agent Query Execution" width="100%"/>
+      <br>
+      <b>Figure 3: SQL Agent Executing Relational Database Queries</b>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <img src="Unstructured_Data_Retrieval.png" alt="Unstructured RAG Retrieval" width="100%"/>
+      <br>
+      <b>Figure 4: Hybrid RAG Search & Policy Retrieval</b>
+    </td>
+    <td width="50%" align="center">
+      <img src="Evaluation_Scores.png" alt="Ragas Benchmark Evaluation Scores" width="100%"/>
+      <br>
+      <b>Figure 5: Ragas Benchmark Evaluation Dashboard</b>
+    </td>
+  </tr>
+</table>
+
+<br>
+
+<div align="center">
+  <img src="Observabilities.png" alt="System Observability & Monitoring" width="100%" />
+  <p><i>Figure 6: System Observability — Live OpenTelemetry, Prometheus metrics & execution telemetry.</i></p>
+</div>
+
+---
+
 ## 🏗️ 1. Platform & Microservice Architecture
 
 The platform utilizes a modern decoupled microservices design. Client actions pass through the API Gateway, are vetted by token security rules, and trigger LangGraph cyclic graphs that coordinate parallel agent actions.

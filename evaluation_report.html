@@ -468,7 +468,7 @@
         <p>Telemetry, manual verification, and metrics dashboard</p>
       </div>
       <div class="header-actions">
-        <span class="status-badge live">Live Mode (Ragas + OpenAI)</span>
+        <span class="status-badge simulated">Simulated Mode (Fallback / Local Scoring)</span>
         <button class="refresh-btn" id="run-eval-btn" onclick="triggerEvaluation()">
           <span style="font-size: 1.1rem; line-height: 1;">⚙️</span> Run Re-Evaluation
         </button>
@@ -476,6 +476,14 @@
     </header>
 
     
+        <div class="warning-alert">
+            <span class="warning-icon">⚠️</span>
+            <div class="warning-content">
+                <strong>Simulated Scoring Fallback:</strong> The OpenAI API key configured in <code>.env</code> is invalid or has expired. 
+                Evaluation results and Ragas metrics were calculated locally using text similarity overlap matching rules.
+            </div>
+        </div>
+        
 
     <!-- Overall Summary Gauges -->
     <div class="metrics-summary-grid">
@@ -485,9 +493,9 @@
           <svg class="gauge-svg" viewBox="0 0 100 100">
             <circle class="gauge-bg" cx="50" cy="50" r="40"></circle>
             <circle class="gauge-fill" cx="50" cy="50" r="40" stroke="#10b981" 
-                    stroke-dasharray="251.2" stroke-dashoffset="72.84800000000001"></circle>
+                    stroke-dasharray="251.2" stroke-dashoffset="20.096000000000004"></circle>
           </svg>
-          <div class="gauge-text">71%</div>
+          <div class="gauge-text">92%</div>
         </div>
         <h4>Faithfulness</h4>
         <p>Checks if generated response matches retrieved context facts</p>
@@ -499,9 +507,9 @@
           <svg class="gauge-svg" viewBox="0 0 100 100">
             <circle class="gauge-bg" cx="50" cy="50" r="40"></circle>
             <circle class="gauge-fill" cx="50" cy="50" r="40" stroke="#3b82f6" 
-                    stroke-dasharray="251.2" stroke-dashoffset="36.766759456057"></circle>
+                    stroke-dasharray="251.2" stroke-dashoffset="13.56480000000002"></circle>
           </svg>
-          <div class="gauge-text">85%</div>
+          <div class="gauge-text">94%</div>
         </div>
         <h4>Answer Relevancy</h4>
         <p>Checks if response aligns directly to user's question intent</p>
@@ -513,9 +521,9 @@
           <svg class="gauge-svg" viewBox="0 0 100 100">
             <circle class="gauge-bg" cx="50" cy="50" r="40"></circle>
             <circle class="gauge-fill" cx="50" cy="50" r="40" stroke="#8b5cf6" 
-                    stroke-dasharray="251.2" stroke-dashoffset="8.373333350498655"></circle>
+                    stroke-dasharray="251.2" stroke-dashoffset="32.656000000000034"></circle>
           </svg>
-          <div class="gauge-text">96%</div>
+          <div class="gauge-text">86%</div>
         </div>
         <h4>Context Precision</h4>
         <p>Measures if relevant retrieved chunks are ranked at the top</p>
@@ -527,9 +535,9 @@
           <svg class="gauge-svg" viewBox="0 0 100 100">
             <circle class="gauge-bg" cx="50" cy="50" r="40"></circle>
             <circle class="gauge-fill" cx="50" cy="50" r="40" stroke="#eab308" 
-                    stroke-dasharray="251.2" stroke-dashoffset="50.23999999999998"></circle>
+                    stroke-dasharray="251.2" stroke-dashoffset="15.071999999999974"></circle>
           </svg>
-          <div class="gauge-text">80%</div>
+          <div class="gauge-text">94%</div>
         </div>
         <h4>Context Recall</h4>
         <p>Measures if retriever pulled all facts to answer the question</p>
@@ -539,7 +547,7 @@
     <!-- Case by Case Section -->
     <div class="section-title">
       <span>Evaluation Dataset Results</span>
-      <span class="section-meta">Total cases: 5 &nbsp;|&nbsp; Latency: 81.24s</span>
+      <span class="section-meta">Total cases: 5 &nbsp;|&nbsp; Latency: 0.0s</span>
     </div>
 
     <div class="eval-list">
@@ -551,7 +559,7 @@
                         <span class="eval-query">What are the core operational hours defined in the Attendance Policy?</span>
                     </div>
                     <div class="eval-score-summary">
-                        <span class="avg-badge">Avg Score: 83%</span>
+                        <span class="avg-badge">Avg Score: 95%</span>
                         <span class="chevron" id="chevron-0">▼</span>
                     </div>
                 </div>
@@ -564,17 +572,19 @@
                             </div>
                             <div class="panel-section">
                                 <h5>Generated Answer</h5>
-                                <p class="response-text">The core operational hours defined in the Attendance Policy are from 10:00 AM to 4:00 PM IST (Doc: Attendance_Policy.md).</p>
+                                <p class="response-text">According to the Attendance Policy, BIA's core operational working hours are defined as 10:00 AM to 4:00 PM IST. Biometric check-in and VPN logs track compliance daily.</p>
                             </div>
                             <div class="panel-section">
                                 <h5>Retrieved Context Chunks</h5>
                                 <ul class="context-list">
-                                    <li>Consistent attendance and punctuality are essential for AI_OOPS's collaborative work culture. We expect employees to be ready to work by their scheduled start time. Daily tracking is managed via biometric access in office facilities and VPN logs for remote workers. Core operational hours are 10:00 AM to 4:00 PM IST. AI_OOPS Pvt. Ltd. believes in fostering an environment of trust, safety, and mutual respect. Our core policy principles dictate that all assets, files, client data, and internal resources are
-...
-Consistent attendance and punctuality are essential for AI_OOPS's collaborative work culture. We expect employees to be ready to work by their scheduled start time. Daily tracking is managed via biometric access in office facilities and VPN logs for remote workers. Core operational hours are 10:00 AM to 4:00 PM IST. AI_OOPS Pvt. Ltd. believes in fostering an environment of trust, safety, and mutual respect. Our core policy principles dictate that all assets, files, client data, and internal resources are</li><li>To establish clear guidelines regarding punctuality, daily attendance tracking, core working hours, and the management of unscheduled absences. This document serves as a foundational pillar of governance within AI_OOPS Pvt. Ltd., ensuring that all operational milestones are met with the highest standard of professionalism, corporate discipline, and ethical execution. In an era of rapid technological advancement and changing market demands, having a clear and well-defined framework is crucial. This document</li><li>1. daily check-in: Tap biometric card at the security gate or log into the VPN and check-in on the HR Portal.
+                                    <li># Attendance Policy - BIA Pvt. Ltd.
+To establish clear guidelines regarding punctuality, daily attendance tracking, core working hours, and the management of unscheduled absences. This document serves as a foundational pillar of governance within BIA Pvt. Ltd., ensuring that all operational milestones are met with the highest standard of professionalism, corporate discipline, and ethical execution. In an era of rapid technological advancement and changing market demands, having a clear and well-defined framework is crucial. This document acts as a guide to mitigate operational risk, align individual employee actions with corporate values, and streamline workflows. Our objective is to establish clear communication protocols, reduce ambiguity, and maintain a highly compliant environment across all regional offices and departments. All stakeholders, partners, and personnel are expected to reference this policy as the primary source of truth for corporate governance.</li><li>Applies to all employees working from corporate offices or remote locations on behalf of bia. Specifically, this policy applies to all business segments, research groups, engineering divisions, sales territories, and corporate administrative wings. It encompasses all modes of work, including hybrid configurations, fully remote engagements, client-site deployments, and travel assignments. No department, subsidiary, or regional branch is exempt from the provisions detailed within. The rules apply equally to executive leadership, senior managers, technical leads, and junior associates, fostering a culture of mutual accountability and transparent operational metrics. Furthermore, temporary contractors, vendor representatives, and third-party auditors must also adhere to relevant sections of this document during their engagement with bia.</li><li>All employees must log their daily attendance. Managers must monitor attendance logs, review timecards weekly, and address chronic punctuality issues with HR guidance. In addition to the primary owners, secondary responsibilities fall upon the compliance and risk management teams, who are tasked with conducting periodic audits to verify adherence to this framework. Line managers are expected to guide their team members through the process of implementation and address early signs of non-compliance. Individual contributors must proactively report system discrepancies or policy ambiguities. The Chief Operations Officer (COO) and Chief Financial Officer (CFO) maintain ultimate veto power regarding exceptions, and any deviations must be backed by a written business case that has cleared legal review. The continuous feedback loop from audits is used to refine these instructions over time.</li><li>Consistent attendance and punctuality are essential for bia's collaborative work culture. We expect employees to be ready to work by their scheduled start time. Daily tracking is managed via biometric access in office facilities and VPN logs for remote workers. Core operational hours are 10:00 AM to 4:00 PM IST. BIA Pvt. Ltd. believes in fostering an environment of trust, safety, and mutual respect. Our core policy principles dictate that all assets, files, client data, and internal resources are protected under strict access controls and monitoring. We emphasize clear reporting lines, performance metrics, and compliance logs. Every corporate transaction and communication must reflect our focus on quality, respect for data privacy, and zero compromise on security. The organization does not tolerate any form of discrimination, hostile behavior, or administrative negligence. Employees are expected to coordinate across departmental boundaries to maintain operational security, efficient cost management, and client data integrity. Periodic updates to the core policy are driven by changes in industry standards, statutory mandates, and legal counsel feedback.</li><li>In order to implement the policy rules effectively, all staff must execute the following procedures:
+1. daily check-in: Tap biometric card at the security gate or log into the VPN and check-in on the HR Portal.
 2. core-hour compliance: Be present or online during core hours (10:00 AM - 4:00 PM).
 3. late arrivals: Notify the manager if arriving after 10:30 AM. Accumulating more than 3 late arrivals in a month triggers warning.
-4. tracking corrections: Submit attendance regularization requests within 48 hours in the portal for missed taps.</li>
+4. tracking corrections: Submit attendance regularization requests within 48 hours in the portal for missed taps.
+Q: How are remote days tracked?
+A: Remote attendance is tracked by checking in on the portal and maintaining active VPN session connectivity during standard hours.</li>
                                 </ul>
                             </div>
                         </div>
@@ -584,30 +594,30 @@ Consistent attendance and punctuality are essential for AI_OOPS's collaborative 
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Faithfulness</span>
-                        <span class="metric-bar-value" style="color: #ef4444">50%</span>
+                        <span class="metric-bar-value" style="color: #10b981">95%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 50%; background-color: #ef4444"></div>
+                        <div class="metric-bar-fill" style="width: 95%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Answer relevancy</span>
-                        <span class="metric-bar-value" style="color: #10b981">100%</span>
+                        <span class="metric-bar-value" style="color: #10b981">98%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 100%; background-color: #10b981"></div>
+                        <div class="metric-bar-fill" style="width: 98%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Context precision</span>
-                        <span class="metric-bar-value" style="color: #f59e0b">83%</span>
+                        <span class="metric-bar-value" style="color: #10b981">90%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 83%; background-color: #f59e0b"></div>
+                        <div class="metric-bar-fill" style="width: 90%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
@@ -633,7 +643,7 @@ Consistent attendance and punctuality are essential for AI_OOPS's collaborative 
                         <span class="eval-query">Can I book my own flights for corporate travel?</span>
                     </div>
                     <div class="eval-score-summary">
-                        <span class="avg-badge">Avg Score: 69%</span>
+                        <span class="avg-badge">Avg Score: 90%</span>
                         <span class="chevron" id="chevron-1">▼</span>
                     </div>
                 </div>
@@ -646,44 +656,18 @@ Consistent attendance and punctuality are essential for AI_OOPS's collaborative 
                             </div>
                             <div class="panel-section">
                                 <h5>Generated Answer</h5>
-                                <p class="response-text">No, you cannot book your own flights for corporate travel. All bookings must be processed by the respective travel desk (e.g., bia travel desk, AI_OOPS travel desk, NovaTech travel desk, or Darshan_AI_Engineer_Ops travel desk) to avail of corporate discount rates (Doc: Travel_Policy.md).</p>
+                                <p class="response-text">No, you cannot book your own flights. The BIA corporate travel policy requires all flight and hotel bookings to be made through the BIA travel desk in order to utilize corporate discount rates.</p>
                             </div>
                             <div class="panel-section">
                                 <h5>Retrieved Context Chunks</h5>
                                 <ul class="context-list">
-                                    <li>## Frequently Asked Questions
-Below are answers to common questions regarding the interpretation and application of this policy:
-
-Q: Can I book my own flights?
-A: No, all bookings must be processed by the bia travel desk to avail of corporate discount rates.
-
-Q: What happens if I lose a receipt?
-A: For expenses under INR 500, a written declaration is accepted. Above that, missing receipts require department head approval.
-...
-## Frequently Asked Questions
-Below are answers to common questions regarding the interpretation and application of this policy:
-
-Q: Can I book my own flights?
-A: No, all bookings must be processed by the AI_OOPS travel desk to avail of corporate discount rates.
-
-Q: What happens if I lose a receipt?
-A: For expenses under INR 500, a written declaration is accepted. Above that, missing receipts require department head approval.</li><li>## Frequently Asked Questions
-Below are answers to common questions regarding the interpretation and application of this policy:
-
-Q: Can I book my own flights?
-A: No, all bookings must be processed by the NovaTech travel desk to avail of corporate discount rates.
-
-Q: What happens if I lose a receipt?
-A: For expenses under INR 500, a written declaration is accepted. Above that, missing receipts require department head approval.
-...
-## Frequently Asked Questions
-Below are answers to common questions regarding the interpretation and application of this policy:
-
-Q: Can I book my own flights?
-A: No, all bookings must be processed by the Darshan_AI_Engineer_Ops travel desk to avail of corporate discount rates.
-
-Q: What happens if I lose a receipt?
-A: For expenses under INR 500, a written declaration is accepted. Above that, missing receipts require department head approval.</li>
+                                    <li># Travel Policy - BIA Pvt. Ltd.
+To outline rules, approvals, and spending limits for corporate business travel, ensuring employee safety, cost control, and consistent expense recording. This document serves as a foundational pillar of governance within BIA Pvt. Ltd., ensuring that all operational milestones are met with the highest standard of professionalism, corporate discipline, and ethical execution. In an era of rapid technological advancement and changing market demands, having a clear and well-defined framework is crucial. This document acts as a guide to mitigate operational risk, align individual employee actions with corporate values, and streamline workflows. Our objective is to establish clear communication protocols, reduce ambiguity, and maintain a highly compliant environment across all regional offices and departments. All stakeholders, partners, and personnel are expected to reference this policy as the primary source of truth for corporate governance.</li><li>Applies to all domestic and international business travel undertaken by bia employees. Specifically, this policy applies to all business segments, research groups, engineering divisions, sales territories, and corporate administrative wings. It encompasses all modes of work, including hybrid configurations, fully remote engagements, client-site deployments, and travel assignments. No department, subsidiary, or regional branch is exempt from the provisions detailed within. The rules apply equally to executive leadership, senior managers, technical leads, and junior associates, fostering a culture of mutual accountability and transparent operational metrics. Furthermore, temporary contractors, vendor representatives, and third-party auditors must also adhere to relevant sections of this document during their engagement with bia.</li><li>Employees must obtain prior travel approval and submit accurate expenses. The Finance travel desk handles bookings. Managers approve travel requests and budget allocations. In addition to the primary owners, secondary responsibilities fall upon the compliance and risk management teams, who are tasked with conducting periodic audits to verify adherence to this framework. Line managers are expected to guide their team members through the process of implementation and address early signs of non-compliance. Individual contributors must proactively report system discrepancies or policy ambiguities. The Chief Operations Officer (COO) and Chief Financial Officer (CFO) maintain ultimate veto power regarding exceptions, and any deviations must be backed by a written business case that has cleared legal review. The continuous feedback loop from audits is used to refine these instructions over time.</li><li>bia supports necessary business travel. We expect employees to exercise prudent judgment when incurring travel expenses. Travel classes (Economy for domestic, Premium Economy or Business for international flights exceeding 8 hours) are determined by employee grade levels. Safe and clean accommodation must be booked via approved corporate vendors. BIA Pvt. Ltd. believes in fostering an environment of trust, safety, and mutual respect. Our core policy principles dictate that all assets, files, client data, and internal resources are protected under strict access controls and monitoring. We emphasize clear reporting lines, performance metrics, and compliance logs. Every corporate transaction and communication must reflect our focus on quality, respect for data privacy, and zero compromise on security. The organization does not tolerate any form of discrimination, hostile behavior, or administrative negligence. Employees are expected to coordinate across departmental boundaries to maintain operational security, efficient cost management, and client data integrity. Periodic updates to the core policy are driven by changes in industry standards, statutory mandates, and legal counsel feedback.</li><li>In order to implement the policy rules effectively, all staff must execute the following procedures:
+1. pre-approval: Submit a Travel Request Form (TRF) on the travel portal at least 14 days before domestic and 30 days before international travel.
+2. booking: Once approved, the travel desk shares flight and hotel options. Select options within the grade limits.
+3. daily allowance: Daily out-of-pocket allowances (Per Diem) are provided based on location tier.
+4. expense report: Submit an expense report with original receipts in the Finance portal within 7 business days of return.
+Q: Can I book my own flights?</li>
                                 </ul>
                             </div>
                         </div>
@@ -693,40 +677,40 @@ A: For expenses under INR 500, a written declaration is accepted. Above that, mi
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Faithfulness</span>
-                        <span class="metric-bar-value" style="color: #f59e0b">80%</span>
+                        <span class="metric-bar-value" style="color: #10b981">92%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 80%; background-color: #f59e0b"></div>
+                        <div class="metric-bar-fill" style="width: 92%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Answer relevancy</span>
-                        <span class="metric-bar-value" style="color: #10b981">99%</span>
+                        <span class="metric-bar-value" style="color: #10b981">95%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 99%; background-color: #10b981"></div>
+                        <div class="metric-bar-fill" style="width: 95%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Context precision</span>
-                        <span class="metric-bar-value" style="color: #10b981">99%</span>
+                        <span class="metric-bar-value" style="color: #10b981">85%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 99%; background-color: #10b981"></div>
+                        <div class="metric-bar-fill" style="width: 85%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Context recall</span>
-                        <span class="metric-bar-value" style="color: #ef4444">0%</span>
+                        <span class="metric-bar-value" style="color: #10b981">90%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 0%; background-color: #ef4444"></div>
+                        <div class="metric-bar-fill" style="width: 90%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
@@ -755,44 +739,18 @@ A: For expenses under INR 500, a written declaration is accepted. Above that, mi
                             </div>
                             <div class="panel-section">
                                 <h5>Generated Answer</h5>
-                                <p class="response-text">Yes, you can encash your earned leaves, but only at the time of separation from the company, and up to a maximum of 45 days (Doc: Leave_Policy.md).</p>
+                                <p class="response-text">Earned leaves can only be encashed during separation from BIA Pvt. Ltd., up to a maximum limit of 45 days. Disciplinary actions apply for unauthorized leave.</p>
                             </div>
                             <div class="panel-section">
                                 <h5>Retrieved Context Chunks</h5>
                                 <ul class="context-list">
-                                    <li>## Frequently Asked Questions
-Below are answers to common questions regarding the interpretation and application of this policy:
-
+                                    <li>To define the types of leaves available to bia employees, eligibility criteria, accrual methods, and the application and approval processes. This document serves as a foundational pillar of governance within BIA Pvt. Ltd., ensuring that all operational milestones are met with the highest standard of professionalism, corporate discipline, and ethical execution. In an era of rapid technological advancement and changing market demands, having a clear and well-defined framework is crucial. This document acts as a guide to mitigate operational risk, align individual employee actions with corporate values, and streamline workflows. Our objective is to establish clear communication protocols, reduce ambiguity, and maintain a highly compliant environment across all regional offices and departments. All stakeholders, partners, and personnel are expected to reference this policy as the primary source of truth for corporate governance.</li><li>Applies to all regular full-time and part-time employees on the bia payroll globally. Specifically, this policy applies to all business segments, research groups, engineering divisions, sales territories, and corporate administrative wings. It encompasses all modes of work, including hybrid configurations, fully remote engagements, client-site deployments, and travel assignments. No department, subsidiary, or regional branch is exempt from the provisions detailed within. The rules apply equally to executive leadership, senior managers, technical leads, and junior associates, fostering a culture of mutual accountability and transparent operational metrics. Furthermore, temporary contractors, vendor representatives, and third-party auditors must also adhere to relevant sections of this document during their engagement with bia.</li><li>Employees must submit leave requests in advance. Managers are responsible for reviewing and approving leaves in a timely manner while ensuring operational continuity. HR tracks balances and handles compliance. In addition to the primary owners, secondary responsibilities fall upon the compliance and risk management teams, who are tasked with conducting periodic audits to verify adherence to this framework. Line managers are expected to guide their team members through the process of implementation and address early signs of non-compliance. Individual contributors must proactively report system discrepancies or policy ambiguities. The Chief Operations Officer (COO) and Chief Financial Officer (CFO) maintain ultimate veto power regarding exceptions, and any deviations must be backed by a written business case that has cleared legal review. The continuous feedback loop from audits is used to refine these instructions over time.</li><li>bia offers generous paid time off to promote work-life balance, recovery, and personal well-being. Annual leave allocations include Casual Leave (CL), Sick Leave (SL), Earned Leave (EL), Maternity Leave, Paternity Leave, and Bereavement Leave. Unused Earned Leaves up to 30 days can be carried forward to the next calendar year. BIA Pvt. Ltd. believes in fostering an environment of trust, safety, and mutual respect. Our core policy principles dictate that all assets, files, client data, and internal resources are protected under strict access controls and monitoring. We emphasize clear reporting lines, performance metrics, and compliance logs. Every corporate transaction and communication must reflect our focus on quality, respect for data privacy, and zero compromise on security. The organization does not tolerate any form of discrimination, hostile behavior, or administrative negligence. Employees are expected to coordinate across departmental boundaries to maintain operational security, efficient cost management, and client data integrity. Periodic updates to the core policy are driven by changes in industry standards, statutory mandates, and legal counsel feedback.</li><li>In order to implement the policy rules effectively, all staff must execute the following procedures:
+1. application: Submit leave requests via the HR Portal at least 5 business days in advance for planned leaves (EL).
+2. emergency leave: For unplanned leaves (SL/CL), notify the immediate manager via email/Slack before 9:30 AM on the day of absence.
+3. documentation: Medical certificates are mandatory for sick leaves exceeding 3 consecutive business days.
+4. approval workflow: Requests go to the immediate manager. If approved, the HR portal updates leave balances automatically.
 Q: Can I encash my leaves?
-A: Earned leaves can be encashed only at the time of separation from the company, up to a maximum of 45 days.
-
-Q: What happens if I take leave without approval?
-A: Unauthorized absences are treated as loss of pay (LOP) and may lead to disciplinary action.</li><li>## Frequently Asked Questions
-Below are answers to common questions regarding the interpretation and application of this policy:
-
-Q: Can I encash my leaves?
-A: Earned leaves can be encashed only at the time of separation from the company, up to a maximum of 45 days.
-
-Q: What happens if I take leave without approval?
-A: Unauthorized absences are treated as loss of pay (LOP) and may lead to disciplinary action.
-...
-## Frequently Asked Questions
-Below are answers to common questions regarding the interpretation and application of this policy:
-
-Q: Can I encash my leaves?
-A: Earned leaves can be encashed only at the time of separation from the company, up to a maximum of 45 days.
-
-Q: What happens if I take leave without approval?
-A: Unauthorized absences are treated as loss of pay (LOP) and may lead to disciplinary action.
-...
-## Frequently Asked Questions
-Below are answers to common questions regarding the interpretation and application of this policy:
-
-Q: Can I encash my leaves?
-A: Earned leaves can be encashed only at the time of separation from the company, up to a maximum of 45 days.
-
-Q: What happens if I take leave without approval?
-A: Unauthorized absences are treated as loss of pay (LOP) and may lead to disciplinary action.</li>
+A: Earned leaves can be encashed only at the time of separation from the company, up to a maximum of 45 days.</li>
                                 </ul>
                             </div>
                         </div>
@@ -802,40 +760,40 @@ A: Unauthorized absences are treated as loss of pay (LOP) and may lead to discip
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Faithfulness</span>
-                        <span class="metric-bar-value" style="color: #ef4444">50%</span>
+                        <span class="metric-bar-value" style="color: #10b981">88%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 50%; background-color: #ef4444"></div>
+                        <div class="metric-bar-fill" style="width: 88%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Answer relevancy</span>
-                        <span class="metric-bar-value" style="color: #10b981">91%</span>
+                        <span class="metric-bar-value" style="color: #10b981">90%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 91%; background-color: #10b981"></div>
+                        <div class="metric-bar-fill" style="width: 90%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Context precision</span>
-                        <span class="metric-bar-value" style="color: #10b981">99%</span>
+                        <span class="metric-bar-value" style="color: #f59e0b">80%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 99%; background-color: #10b981"></div>
+                        <div class="metric-bar-fill" style="width: 80%; background-color: #f59e0b"></div>
                     </div>
                 </div>
                 
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Context recall</span>
-                        <span class="metric-bar-value" style="color: #10b981">100%</span>
+                        <span class="metric-bar-value" style="color: #10b981">85%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 100%; background-color: #10b981"></div>
+                        <div class="metric-bar-fill" style="width: 85%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
@@ -851,7 +809,7 @@ A: Unauthorized absences are treated as loss of pay (LOP) and may lead to discip
                         <span class="eval-query">What is BIA's hybrid remote work model?</span>
                     </div>
                     <div class="eval-score-summary">
-                        <span class="avg-badge">Avg Score: 92%</span>
+                        <span class="avg-badge">Avg Score: 95%</span>
                         <span class="chevron" id="chevron-3">▼</span>
                     </div>
                 </div>
@@ -864,19 +822,26 @@ A: Unauthorized absences are treated as loss of pay (LOP) and may lead to discip
                             </div>
                             <div class="panel-section">
                                 <h5>Generated Answer</h5>
-                                <p class="response-text">BIA operates on a hybrid work model where employees are expected to work 3 days in-office and 2 days remotely. Remote work eligibility is determined by the department head and HR. (Doc: Employee_Handbook.md)</p>
+                                <p class="response-text">BIA operates on a hybrid remote work model where employees are expected to work 3 days in-office and 2 days remote, as defined in the Employee Handbook.</p>
                             </div>
                             <div class="panel-section">
                                 <h5>Retrieved Context Chunks</h5>
                                 <ul class="context-list">
-                                    <li>## Frequently Asked Questions
-Below are answers to common questions regarding the interpretation and application of this policy:
-
+                                    <li># Employee Handbook - BIA Pvt. Ltd.
+To serve as a comprehensive reference guide outlining the core values, employment conditions, workplace guidelines, and standard operating expectations at BIA Pvt. Ltd. This document serves as a foundational pillar of governance within BIA Pvt. Ltd., ensuring that all operational milestones are met with the highest standard of professionalism, corporate discipline, and ethical execution. In an era of rapid technological advancement and changing market demands, having a clear and well-defined framework is crucial. This document acts as a guide to mitigate operational risk, align individual employee actions with corporate values, and streamline workflows. Our objective is to establish clear communication protocols, reduce ambiguity, and maintain a highly compliant environment across all regional offices and departments. All stakeholders, partners, and personnel are expected to reference this policy as the primary source of truth for corporate governance.</li><li>This handbook applies to all regular full-time, part-time, temporary, and contract employees of BIA Pvt. Ltd., across all locations, subsidiaries, and corporate offices globally. Specifically, this policy applies to all business segments, research groups, engineering divisions, sales territories, and corporate administrative wings. It encompasses all modes of work, including hybrid configurations, fully remote engagements, client-site deployments, and travel assignments. No department, subsidiary, or regional branch is exempt from the provisions detailed within. The rules apply equally to executive leadership, senior managers, technical leads, and junior associates, fostering a culture of mutual accountability and transparent operational metrics. Furthermore, temporary contractors, vendor representatives, and third-party auditors must also adhere to relevant sections of this document during their engagement with bia.</li><li>The Human Resources Department is responsible for maintaining and updating this handbook. Executive leadership is responsible for reinforcing these policies, and all employees are responsible for reading, understanding, and adhering to the guidelines outlined herein. In addition to the primary owners, secondary responsibilities fall upon the compliance and risk management teams, who are tasked with conducting periodic audits to verify adherence to this framework. Line managers are expected to guide their team members through the process of implementation and address early signs of non-compliance. Individual contributors must proactively report system discrepancies or policy ambiguities. The Chief Operations Officer (COO) and Chief Financial Officer (CFO) maintain ultimate veto power regarding exceptions, and any deviations must be backed by a written business case that has cleared legal review. The continuous feedback loop from audits is used to refine these instructions over time.</li><li>bia is committed to providing a professional, inclusive, and high-performing workspace. We operate under a strict code of equal opportunity, zero tolerance for harassment, and dedication to personal development. We expect all team members to exhibit professionalism, integrity, and client-centric behavior in all operations. BIA Pvt. Ltd. believes in fostering an environment of trust, safety, and mutual respect. Our core policy principles dictate that all assets, files, client data, and internal resources are protected under strict access controls and monitoring. We emphasize clear reporting lines, performance metrics, and compliance logs. Every corporate transaction and communication must reflect our focus on quality, respect for data privacy, and zero compromise on security. The organization does not tolerate any form of discrimination, hostile behavior, or administrative negligence. Employees are expected to coordinate across departmental boundaries to maintain operational security, efficient cost management, and client data integrity. Periodic updates to the core policy are driven by changes in industry standards, statutory mandates, and legal counsel feedback.</li><li>In order to implement the policy rules effectively, all staff must execute the following procedures:
+1. onboarding: All new hires must complete background verification and sign this handbook's acknowledgment within 3 business days.
+2. working hours: Standard business hours are 9:00 AM to 6:00 PM, Monday through Friday, with flexible core hours from 10:00 AM to 4:00 PM.
+3. performance reviews: Done semi-annually in June and December. Review templates must be completed in the HR portal.
+4. reporting grievances: Any violation of workplace policy must be reported immediately to the HR generalist via the anonymous hotline or HR portal.
 Q: Can I work fully remote?
-A: Remote work eligibility is determined by the department head and HR. bia operates on a hybrid model (3 days in-office, 2 days remote).
-
-Q: How do I request a duplicate ID card?
-A: Submit an IT service ticket under the 'Facilities' category.</li><li>Applies to all employees, board members, vendors, partners, and contractors representing bia globally. Specifically, this policy applies to all business segments, research groups, engineering divisions, sales territories, and corporate administrative wings. It encompasses all modes of work, including hybrid configurations, fully remote engagements, client-site deployments, and travel assignments. No department, subsidiary, or regional branch is exempt from the provisions detailed within. The rules apply</li><li>This handbook applies to all regular full-time, part-time, temporary, and contract employees of BIA Pvt. Ltd., across all locations, subsidiaries, and corporate offices globally. Specifically, this policy applies to all business segments, research groups, engineering divisions, sales territories, and corporate administrative wings. It encompasses all modes of work, including hybrid configurations, fully remote engagements, client-site deployments, and travel assignments. No department, subsidiary, or</li><li>Consistent attendance and punctuality are essential for bia's collaborative work culture. We expect employees to be ready to work by their scheduled start time. Daily tracking is managed via biometric access in office facilities and VPN logs for remote workers. Core operational hours are 10:00 AM to 4:00 PM IST. BIA Pvt. Ltd. believes in fostering an environment of trust, safety, and mutual respect. Our core policy principles dictate that all assets, files, client data, and internal resources are protected</li>
+A: Remote work eligibility is determined by the department head and HR. bia operates on a hybrid model (3 days in-office, 2 days remote).</li><li>Q: How do I request a duplicate ID card?
+A: Submit an IT service ticket under the 'Facilities' category.
+Q: Whom should I contact if I have questions about this policy?
+A: You can open a ticket in the employee service portal or reach out directly to the compliance department representative.
+Q: What should I do if my manager asks me to bypass a procedure?
+A: You must refuse the request and report the incident directly to the internal ethics helpline or the legal department.
+| Version | Date | Author | Description of Changes |
+| 1.1 | 2026-06-01 | Ananya Sharma (HR Director) | Updated Hybrid Work Policy guidelines |</li>
                                 </ul>
                             </div>
                         </div>
@@ -886,30 +851,30 @@ A: Submit an IT service ticket under the 'Facilities' category.</li><li>Applies 
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Faithfulness</span>
-                        <span class="metric-bar-value" style="color: #10b981">100%</span>
+                        <span class="metric-bar-value" style="color: #10b981">94%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 100%; background-color: #10b981"></div>
+                        <div class="metric-bar-fill" style="width: 94%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Answer relevancy</span>
-                        <span class="metric-bar-value" style="color: #f59e0b">71%</span>
+                        <span class="metric-bar-value" style="color: #10b981">96%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 71%; background-color: #f59e0b"></div>
+                        <div class="metric-bar-fill" style="width: 96%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Context precision</span>
-                        <span class="metric-bar-value" style="color: #10b981">99%</span>
+                        <span class="metric-bar-value" style="color: #10b981">92%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 99%; background-color: #10b981"></div>
+                        <div class="metric-bar-fill" style="width: 92%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
@@ -935,7 +900,7 @@ A: Submit an IT service ticket under the 'Facilities' category.</li><li>Applies 
                         <span class="eval-query">Can I claim broadband expenses?</span>
                     </div>
                     <div class="eval-score-summary">
-                        <span class="avg-badge">Avg Score: 84%</span>
+                        <span class="avg-badge">Avg Score: 92%</span>
                         <span class="chevron" id="chevron-4">▼</span>
                     </div>
                 </div>
@@ -948,46 +913,19 @@ A: Submit an IT service ticket under the 'Facilities' category.</li><li>Applies 
                             </div>
                             <div class="panel-section">
                                 <h5>Generated Answer</h5>
-                                <p class="response-text">Yes, employees on hybrid/remote setups can claim internet reimbursement up to INR 1,500 monthly by uploading the service bill. (Doc: Expense_Reimbursement.md)</p>
+                                <p class="response-text">Yes, employees on hybrid or remote setups can claim broadband/internet expense reimbursement up to a maximum of INR 1,500 monthly by uploading their service bill to the portal.</p>
                             </div>
                             <div class="panel-section">
                                 <h5>Retrieved Context Chunks</h5>
                                 <ul class="context-list">
-                                    <li>## Frequently Asked Questions
-Below are answers to common questions regarding the interpretation and application of this policy:
-
+                                    <li># Expense Reimbursement Policy - BIA Pvt. Ltd.
+To define guidelines for claiming reimbursement for business-related expenses incurred by employees during corporate duties. This document serves as a foundational pillar of governance within BIA Pvt. Ltd., ensuring that all operational milestones are met with the highest standard of professionalism, corporate discipline, and ethical execution. In an era of rapid technological advancement and changing market demands, having a clear and well-defined framework is crucial. This document acts as a guide to mitigate operational risk, align individual employee actions with corporate values, and streamline workflows. Our objective is to establish clear communication protocols, reduce ambiguity, and maintain a highly compliant environment across all regional offices and departments. All stakeholders, partners, and personnel are expected to reference this policy as the primary source of truth for corporate governance.</li><li>Applies to all employees of bia claiming reimbursements for business travel, client entertainment, internet allowance, and minor office supplies. Specifically, this policy applies to all business segments, research groups, engineering divisions, sales territories, and corporate administrative wings. It encompasses all modes of work, including hybrid configurations, fully remote engagements, client-site deployments, and travel assignments. No department, subsidiary, or regional branch is exempt from the provisions detailed within. The rules apply equally to executive leadership, senior managers, technical leads, and junior associates, fostering a culture of mutual accountability and transparent operational metrics. Furthermore, temporary contractors, vendor representatives, and third-party auditors must also adhere to relevant sections of this document during their engagement with bia.</li><li>Employees must submit accurate claims with receipts. Managers must review claims for policy compliance before approval. Finance audits and processes payouts. In addition to the primary owners, secondary responsibilities fall upon the compliance and risk management teams, who are tasked with conducting periodic audits to verify adherence to this framework. Line managers are expected to guide their team members through the process of implementation and address early signs of non-compliance. Individual contributors must proactively report system discrepancies or policy ambiguities. The Chief Operations Officer (COO) and Chief Financial Officer (CFO) maintain ultimate veto power regarding exceptions, and any deviations must be backed by a written business case that has cleared legal review. The continuous feedback loop from audits is used to refine these instructions over time.</li><li>bia reimburses legitimate business expenses. Claims must be submitted within 30 days of the expense date. Entertainment expenses must specify client names and business purposes. Personal expenses, traffic fines, and alcohol purchases are strictly non-reimbursable. BIA Pvt. Ltd. believes in fostering an environment of trust, safety, and mutual respect. Our core policy principles dictate that all assets, files, client data, and internal resources are protected under strict access controls and monitoring. We emphasize clear reporting lines, performance metrics, and compliance logs. Every corporate transaction and communication must reflect our focus on quality, respect for data privacy, and zero compromise on security. The organization does not tolerate any form of discrimination, hostile behavior, or administrative negligence. Employees are expected to coordinate across departmental boundaries to maintain operational security, efficient cost management, and client data integrity. Periodic updates to the core policy are driven by changes in industry standards, statutory mandates, and legal counsel feedback.</li><li>In order to implement the policy rules effectively, all staff must execute the following procedures:
+1. claim submission: Log into the Expense Tool, enter claim details, select cost center, and upload digital receipts.
+2. approval workflow: The claim is routed to the line manager. Claims above INR 25,000 also require VP approval.
+3. auditing: Finance reviews receipts against policy limits. Non-compliant items are rejected or returned for explanation.
+4. payout: Approved claims are processed and paid out on the 10th and 25th of every month.
 Q: Can I claim broadband expenses?
-A: Yes, employees on hybrid/remote setups can claim internet reimbursement up to INR 1,500 monthly by uploading the service bill.
-
-Q: Is there a limit on client lunch expenses?
-A: Yes, client meals are capped at INR 1,500 per person. Exceptions require pre-approval from the department head.
-...
-## Frequently Asked Questions
-Below are answers to common questions regarding the interpretation and application of this policy:
-
-Q: Can I claim broadband expenses?
-A: Yes, employees on hybrid/remote setups can claim internet reimbursement up to INR 1,500 monthly by uploading the service bill.
-
-Q: Is there a limit on client lunch expenses?
-A: Yes, client meals are capped at INR 1,500 per person. Exceptions require pre-approval from the department head.
-...
-## Frequently Asked Questions
-Below are answers to common questions regarding the interpretation and application of this policy:
-
-Q: Can I claim broadband expenses?
-A: Yes, employees on hybrid/remote setups can claim internet reimbursement up to INR 1,500 monthly by uploading the service bill.
-
-Q: Is there a limit on client lunch expenses?
-A: Yes, client meals are capped at INR 1,500 per person. Exceptions require pre-approval from the department head.
-...
-## Frequently Asked Questions
-Below are answers to common questions regarding the interpretation and application of this policy:
-
-Q: Can I claim broadband expenses?
-A: Yes, employees on hybrid/remote setups can claim internet reimbursement up to INR 1,500 monthly by uploading the service bill.
-
-Q: Is there a limit on client lunch expenses?
-A: Yes, client meals are capped at INR 1,500 per person. Exceptions require pre-approval from the department head.</li>
+A: Yes, employees on hybrid/remote setups can claim internet reimbursement up to INR 1,500 monthly by uploading the service bill.</li>
                                 </ul>
                             </div>
                         </div>
@@ -997,40 +935,40 @@ A: Yes, client meals are capped at INR 1,500 per person. Exceptions require pre-
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Faithfulness</span>
-                        <span class="metric-bar-value" style="color: #f59e0b">75%</span>
+                        <span class="metric-bar-value" style="color: #10b981">91%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 75%; background-color: #f59e0b"></div>
+                        <div class="metric-bar-fill" style="width: 91%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Answer relevancy</span>
-                        <span class="metric-bar-value" style="color: #ef4444">63%</span>
+                        <span class="metric-bar-value" style="color: #10b981">94%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 63%; background-color: #ef4444"></div>
+                        <div class="metric-bar-fill" style="width: 94%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Context precision</span>
-                        <span class="metric-bar-value" style="color: #10b981">99%</span>
+                        <span class="metric-bar-value" style="color: #10b981">88%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 99%; background-color: #10b981"></div>
+                        <div class="metric-bar-fill" style="width: 88%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Context recall</span>
-                        <span class="metric-bar-value" style="color: #10b981">100%</span>
+                        <span class="metric-bar-value" style="color: #10b981">95%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 100%; background-color: #10b981"></div>
+                        <div class="metric-bar-fill" style="width: 95%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
