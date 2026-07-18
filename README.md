@@ -72,31 +72,31 @@ graph TD
     classDef storage fill:#ec4899,stroke:#be185d,stroke-width:2px,color:#fff;
     classDef monitoring fill:#64748b,stroke:#475569,stroke-width:2px,color:#fff;
 
-    Client[React Frontend Dashboard<br>Vite | TS | Glassmorphism]:::client -->|HTTPS / SSE| GW[FastAPI Gateway API<br>JWT & RBAC Filters]:::gateway
+    Client["React Frontend Dashboard<br>Vite | TS | Glassmorphism"]:::client -->|HTTPS / SSE| GW["FastAPI Gateway API<br>JWT & RBAC Filters"]:::gateway
     
-    GW -->|Validate Token| Auth[Auth Service<br>Local Authentication]:::gateway
-    GW -->|Orchestrate workflow| LG[LangGraph Orchestrator<br>StateGraph Execution]:::gateway
+    GW -->|Validate Token| Auth["Auth Service<br>Local Authentication"]:::gateway
+    GW -->|Orchestrate workflow| LG["LangGraph Orchestrator<br>StateGraph Execution"]:::gateway
     
-    subgraph Multi-Agent Grid
-        LG --> Agents[Specialized Agent Nodes<br>Router, Planner, Workers, Safety...]:::agent
+    subgraph "Multi-Agent Grid"
+        LG --> Agents["Specialized Agent Nodes<br>Router, Planner, Workers, Safety..."]:::agent
     end
     
-    Agents -->|Invoke Tools via HTTP| MCP[MCP Server<br>Model Context Protocol]:::mcp
+    Agents -->|Invoke Tools via HTTP| MCP["MCP Server<br>Model Context Protocol"]:::mcp
     
-    MCP -->|Read / Write SQL| Postgres[(PostgreSQL DB<br>Transactional Stores)]:::storage
-    MCP -->|Read / Write Files| FS[Sandboxed Filesystem]:::mcp
-    MCP -->|HTTP Requests| ExternalAPI[External Rest APIs]:::mcp
+    MCP -->|Read / Write SQL| Postgres[("PostgreSQL DB<br>Transactional Stores")]:::storage
+    MCP -->|Read / Write Files| FS["Sandboxed Filesystem"]:::mcp
+    MCP -->|HTTP Requests| ExternalAPI["External REST APIs"]:::mcp
     
-    Agents -->|Semantic Query| RAG[RAG Service API<br>Similarity & Flashrank Rerank]:::agent
-    RAG -->|Vector Search| Qdrant[(Qdrant Vector DB<br>Embeddings Stores)]:::storage
+    Agents -->|Semantic Query| RAG["RAG Service API<br>Similarity & Flashrank Rerank"]:::agent
+    RAG -->|Vector Search| Qdrant[("Qdrant Vector DB<br>Embeddings Stores")]:::storage
     
-    LG -->|Checkpointer State| Redis[(Redis State Store<br>Session Checkpoints)]:::storage
+    LG -->|Checkpointer State| Redis[("Redis State Store<br>Session Checkpoints")]:::storage
     
     %% Telemetry Paths
-    GW -.->|Logs & Traces| OTEL[OpenTelemetry Collector]:::monitoring
+    GW -.->|Logs & Traces| OTEL["OpenTelemetry Collector"]:::monitoring
     LG -.->|Logs & Traces| OTEL:::monitoring
-    OTEL -.->|Scrape Metrics| Prom[Prometheus Engine]:::monitoring
-    Prom -.->|Live Dashboards| Grafana[Grafana Dashboard]:::monitoring
+    OTEL -.->|Scrape Metrics| Prom["Prometheus Engine"]:::monitoring
+    Prom -.->|Live Dashboards| Grafana["Grafana Dashboard"]:::monitoring
 ```
 
 ### Component Taxonomy
@@ -120,35 +120,35 @@ The graph is orchestrated using a stateful **LangGraph** workflow. Execution use
 ### Dynamic Agent Execution & Coordination Flow
 ```mermaid
 flowchart TD
-    Start([User Input Prompt]) --> Security{1. Guardrails Check}
+    Start(["User Input Prompt"]) --> Security{"1. Guardrails Check"}
     
-    Security -->|Malicious Prompt / SQL Injection| ActionBlock[Block Request & Exit]
-    Security -->|Safe Query| Router[2. Router Agent Node]
+    Security -->|Malicious Prompt / SQL Injection| ActionBlock["Block Request & Exit"]
+    Security -->|Safe Query| Router["2. Router Agent Node"]
     
-    Router -->|Classification decision| RouteCheck{Evaluate Route}
+    Router -->|Classification decision| RouteCheck{"Evaluate Route"}
     
-    RouteCheck -->|Unsafe Intent / Role violation| SafetyRedact[7. Safety Agent Node]
-    RouteCheck -->|General conversation| ReportComp[8. Report Agent Node]
-    RouteCheck -->|Complex Data Request| Planner[3. Planner Agent Node]
+    RouteCheck -->|Unsafe Intent / Role violation| SafetyRedact["7. Safety Agent Node"]
+    RouteCheck -->|General conversation| ReportComp["8. Report Agent Node"]
+    RouteCheck -->|Complex Data Request| Planner["3. Planner Agent Node"]
     
-    Planner -->|Generate execution plan| Checkpoint[State Checkpoint saved to Redis]
+    Planner -->|Generate execution plan| Checkpoint["State Checkpoint saved to Redis"]
     
     %% Parallel Executions
-    Checkpoint --> RetrievalAgent[4. Retrieval Agent Node]
-    Checkpoint --> SQLAgent[4. SQL Agent Node]
-    Checkpoint --> APIAgent[4. API Agent Node]
+    Checkpoint --> RetrievalAgent["4. Retrieval Agent Node"]
+    Checkpoint --> SQLAgent["4. SQL Agent Node"]
+    Checkpoint --> APIAgent["4. API Agent Node"]
     
-    RetrievalAgent -->|Find documents| RetrieveTool[MCP Retriever / Qdrant]
-    SQLAgent -->|Query database| SQLTool[MCP SQL Tool / Postgres]
-    APIAgent -->|Call endpoint| APITool[MCP REST API Tool]
+    RetrievalAgent -->|Find documents| RetrieveTool["MCP Retriever / Qdrant"]
+    SQLAgent -->|Query database| SQLTool["MCP SQL Tool / Postgres"]
+    APIAgent -->|Call endpoint| APITool["MCP REST API Tool"]
     
-    RetrieveTool --> Merge[5. Passthrough Sync Merge Node]
+    RetrieveTool --> Merge["5. Passthrough Sync Merge Node"]
     SQLTool --> Merge
     APITool --> Merge
     
-    Merge --> Reflection[6. Reflection Agent Node]
+    Merge --> Reflection["6. Reflection Agent Node"]
     
-    Reflection -->|Validation fails / Empty results / DB Error| CheckRetry{Attempts < 3?}
+    Reflection -->|Validation fails / Empty results / DB Error| CheckRetry{"Attempts < 3?"}
     CheckRetry -->|Yes| Planner
     CheckRetry -->|No| SafetyRedact
     
@@ -156,7 +156,7 @@ flowchart TD
     
     SafetyRedact -->|Redact credit cards, emails, hashes| ReportComp
     
-    ReportComp -->|Generate Markdown Report| Output([Return stream to Client])
+    ReportComp -->|Generate Markdown Report| Output(["Return stream to Client"])
 ```
 
 ### Agent Nodes Registry
@@ -181,23 +181,23 @@ The Retrieval-Augmented Generation pipeline handles importing markdown documents
 ### Ingestion & Retrieval Workflow
 ```mermaid
 flowchart TD
-    subgraph Document Ingestion Pipeline (Admin/Manager Roles)
-        Upload([Upload Markdown File]) --> AuthVerify{RBAC Auth Check}
-        AuthVerify -->|Deny| ErrorResp[Access Denied Response]
-        AuthVerify -->|Allow| IngestAPI[RAG Ingestion API]
-        IngestAPI --> Loader[loader.py: Read markdown contents]
-        Loader --> Chunker[chunker.py: Recursive Character Text Splitter]
-        Chunker --> Embedding[OpenAI text-embedding-3-small]
-        Embedding --> VectorStore[vector_store.py: Bulk upload to Qdrant]
-        VectorStore --> Indexed[(Qdrant Vector Database)]
+    subgraph "Document Ingestion Pipeline (Admin/Manager Roles)"
+        Upload(["Upload Markdown File"]) --> AuthVerify{"RBAC Auth Check"}
+        AuthVerify -->|Deny| ErrorResp["Access Denied Response"]
+        AuthVerify -->|Allow| IngestAPI["RAG Ingestion API"]
+        IngestAPI --> Loader["loader.py: Read markdown contents"]
+        Loader --> Chunker["chunker.py: Recursive Character Text Splitter"]
+        Chunker --> Embedding["OpenAI text-embedding-3-small"]
+        Embedding --> VectorStore["vector_store.py: Bulk upload to Qdrant"]
+        VectorStore --> Indexed[("Qdrant Vector Database")]
     end
 
-    subgraph Document Retrieval Pipeline
-        Query([User Query Context]) --> RAG_API[RAG Service API]
-        RAG_API --> Retrieve[retriever.py: Similarity search in Qdrant]
+    subgraph "Document Retrieval Pipeline"
+        Query(["User Query Context"]) --> RAG_API["RAG Service API"]
+        RAG_API --> Retrieve["retriever.py: Similarity search in Qdrant"]
         Indexed -.-> Retrieve
-        Retrieve --> Rerank[Flashrank Local Reranker]
-        Rerank --> ContextMatch[Top-N context paragraphs matching query]
+        Retrieve --> Rerank["Flashrank Local Reranker"]
+        Rerank --> ContextMatch["Top-N context paragraphs matching query"]
     end
 ```
 

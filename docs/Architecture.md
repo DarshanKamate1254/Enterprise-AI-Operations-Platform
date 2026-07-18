@@ -12,37 +12,37 @@ The client request enters the API Gateway, which handles security token checks a
 
 ```mermaid
 flowchart TD
-    Client[Web UI / Client] -->|HTTP/WebSockets| GW[Gateway API]
-    GW -->|Authenticate| Auth[Auth Service / Local Token Verification]
-    GW -->|Execute Workflow| LG[LangGraph Orchestrator]
+    Client["Web UI / Client"] -->|HTTP/WebSockets| GW["Gateway API"]
+    GW -->|Authenticate| Auth["Auth Service / Local Token Verification"]
+    GW -->|Execute Workflow| LG["LangGraph Orchestrator"]
     
-    subgraph Multi-Agent System
-        LG --> Router[1. Router Agent]
-        Router -->|Route Request| Planner[2. Planner Agent]
-        Planner -->|Fetch Internal Policies| RAG_A[3. Retrieval Agent]
-        Planner -->|Query Structured DB| SQL_A[4. SQL Agent]
-        Planner -->|Invoke Integrations| API_A[5. API Agent]
+    subgraph "Multi-Agent System"
+        LG --> Router["1. Router Agent"]
+        Router -->|Route Request| Planner["2. Planner Agent"]
+        Planner -->|Fetch Internal Policies| RAG_A["3. Retrieval Agent"]
+        Planner -->|Query Structured DB| SQL_A["4. SQL Agent"]
+        Planner -->|Invoke Integrations| API_A["5. API Agent"]
         
-        RAG_A --> Ref[6. Reflection Agent]
+        RAG_A --> Ref["6. Reflection Agent"]
         SQL_A --> Ref
         API_A --> Ref
         
         Ref -->|Correct / Refine| Planner
-        Ref -->|Approved| Safety[7. Safety Agent]
-        Safety -->|Compliance Cleared| Report[8. Report Agent]
+        Ref -->|Approved| Safety["7. Safety Agent"]
+        Safety -->|Compliance Cleared| Report["8. Report Agent"]
       end
 
-    RAG_A -->|Semantic Queries| Qdrant[(Qdrant Vector DB)]
-    SQL_A -->|Read/Write Operations| Postgres[(PostgreSQL DB)]
-    API_A -->|Tool Triggers| MCP[MCP Server]
+    RAG_A -->|Semantic Queries| Qdrant[("Qdrant Vector DB")]
+    SQL_A -->|Read/Write Operations| Postgres[("PostgreSQL DB")]
+    API_A -->|Tool Triggers| MCP["MCP Server"]
     
-    LG -->|State Caching| Redis[(Redis State Store)]
+    LG -->|State Caching| Redis[("Redis State Store")]
     
     %% Monitoring & Observability
-    GW -.->|Traces & Logs| OTEL[OpenTelemetry Collector]
+    GW -.->|Traces & Logs| OTEL["OpenTelemetry Collector"]
     LG -.->|Traces & Logs| OTEL
-    OTEL -.->|Scrape Metrics| Prom[Prometheus]
-    Prom -.->|Dashboards| Grafana[Grafana]
+    OTEL -.->|Scrape Metrics| Prom["Prometheus"]
+    Prom -.->|Dashboards| Grafana["Grafana"]
 ```
 
 ---
