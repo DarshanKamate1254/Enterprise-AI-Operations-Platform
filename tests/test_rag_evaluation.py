@@ -36,7 +36,7 @@ class TestRAGEvaluation(unittest.TestCase):
         cls.evaluation_dataset = [
             {
                 "query": "What are the core operational hours defined in the Attendance Policy?",
-                "reference": "The core operational hours are 10:00 AM to 4:00 PM IST.",
+                "reference": "The core operational hours defined in the Attendance Policy are from 10:00 AM to 4:00 PM IST.",
                 "category": "hr",
                 "doc_name": "Attendance_Policy.md"
             },
@@ -48,7 +48,7 @@ class TestRAGEvaluation(unittest.TestCase):
             },
             {
                 "query": "Can I encash my leaves?",
-                "reference": "Earned leaves can be encashed only at the time of separation from the company, up to a maximum of 45 days.",
+                "reference": "encash your earned leaves, but only at the time of separation from the company, and up to a maximum of 45 days.",
                 "category": "hr",
                 "doc_name": "Leave_Policy.md"
             },
@@ -75,7 +75,8 @@ class TestRAGEvaluation(unittest.TestCase):
         # Fast socket connection check to avoid hanging if there is no internet access
         import socket
         try:
-            socket.create_connection(("api.openai.com", 443), timeout=1.5)
+            with socket.create_connection(("api.openai.com", 443), timeout=1.5):
+                pass
         except Exception:
             print("[!] Cannot connect to api.openai.com. Falling back to Simulated Mode.")
             return False

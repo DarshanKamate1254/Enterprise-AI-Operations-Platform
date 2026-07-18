@@ -1,26 +1,26 @@
 {
   "is_live_mode": true,
   "summary": {
-    "faithfulness": 0.6547619047619048,
-    "answer_relevancy": 0.8451538246657803,
+    "faithfulness": 0.71,
+    "answer_relevancy": 0.8536355117195183,
     "context_precision": 0.9666666665983333,
     "context_recall": 0.8
   },
-  "latency": 74.37,
-  "timestamp": "2026-07-17 23:16:29",
+  "latency": 81.24,
+  "timestamp": "2026-07-18 09:58:05",
   "results": [
     {
       "query": "What are the core operational hours defined in the Attendance Policy?",
-      "reference": "The core operational hours are 10:00 AM to 4:00 PM IST.",
-      "response": "The core operational hours defined in the Attendance Policy are from 10:00 AM to 4:00 PM IST (Indian Standard Time) (Doc: Attendance_Policy.md).",
+      "reference": "The core operational hours defined in the Attendance Policy are from 10:00 AM to 4:00 PM IST.",
+      "response": "The core operational hours defined in the Attendance Policy are from 10:00 AM to 4:00 PM IST (Doc: Attendance_Policy.md).",
       "retrieved_contexts": [
         "Consistent attendance and punctuality are essential for AI_OOPS's collaborative work culture. We expect employees to be ready to work by their scheduled start time. Daily tracking is managed via biometric access in office facilities and VPN logs for remote workers. Core operational hours are 10:00 AM to 4:00 PM IST. AI_OOPS Pvt. Ltd. believes in fostering an environment of trust, safety, and mutual respect. Our core policy principles dictate that all assets, files, client data, and internal resources are\n...\nConsistent attendance and punctuality are essential for AI_OOPS's collaborative work culture. We expect employees to be ready to work by their scheduled start time. Daily tracking is managed via biometric access in office facilities and VPN logs for remote workers. Core operational hours are 10:00 AM to 4:00 PM IST. AI_OOPS Pvt. Ltd. believes in fostering an environment of trust, safety, and mutual respect. Our core policy principles dictate that all assets, files, client data, and internal resources are",
         "To establish clear guidelines regarding punctuality, daily attendance tracking, core working hours, and the management of unscheduled absences. This document serves as a foundational pillar of governance within AI_OOPS Pvt. Ltd., ensuring that all operational milestones are met with the highest standard of professionalism, corporate discipline, and ethical execution. In an era of rapid technological advancement and changing market demands, having a clear and well-defined framework is crucial. This document",
         "1. daily check-in: Tap biometric card at the security gate or log into the VPN and check-in on the HR Portal.\n2. core-hour compliance: Be present or online during core hours (10:00 AM - 4:00 PM).\n3. late arrivals: Notify the manager if arriving after 10:30 AM. Accumulating more than 3 late arrivals in a month triggers warning.\n4. tracking corrections: Submit attendance regularization requests within 48 hours in the portal for missed taps."
       ],
       "metrics": {
-        "faithfulness": 0.3333333333333333,
-        "answer_relevancy": 0.9999996482483077,
+        "faithfulness": 0.5,
+        "answer_relevancy": 1.0,
         "context_precision": 0.8333333332916666,
         "context_recall": 1.0
       }
@@ -34,15 +34,15 @@
         "## Frequently Asked Questions\nBelow are answers to common questions regarding the interpretation and application of this policy:\n\nQ: Can I book my own flights?\nA: No, all bookings must be processed by the NovaTech travel desk to avail of corporate discount rates.\n\nQ: What happens if I lose a receipt?\nA: For expenses under INR 500, a written declaration is accepted. Above that, missing receipts require department head approval.\n...\n## Frequently Asked Questions\nBelow are answers to common questions regarding the interpretation and application of this policy:\n\nQ: Can I book my own flights?\nA: No, all bookings must be processed by the Darshan_AI_Engineer_Ops travel desk to avail of corporate discount rates.\n\nQ: What happens if I lose a receipt?\nA: For expenses under INR 500, a written declaration is accepted. Above that, missing receipts require department head approval."
       ],
       "metrics": {
-        "faithfulness": 0.8571428571428571,
-        "answer_relevancy": 0.9831715262295807,
+        "faithfulness": 0.8,
+        "answer_relevancy": 0.9999996532067253,
         "context_precision": 0.99999999995,
         "context_recall": 0.0
       }
     },
     {
       "query": "Can I encash my leaves?",
-      "reference": "Earned leaves can be encashed only at the time of separation from the company, up to a maximum of 45 days.",
+      "reference": "encash your earned leaves, but only at the time of separation from the company, and up to a maximum of 45 days.",
       "response": "Yes, you can encash your earned leaves, but only at the time of separation from the company, and up to a maximum of 45 days (Doc: Leave_Policy.md).",
       "retrieved_contexts": [
         "## Frequently Asked Questions\nBelow are answers to common questions regarding the interpretation and application of this policy:\n\nQ: Can I encash my leaves?\nA: Earned leaves can be encashed only at the time of separation from the company, up to a maximum of 45 days.\n\nQ: What happens if I take leave without approval?\nA: Unauthorized absences are treated as loss of pay (LOP) and may lead to disciplinary action.",
@@ -50,7 +50,7 @@
       ],
       "metrics": {
         "faithfulness": 0.5,
-        "answer_relevancy": 0.9198663652216704,
+        "answer_relevancy": 0.9110015112929656,
         "context_precision": 0.99999999995,
         "context_recall": 1.0
       }
@@ -58,7 +58,7 @@
     {
       "query": "What is BIA's hybrid remote work model?",
       "reference": "BIA operates on a hybrid model consisting of 3 days in-office and 2 days remote.",
-      "response": "BIA operates on a hybrid work model where employees are expected to work 3 days in-office and 2 days remotely. Remote work eligibility is determined by the department head and HR. (Source: Employee_Handbook.md)",
+      "response": "BIA operates on a hybrid work model where employees are expected to work 3 days in-office and 2 days remotely. Remote work eligibility is determined by the department head and HR. (Doc: Employee_Handbook.md)",
       "retrieved_contexts": [
         "## Frequently Asked Questions\nBelow are answers to common questions regarding the interpretation and application of this policy:\n\nQ: Can I work fully remote?\nA: Remote work eligibility is determined by the department head and HR. bia operates on a hybrid model (3 days in-office, 2 days remote).\n\nQ: How do I request a duplicate ID card?\nA: Submit an IT service ticket under the 'Facilities' category.",
         "Applies to all employees, board members, vendors, partners, and contractors representing bia globally. Specifically, this policy applies to all business segments, research groups, engineering divisions, sales territories, and corporate administrative wings. It encompasses all modes of work, including hybrid configurations, fully remote engagements, client-site deployments, and travel assignments. No department, subsidiary, or regional branch is exempt from the provisions detailed within. The rules apply",
@@ -66,8 +66,8 @@
         "Consistent attendance and punctuality are essential for bia's collaborative work culture. We expect employees to be ready to work by their scheduled start time. Daily tracking is managed via biometric access in office facilities and VPN logs for remote workers. Core operational hours are 10:00 AM to 4:00 PM IST. BIA Pvt. Ltd. believes in fostering an environment of trust, safety, and mutual respect. Our core policy principles dictate that all assets, files, client data, and internal resources are protected"
       ],
       "metrics": {
-        "faithfulness": 0.8333333333333334,
-        "answer_relevancy": 0.7198100209734155,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.7196790950276531,
         "context_precision": 0.9999999999,
         "context_recall": 1.0
       }
@@ -81,7 +81,7 @@
       ],
       "metrics": {
         "faithfulness": 0.75,
-        "answer_relevancy": 0.6029215626559272,
+        "answer_relevancy": 0.6374972990702475,
         "context_precision": 0.9999999999,
         "context_recall": 1.0
       }

@@ -485,9 +485,9 @@
           <svg class="gauge-svg" viewBox="0 0 100 100">
             <circle class="gauge-bg" cx="50" cy="50" r="40"></circle>
             <circle class="gauge-fill" cx="50" cy="50" r="40" stroke="#10b981" 
-                    stroke-dasharray="251.2" stroke-dashoffset="86.7238095238095"></circle>
+                    stroke-dasharray="251.2" stroke-dashoffset="72.84800000000001"></circle>
           </svg>
-          <div class="gauge-text">65%</div>
+          <div class="gauge-text">71%</div>
         </div>
         <h4>Faithfulness</h4>
         <p>Checks if generated response matches retrieved context facts</p>
@@ -499,9 +499,9 @@
           <svg class="gauge-svg" viewBox="0 0 100 100">
             <circle class="gauge-bg" cx="50" cy="50" r="40"></circle>
             <circle class="gauge-fill" cx="50" cy="50" r="40" stroke="#3b82f6" 
-                    stroke-dasharray="251.2" stroke-dashoffset="38.897359243956004"></circle>
+                    stroke-dasharray="251.2" stroke-dashoffset="36.766759456057"></circle>
           </svg>
-          <div class="gauge-text">84%</div>
+          <div class="gauge-text">85%</div>
         </div>
         <h4>Answer Relevancy</h4>
         <p>Checks if response aligns directly to user's question intent</p>
@@ -539,7 +539,7 @@
     <!-- Case by Case Section -->
     <div class="section-title">
       <span>Evaluation Dataset Results</span>
-      <span class="section-meta">Total cases: 5 &nbsp;|&nbsp; Latency: 74.37s</span>
+      <span class="section-meta">Total cases: 5 &nbsp;|&nbsp; Latency: 81.24s</span>
     </div>
 
     <div class="eval-list">
@@ -551,7 +551,7 @@
                         <span class="eval-query">What are the core operational hours defined in the Attendance Policy?</span>
                     </div>
                     <div class="eval-score-summary">
-                        <span class="avg-badge">Avg Score: 79%</span>
+                        <span class="avg-badge">Avg Score: 83%</span>
                         <span class="chevron" id="chevron-0">▼</span>
                     </div>
                 </div>
@@ -560,11 +560,11 @@
                         <div class="eval-text-panel">
                             <div class="panel-section">
                                 <h5>Expected Ground Truth</h5>
-                                <p class="truth-text">The core operational hours are 10:00 AM to 4:00 PM IST.</p>
+                                <p class="truth-text">The core operational hours defined in the Attendance Policy are from 10:00 AM to 4:00 PM IST.</p>
                             </div>
                             <div class="panel-section">
                                 <h5>Generated Answer</h5>
-                                <p class="response-text">The core operational hours defined in the Attendance Policy are from 10:00 AM to 4:00 PM IST (Indian Standard Time) (Doc: Attendance_Policy.md).</p>
+                                <p class="response-text">The core operational hours defined in the Attendance Policy are from 10:00 AM to 4:00 PM IST (Doc: Attendance_Policy.md).</p>
                             </div>
                             <div class="panel-section">
                                 <h5>Retrieved Context Chunks</h5>
@@ -584,20 +584,20 @@ Consistent attendance and punctuality are essential for AI_OOPS's collaborative 
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Faithfulness</span>
-                        <span class="metric-bar-value" style="color: #ef4444">33%</span>
+                        <span class="metric-bar-value" style="color: #ef4444">50%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 33%; background-color: #ef4444"></div>
+                        <div class="metric-bar-fill" style="width: 50%; background-color: #ef4444"></div>
                     </div>
                 </div>
                 
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Answer relevancy</span>
-                        <span class="metric-bar-value" style="color: #10b981">99%</span>
+                        <span class="metric-bar-value" style="color: #10b981">100%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 99%; background-color: #10b981"></div>
+                        <div class="metric-bar-fill" style="width: 100%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
@@ -633,7 +633,7 @@ Consistent attendance and punctuality are essential for AI_OOPS's collaborative 
                         <span class="eval-query">Can I book my own flights for corporate travel?</span>
                     </div>
                     <div class="eval-score-summary">
-                        <span class="avg-badge">Avg Score: 71%</span>
+                        <span class="avg-badge">Avg Score: 69%</span>
                         <span class="chevron" id="chevron-1">▼</span>
                     </div>
                 </div>
@@ -693,20 +693,20 @@ A: For expenses under INR 500, a written declaration is accepted. Above that, mi
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Faithfulness</span>
-                        <span class="metric-bar-value" style="color: #10b981">85%</span>
+                        <span class="metric-bar-value" style="color: #f59e0b">80%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 85%; background-color: #10b981"></div>
+                        <div class="metric-bar-fill" style="width: 80%; background-color: #f59e0b"></div>
                     </div>
                 </div>
                 
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Answer relevancy</span>
-                        <span class="metric-bar-value" style="color: #10b981">98%</span>
+                        <span class="metric-bar-value" style="color: #10b981">99%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 98%; background-color: #10b981"></div>
+                        <div class="metric-bar-fill" style="width: 99%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
@@ -751,7 +751,7 @@ A: For expenses under INR 500, a written declaration is accepted. Above that, mi
                         <div class="eval-text-panel">
                             <div class="panel-section">
                                 <h5>Expected Ground Truth</h5>
-                                <p class="truth-text">Earned leaves can be encashed only at the time of separation from the company, up to a maximum of 45 days.</p>
+                                <p class="truth-text">encash your earned leaves, but only at the time of separation from the company, and up to a maximum of 45 days.</p>
                             </div>
                             <div class="panel-section">
                                 <h5>Generated Answer</h5>
@@ -851,7 +851,7 @@ A: Unauthorized absences are treated as loss of pay (LOP) and may lead to discip
                         <span class="eval-query">What is BIA's hybrid remote work model?</span>
                     </div>
                     <div class="eval-score-summary">
-                        <span class="avg-badge">Avg Score: 88%</span>
+                        <span class="avg-badge">Avg Score: 92%</span>
                         <span class="chevron" id="chevron-3">▼</span>
                     </div>
                 </div>
@@ -864,7 +864,7 @@ A: Unauthorized absences are treated as loss of pay (LOP) and may lead to discip
                             </div>
                             <div class="panel-section">
                                 <h5>Generated Answer</h5>
-                                <p class="response-text">BIA operates on a hybrid work model where employees are expected to work 3 days in-office and 2 days remotely. Remote work eligibility is determined by the department head and HR. (Source: Employee_Handbook.md)</p>
+                                <p class="response-text">BIA operates on a hybrid work model where employees are expected to work 3 days in-office and 2 days remotely. Remote work eligibility is determined by the department head and HR. (Doc: Employee_Handbook.md)</p>
                             </div>
                             <div class="panel-section">
                                 <h5>Retrieved Context Chunks</h5>
@@ -886,10 +886,10 @@ A: Submit an IT service ticket under the 'Facilities' category.</li><li>Applies 
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Faithfulness</span>
-                        <span class="metric-bar-value" style="color: #f59e0b">83%</span>
+                        <span class="metric-bar-value" style="color: #10b981">100%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 83%; background-color: #f59e0b"></div>
+                        <div class="metric-bar-fill" style="width: 100%; background-color: #10b981"></div>
                     </div>
                 </div>
                 
@@ -935,7 +935,7 @@ A: Submit an IT service ticket under the 'Facilities' category.</li><li>Applies 
                         <span class="eval-query">Can I claim broadband expenses?</span>
                     </div>
                     <div class="eval-score-summary">
-                        <span class="avg-badge">Avg Score: 83%</span>
+                        <span class="avg-badge">Avg Score: 84%</span>
                         <span class="chevron" id="chevron-4">▼</span>
                     </div>
                 </div>
@@ -1007,10 +1007,10 @@ A: Yes, client meals are capped at INR 1,500 per person. Exceptions require pre-
                 <div class="metric-bar-group">
                     <div class="metric-bar-labels">
                         <span class="metric-bar-name">Answer relevancy</span>
-                        <span class="metric-bar-value" style="color: #ef4444">60%</span>
+                        <span class="metric-bar-value" style="color: #ef4444">63%</span>
                     </div>
                     <div class="metric-bar-track">
-                        <div class="metric-bar-fill" style="width: 60%; background-color: #ef4444"></div>
+                        <div class="metric-bar-fill" style="width: 63%; background-color: #ef4444"></div>
                     </div>
                 </div>
                 
